@@ -1,1 +1,1 @@
-# SMIL_projecy
+# SMIL_project
