@@ -14,7 +14,19 @@
 		<div id = "a">	
 	    {% block content %} 
 	    <h1><a href="">Home</a></h1>
+
+		{% if graph %}	
+		<div style="width:600;height:500">
+			{{graph|safe}}
+		</div>
+		{% endif %}
+
 		{% endblock content %} 
 		</div>
+		{% if graph %}	
+		<div style="width:600;height:500">
+			{{graph|safe}}
+		</div>
+		{% endif %}
 	</body>
 </html>
