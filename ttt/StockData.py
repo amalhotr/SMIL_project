@@ -4,12 +4,13 @@ api_key = 'B9KY7ZHBX1HNKGHO'
 
 from alpha_vantage.timeseries import TimeSeries
 from alpha_vantage.cryptocurrencies import CryptoCurrencies
+import pandas
 import pygal
 
 class StockData():
     @staticmethod
     def test(str):
-        print(str)
+        print(str) 
 
     @staticmethod
     def getValues():
