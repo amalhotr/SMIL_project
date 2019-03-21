@@ -9,7 +9,11 @@
 	    {% extends 'base.html' %}	
 	    {% block content %} 
 	    <h1>Dashboard</h1>
-	    {% endblock content %} 
-		
+		<div class = "TimeSeries">
+			<label for="Ticker">Symbol: </label>
+			<input type="text" class="TimeSeries" id="symbol" placeholder="AAPL">
+			<button type="submit" class="TimeSeries">Submit</button>
+		</div>
+		{% endblock content %} 
 	</body>
 </html>
