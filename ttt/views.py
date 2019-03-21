@@ -15,7 +15,7 @@ class HomePageView(TemplateView):
     def get_context_data(self, **kwargs):
         context = super(HomePageView, self).get_context_data(**kwargs)
 
-        x,y = StockData.getValues()
+        x,y = StockData.getValues('MSFT')
         trace1 = go.Scatter(x=x,y=y, marker={'color':'red', 'symbol':'circle', 'size':10},mode='lines', name='1st trace')
 
         data=go.Data([trace1])
