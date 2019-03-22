@@ -1,0 +1,30 @@
+{% extends "base_generic.html" %}
+
+{% block content %}
+	<h1>Leagues</h1>
+
+	{% if leagues %}
+		<table>
+			<tr>
+				<th>Name</th>
+				<th>Starting Balance</th>
+				<th>Start Date</th>
+				<th>End Date</th>
+				<th>Public</th>
+				<th>Description</th>
+			</tr>
+		{% for league in leagues %}
+			<tr>
+				<td><a href="join/{{ league.name }}">{{ league.name }}</a></td>
+				<td>{{ league.startingBalance }}</td>
+				<td>{{ league.startDate }}</td>
+				<td>{{ league.endDate }}</td>
+				<td>{{ league.public }}</td>
+				<td>{{ league.derscription }}</td>
+			</tr>
+		{% endfor %}
+		</table>
+	{% endif %}
+
+	<a href="{% url 'createLeague' %}">Create league</a>
+{% endblock %}
