@@ -1,19 +1,10 @@
-<!DOCTYPE html>
-<html lang = "en">
-	<head>
-        <meta charset="utf-8" />
-        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-		<title>Dashboard</title>
-	</head>
-	<body>
-	    {% extends 'base.html' %}	
-	    {% block content %} 
-	    <h1>Dashboard</h1>
-		<div class = "TimeSeries">
-			<label for="Ticker">Symbol: </label>
-			<input type="text" class="TimeSeries" id="symbol" placeholder="AAPL">
-			<button type="submit" class="TimeSeries">Submit</button>
-		</div>
-		{% endblock content %} 
-	</body>
-</html>
+{% extends "base_generic.html" %}
+
+{% block content %}
+	<h1>Dashboard</h1>
+	<form method="post">
+		{% csrf_token %}
+		{{ form }}
+		<input type="submit" value="Submit">
+	</form>
+{% endblock %}
