@@ -9,6 +9,7 @@ verify_ssl = true
 django = "==2.1.7"
 plotly = "*"
 alpha-vantage = "*"
+pandas = "*"
 
 [requires]
 python_version = "3.7"
