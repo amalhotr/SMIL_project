@@ -10,6 +10,9 @@ class StockData():
 
     @staticmethod
     def getValues(symbol, currency='stock'):
+        ''' get the full time series from a given stock or cryptocurrency
+            param symbol: symbol of desired stock or crypto
+            param currency: 'stock' or 'crypto' '''
         if currency=='stock':
             ts = TimeSeries(key=api_key, output_format='pandas')
             try:

@@ -1,0 +1,22 @@
+{% extends "base_generic.html" %}
+
+{% block content %}
+	<h1>{{ ticker }}</h1>
+	Ticker price: {{ quote.latestPrice }}
+	Market Cap: {{ keyStats.marketcap }}
+	Price-Earnings Ratio: {{ quote.peRatio }}
+	Dividend Yield: {{ keyStats.dividendYield }}
+	Average Volume: {{ quote.avgTotalVolume }}
+	High Today: {{ quote.high }}
+	Low Today: {{ quote.low }}
+	Open Price: {{quote.open }}
+	Close Price: {{ quote.close }}
+	Volume: {{ quote.latestVolume }}
+	52 Week High: {{ keyStats.week52high }}
+	52 Week Low: {{ keyStats.week52low }}
+	<form method="post">
+		{% csrf_token %}
+		{{ form }}
+		<input type="submit" value="Submit">
+	</form>
+{% endblock %}
