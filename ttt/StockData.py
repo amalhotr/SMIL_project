@@ -28,8 +28,6 @@ class StockData():
             x=data.index.values # get index values (dates)
             y=data.iloc[:,3]    # get third column which is closing price
             return x,y
-<<<<<<< HEAD
-=======
 
     @staticmethod
     def getCurrentPrice(symbol, currency='stock'):
@@ -55,4 +53,3 @@ class StockData():
             y=data.iloc[-1,3]    # get third column which is closing price
             return x,y
 
->>>>>>> parent of fed91ba... added some more unit tests -Antoni
