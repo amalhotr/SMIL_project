@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "fb8930d19d47ee9726c3681cfd5001e72c4f11792e7d14c13e885fbb21ff046d"
+            "sha256": "f6195b5543dd79c49d7bb764bb7daa31be6bd66828d04f167bc117b488f442a5"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -16,6 +16,13 @@
         ]
     },
     "default": {
+        "alpha-vantage": {
+            "hashes": [
+                "sha256:f4d5d59f8d5aa29cfe74ed1526fd2393b871b3aad8442bdeb23e2be0747446de"
+            ],
+            "index": "pypi",
+            "version": "==2.1.0"
+        },
         "attrs": {
             "hashes": [
                 "sha256:69c0dbf2ed392de1cb5ec704444b08a5ef81680a61cb899dc08127123af36a79",
@@ -89,24 +96,15 @@
         },
         "plotly": {
             "hashes": [
-                "sha256:0d85289494a6da90b16a5c4be87a38b58491a823a19d40b7e5ab28f68d71f860",
-                "sha256:a891661fdc343819abcbd1660ba67d5a8741616274569c34d2e36c003ba1b9f6"
+                "sha256:3688585fbde025ebbc820c9c5bc9eaf8cc64f47f3071f62c686bc470bf8db7b9",
+                "sha256:ac353e6b01892b016f77edb599f03198b9e1401dc07f2f66dddf940b18004dbd"
             ],
             "index": "pypi",
-            "version": "==3.7.0"
-        },
-        "pygal": {
-            "hashes": [
-                "sha256:27abab93cbc31e21f3c6bdecc05bda6cd3570cbdbd8297b7caa6904051b50d72",
-                "sha256:9204f05380b02a8a32f9bf99d310b51aa2a932cba5b369f7a4dc3705f0a4ce83"
-            ],
-            "index": "pypi",
-            "version": "==2.4.0"
+            "version": "==3.7.1"
         },
         "pyrsistent": {
             "hashes": [
-                "sha256:3ca82748918eb65e2d89f222b702277099aca77e34843c5eb9d52451173970e2",
-                "sha256:86359a2b7e151659bf5e645f34bbd814169d7985717d1b5ac550b2ae76a89594"
+                "sha256:3ca82748918eb65e2d89f222b702277099aca77e34843c5eb9d52451173970e2"
             ],
             "version": "==0.14.11"
         },

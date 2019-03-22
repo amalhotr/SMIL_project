@@ -7,8 +7,8 @@ verify_ssl = true
 
 [packages]
 django = "==2.1.7"
-pygal = "*"
 plotly = "*"
+alpha-vantage = "*"
 
 [requires]
 python_version = "3.7"
