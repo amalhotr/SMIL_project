@@ -135,7 +135,7 @@ def createLeague(request):
 			# instance.players.add(request.user)
 			instance.save()
 			instance.players.add(request.user)
-			return HttpResponseRedirect('/ttt/leagues/')
+			return HttpResponseRedirect('/leagues/')
 	else:
 		form = CreateLeagueForm()
 	return render(request, 'createLeague.html', {'form': form})
