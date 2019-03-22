@@ -1,7 +1,7 @@
 from django.contrib import admin
 
 # Register your models here.
-from ttt.models import League, Asset, TransactionType, TimeInForce, TransactionHistory, PendingTransaction
+from ttt.models import League, Asset, TransactionType, TimeInForce, TransactionHistory, PendingTransaction, Holdings, Portfolio
 
 # admin.site.register(League)
 class LeagueAdmin(admin.ModelAdmin):
@@ -21,7 +21,7 @@ class TransactionHistoryAdmin(admin.ModelAdmin):
 
 	fieldsets = (
 		(None, {
-			'fields': ('id', 'player', 'league')
+			'fields': ('id', 'player', 'league' , 'holdings')
 			}),
 		('Order', {
 			'fields': ('asset', 'ticker', 'transactionType', 'timeInForce', 'price1', 'price2', 'quantity')
@@ -52,3 +52,6 @@ class PendingTransactionAdmin(admin.ModelAdmin):
 		)
 
 admin.site.register(PendingTransaction, PendingTransactionAdmin)
+
+admin.site.register(Holdings)
+admin.site.register(Portfolio)
