@@ -1,7 +1,7 @@
 from django.contrib import admin
 
 # Register your models here.
-from ttt.models import League, Asset, TransactionType, TimeInForce, TransactionHistory, PendingTransaction, Holdings, Portfolio
+from ttt.models import League, Asset, TransactionType, TimeInForce, TransactionHistory, PendingTransaction, Holding, Portfolio
 
 # admin.site.register(League)
 class LeagueAdmin(admin.ModelAdmin):
@@ -15,13 +15,13 @@ admin.site.register(TimeInForce)
 
 # admin.site.register(TransactionHistory)
 class TransactionHistoryAdmin(admin.ModelAdmin):
-	list_filter = ('league', 'submittedDateTime', 'fulfilledDateTime')
+	list_filter = ('league', 'player', 'submittedDateTime', 'fulfilledDateTime')
 
-	list_display = ('id', 'league', 'ticker', 'transactionType', 'transactionStatus', 'submittedDateTime', 'fulfilledDateTime', 'price1', 'quantity')
+	list_display = ('id', 'league', 'player', 'ticker', 'transactionType', 'transactionStatus', 'submittedDateTime', 'fulfilledDateTime', 'price1', 'quantity')
 
 	fieldsets = (
 		(None, {
-			'fields': ('id', 'player', 'league' , 'holdings')
+			'fields': ('id', 'player', 'league')
 			}),
 		('Order', {
 			'fields': ('asset', 'ticker', 'transactionType', 'timeInForce', 'price1', 'price2', 'quantity')
@@ -35,9 +35,9 @@ admin.site.register(TransactionHistory, TransactionHistoryAdmin)
 
 # admin.site.register(PendingTransaction)
 class PendingTransactionAdmin(admin.ModelAdmin):
- 	list_display = ('id', 'league', 'ticker', 'transactionType', 'transactionStatus', 'submittedDateTime', 'price1', 'quantity')
+ 	list_display = ('id', 'league', 'player', 'ticker', 'transactionType', 'transactionStatus', 'submittedDateTime', 'price1', 'quantity')
 
- 	list_filter = ('league', 'submittedDateTime')
+ 	list_filter = ('league', 'player', 'submittedDateTime')
 
  	fieldsets = (
 		(None, {
@@ -53,5 +53,17 @@ class PendingTransactionAdmin(admin.ModelAdmin):
 
 admin.site.register(PendingTransaction, PendingTransactionAdmin)
 
-admin.site.register(Holdings)
-admin.site.register(Portfolio)
+class PortfolioAdmin(admin.ModelAdmin):
+	list_display = ('id', 'player', 'league', 'cash')
+
+	list_filter = ('player', 'league')
+
+admin.site.register(Portfolio, PortfolioAdmin)
+
+class HoldingAdmin(admin.ModelAdmin):
+	list_display = ('id', 'ticker', 'price', 'quantity', 'portfolio')
+
+	list_filter = ('portfolio', 'ticker')
+
+admin.site.register(Holding, HoldingAdmin)
+
