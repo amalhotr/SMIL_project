@@ -1,10 +1,13 @@
 from django.shortcuts import render
 from .StockData import *
+from .Plot import *
 
 from django.views.generic import TemplateView
 
+'''
 import plotly.offline as opy
 import plotly.graph_objs as go
+'''
 
 from django.shortcuts import render
 from django.http import HttpResponseRedirect
@@ -14,26 +17,24 @@ from .models import League, Asset, TransactionType, TimeInForce, TransactionHist
 from .forms import QuoteForm, TradeForm, LeagueForm, CreateLeagueForm
 
 # Create your views here.
+from django.shortcuts import render
+from django.contrib.auth.decorators import login_required
 
-class HomePageView(TemplateView):
-    template_name = 'home.html'
+def home(request):
+    return render(request, "home.html")
 
-    def get_context_data(self, **kwargs):
-        context = super(HomePageView, self).get_context_data(**kwargs)
+# class HomePageView(TemplateView):
+#     template_name = 'home.html'
 
-        x,y = StockData.getValues('MSFT')
-        trace1 = go.Scatter(x=x,y=y, marker={'color':'red', 'symbol':'circle', 'size':10},mode='lines', name='1st trace')
+#     def get_context_data(self, **kwargs):
+#         context = super(HomePageView, self).get_context_data(**kwargs)
 
-        data=go.Data([trace1])
-        layout=go.Layout(title='MSFT',xaxis={'title':'Date'}, yaxis={'title':'Value'})
-        figure=go.Figure(data=data, layout=layout)
-        div=opy.plot(figure, auto_open=False, output_type='div')
-
-        context['graph']=div
-        return context
+#         x,y = StockData.getValues('BTC', currency='crypto')
+#         context['graph']=Plot.getLinePlot(x,y, 'test')
+#         return context
 
 def trade(request):
-	"""View function for trade page of site."""
+	"""View function for home page of site."""
 	if request.method == 'POST':
 		form = QuoteForm(request.POST)
 		if form.is_valid():
@@ -43,7 +44,7 @@ def trade(request):
 	else:
 		form = QuoteForm()
 
-	return render(request, 'index.html', {'form': form})
+	return render(request, 'trade.html', {'form': form})
 
 import uuid
 from datetime import datetime
@@ -59,7 +60,7 @@ def ticker(request, ticker):
 		if form.is_valid():
 			instance = PendingTransaction(id=uuid.uuid4(), player = request.user, league= form.cleaned_data['League_name'], asset = form.cleaned_data['asset'], ticker = ticker, transactionType = form.cleaned_data['transactionType'], timeInForce = form.cleaned_data['timeInForce'], transactionStatus = 'q', submittedDateTime = datetime.now(), price1 = form.cleaned_data['price1'], price2 = form.cleaned_data['price2'], quantity = form.cleaned_data['quantity'])
 			instance.save()
-			return HttpResponseRedirect('/ttt/dashboard/' + str(instance.league))
+			return HttpResponseRedirect('/dashboard/' + str(instance.league))
 	else:
 		form = TradeForm(user=request.user)
 
@@ -93,7 +94,7 @@ def dashboardLeague(request, league):
 		form = LeagueForm(request.POST, user=request.user)
 		if form.is_valid():
 			league = form.cleaned_data['League_name']
-			return HttpResponseRedirect('/ttt/dashboard/' + str(league))
+			return HttpResponseRedirect('/dashboard/' + str(league))
 	else:
 		form = LeagueForm(user=request.user, initial={'League_name': league})
 
