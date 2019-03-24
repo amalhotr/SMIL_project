@@ -21,17 +21,8 @@ from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
 
 def home(request):
-    return render(request, "home.html")
+	return render(request, "home.html")
 
-# class HomePageView(TemplateView):
-#     template_name = 'home.html'
-
-#     def get_context_data(self, **kwargs):
-#         context = super(HomePageView, self).get_context_data(**kwargs)
-
-#         x,y = StockData.getValues('BTC', currency='crypto')
-#         context['graph']=Plot.getLinePlot(x,y, 'test')
-#         return context
 
 def trade(request):
 	"""View function for home page of site."""
@@ -40,7 +31,7 @@ def trade(request):
 		if form.is_valid():
 			ticker = form.cleaned_data['ticker']
 			return HttpResponseRedirect('ticker/' + ticker)
-			
+
 	else:
 		form = QuoteForm()
 
@@ -53,6 +44,7 @@ from .iex import getQuote, getKeyStats
 
 @login_required
 def ticker(request, ticker):
+	"""View information about given Stock before buying. Enter settings to buy/sell. """
 	quote = getQuote(ticker)
 	keyStats = getKeyStats(ticker)
 	if request.method == 'POST':
@@ -64,11 +56,14 @@ def ticker(request, ticker):
 	else:
 		form = TradeForm(user=request.user)
 
+	data, values = StockData.getValues(ticker)
+	div = Plot.getLinePlot(data, values, ticker)
 	context = {
 		'ticker': ticker,
 		'quote': quote,
 		'keyStats': keyStats,
-		'form': form
+		'form': form,
+		'plot': div
 	}
 	return render(request, 'ticker.html', context)
 
@@ -103,11 +98,11 @@ def dashboardLeague(request, league):
 
 	context = {
 		'form': form,
-		'league': league, 
+		'league': league,
 		'pendingTransactions': pendingTransactions,
 		'transactionHistory': transactionHistory
 	}
-	return render(request, 'dashboardLeague.html', context)
+	return render(request, 'dashBoardLeague.html', context)
 
 @login_required
 def leagues(request):
@@ -140,4 +135,3 @@ def createLeague(request):
 	else:
 		form = CreateLeagueForm()
 	return render(request, 'createLeague.html', {'form': form})
-
