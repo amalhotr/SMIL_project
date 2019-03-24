@@ -56,16 +56,6 @@ class TimeInForce(models.Model):
 
 from django.core.validators import MinValueValidator, MaxValueValidator
 
-class Holdings(models.Model):
-        id = models.UUIDField(primary_key=True, default=uuid.uuid4, help_text='Unique ID for this transaction')
-        ticker = models.CharField(max_length=5, help_text='Enter the ticker for this transaction')
-        quantity = models.IntegerField(validators=[MinValueValidator(1)], help_text='Enter the quantity for this transaction')        
-
-        class Meta:
-                ordering = ['id']
-        def __str__(self):
-                """String for representing the Model object"""
-                return f'{self.ticker}({str(self.id)})'
 
 class TransactionHistory(models.Model):
         """Model representing transaction history."""
@@ -89,7 +79,6 @@ class TransactionHistory(models.Model):
         price2 = models.DecimalField(max_digits=11, decimal_places=2, null=True, blank=True, help_text='Enter the triggering price for this transaction')
         quantity = models.IntegerField(validators=[MinValueValidator(1)], help_text='Enter the quantity for this transaction')
         total = models.DecimalField(max_digits=11, decimal_places=2, help_text='Enter the total price for this transaction')
-        holdings = models.ForeignKey(Holdings, on_delete=models.SET_NULL, null = True)
 
         class Meta:
                 ordering = ['id']
@@ -127,17 +116,24 @@ class PendingTransaction(models.Model):
 		"""String for representing the Model object"""
 		return f'{self.id}'
 
+class Holdings(models.Model):
+        ticker = models.CharField(primary_key = True, max_length=5, help_text='Enter the ticker for this transaction')
+        quantity = models.IntegerField(validators=[MinValueValidator(1)], help_text='Enter the quantity for this transaction')        
+
+        class Meta:
+                ordering = ['ticker']
+        def __str__(self):
+                """String for representing the Model object"""
+                return f'{self.ticker}'
 	
 class Portfolio(models.Model):
         id = models.UUIDField(primary_key=True, default=uuid.uuid4, help_text='Unique ID for this transaction')
         player = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
         league = models.ForeignKey(League, help_text='Select a league for this transaction', on_delete=models.CASCADE)
         cash = models.DecimalField(max_digits=11, decimal_places=2, null=True, blank=True, help_text='Current amount for player')
+        transaction = models.ForeignKey(Holdings, on_delete = models.CASCADE)
 
         class Meta:
                 ordering = ['player' , 'league']
         def __str__(self):
                 return f'{self.player}({self.league})'
-
-
-
