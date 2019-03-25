@@ -7,12 +7,19 @@ from alpha_vantage.cryptocurrencies import CryptoCurrencies
 import pandas
 
 class StockData():
+    '''
+    Stock data class provides static methods for obtaining data about stocks and crypto.
+    Intended for encapsulating the API call.
+    '''
 
     @staticmethod
     def getValues(symbol, currency='stock'):
-        ''' get the full time series from a given stock or cryptocurrency
-            param symbol: symbol of desired stock or crypto
-            param currency: 'stock' or 'crypto' '''
+        ''' 
+        get the full time series from a given stock or cryptocurrency
+        :param symbol: symbol of desired stock or crypto
+        :param currency: 'stock' or 'crypto' 
+        :return: (x,y) x is the dates, and y is the stock value
+        '''
         if currency=='stock':
             ts = TimeSeries(key=api_key, output_format='pandas')
             try:
@@ -34,9 +41,12 @@ class StockData():
 
     @staticmethod
     def getCurrentPrice(symbol, currency='stock'):
-        ''' get current price for a given stock or cryptocurrency
-            param symbol: string of the desired stock or cryptocurrency
-            param currency: 'stock' or 'crypto' '''
+        ''' 
+        get current price for a given stock or cryptocurrency
+        :param symbol: string of the desired stock or cryptocurrency
+        :param currency: 'stock' or 'crypto'
+        :return: (x,y) x is string with date and time, and y is stock value
+        '''
         if currency=='stock':
             ts = TimeSeries(key=api_key, output_format='pandas')
             try:
