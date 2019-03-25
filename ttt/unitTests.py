@@ -10,6 +10,9 @@ from StockData import *
 import unittest
 
 class TestStockDataClass(unittest.TestCase):
+    '''
+    Test harness for StockData class
+    '''
     
         
     def test_basic_stock_query(self):

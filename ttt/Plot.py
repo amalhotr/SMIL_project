@@ -1,11 +1,22 @@
 import plotly.offline as opy
 import plotly.graph_objs as go
 
-
 class Plot():
+    '''
+    Plot class provides static methods for generating HTML blocks
+    containing various plots. Intended for encapsulating the plotting functionality
+    and for ease of writing views
+    '''
 
     @staticmethod
     def getLinePlot(x, y, title):
+        '''
+        return an HTML div with a plot
+        :param x: Horizontal axis data (array-like)
+        :param y: Vertical axis data (array-like)
+        :param title: Title for the plot
+        :return: an html div with a plot
+        '''
         trace1 = go.Scatter(x=x,y=y, marker={'color':'red', 'symbol':'circle', 'size':10},mode='lines', name='1st trace')
 
         layout=go.Layout(title=title,xaxis={'title':'Date'}, yaxis={'title':'Value'})
@@ -15,6 +26,13 @@ class Plot():
 
     @staticmethod
     def getPieChart(labels, values, title):
+        '''
+        return an HTML div with a pie chart
+        :param labels: data labels 
+        :param values: Values mapped to the given labels
+        :param title: Title for the chart
+        :return: an html div with a pie chart
+        '''
         trace = go.Pie(labels=labels, values=values)
         layout=go.Layout(title=title)
         figure=go.Figure([trace], layout=layout)
