@@ -1,6 +1,7 @@
 {% extends "base_generic.html" %}
 
 {% block content %}
+<body class = "body" style="background-color: rgb(0, 50, 143)">
 	<h1>Leagues</h1>
 
 	{% if leagues %}
@@ -27,4 +28,5 @@
 	{% endif %}
 
 	<a href="{% url 'createLeague' %}">Create league</a>
+	</body>
 {% endblock %}
