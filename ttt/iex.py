@@ -5,3 +5,6 @@ def getQuote(symbol):
 
 def getKeyStats(symbol):
 	return Stock(symbol).get_key_stats()
+
+def getNews(symbol):
+	return Stock(symbol).get_news()

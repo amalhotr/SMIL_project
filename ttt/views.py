@@ -40,13 +40,14 @@ def trade(request):
 import uuid
 from datetime import datetime
 
-from .iex import getQuote, getKeyStats
+from .iex import getQuote, getKeyStats, getNews
 
 @login_required
 def ticker(request, ticker):
 	"""View information about given Stock before buying. Enter settings to buy/sell. """
 	quote = getQuote(ticker)
 	keyStats = getKeyStats(ticker)
+	news = getNews(ticker)
 	if request.method == 'POST':
 		form = TradeForm(request.POST, user=request.user)
 		if form.is_valid():
@@ -61,6 +62,7 @@ def ticker(request, ticker):
 	context = {
 		'ticker': ticker,
 		'quote': quote,
+		'news': news,
 		'keyStats': keyStats,
 		'form': form,
 		'plot': div

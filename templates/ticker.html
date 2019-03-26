@@ -25,4 +25,18 @@
 		{{ plot|safe }}
 	</div>
 	{% endif %}
+	<h3>News</h3>
+	{% if news %}
+		<div class="card">
+			{% for new in news %}
+				<div class="card-body">
+					<h5 class="card-title">{{ new.headline }}</h5>
+					<h6 class="card-subtitle mb-2 text-muted">{{ new.datetime|slice:"0:10" }}</h6>
+					<p class="card-text">{{ new.summary }}</p>
+					<a href={{ new.url }} class="card-link" target="_blank" rel="noopener noreferrer">{{ new.source }}</a>
+				</div>
+			{% endfor %}
+		</div>
+	{% endif %}
 {% endblock %}
+
