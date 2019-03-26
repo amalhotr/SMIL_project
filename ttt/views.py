@@ -14,7 +14,7 @@ from django.http import HttpResponseRedirect
 from django.contrib.auth.decorators import login_required
 
 from .models import League, Asset, TransactionType, TimeInForce, TransactionHistory, PendingTransaction
-from .forms import QuoteForm, TradeForm, LeagueForm, CreateLeagueForm
+from .forms import QuoteForm, TradeForm, LeagueForm, AdminLeagueForm, CreateLeagueForm
 
 # Create your views here.
 from django.shortcuts import render
@@ -22,7 +22,6 @@ from django.contrib.auth.decorators import login_required
 
 def home(request):
 	return render(request, "home.html")
-
 
 def trade(request):
 	"""View function for home page of site."""
@@ -109,20 +108,17 @@ def dashboardLeague(request, league):
 @login_required
 def leagues(request):
 	"""View function for leagues page of site."""
-	leag = League.objects.filter(public=True)
+	adminLeagues = League.objects.filter(admin=request.user)
+	playerLeagues = League.objects.filter(players=request.user).exclude(admin=request.user)
+	publicLeagues = League.objects.filter(public=True)
 
 	context = {
-		'leagues': leag,
+		'adminLeagues': adminLeagues,
+		'playerLeagues': playerLeagues,
+		'publicLeagues': publicLeagues,
+
 	}
 	return render(request, 'leagues.html', context)
-
-@login_required
-def joinLeague(request, leagueName):
-	leagueName = unquote(leagueName)
-	league = League.objects.get(name = leagueName)
-	league.players.add(request.user)
-	return HttpResponseRedirect('/')
-
 
 @login_required
 def createLeague(request):
@@ -137,3 +133,39 @@ def createLeague(request):
 	else:
 		form = CreateLeagueForm()
 	return render(request, 'createLeague.html', {'form': form})
+
+@login_required
+def adminLeague(request, leagueName):
+	leagueName = unquote(leagueName)
+	league = League.objects.get(name = leagueName)
+	if request.method == 'POST':
+		form = AdminLeagueForm(request.POST)
+		if form.is_valid():
+			league.startingBalance = form.cleaned_data['startingBalance']
+			league.startDate = form.cleaned_data['startDate']
+			league.endDate = form.cleaned_data['endDate']
+			league.public = form.cleaned_data['public']
+			league.description = form.cleaned_data['description']
+			league.save()
+			return HttpResponseRedirect('/leagues/')
+	else:
+		form = AdminLeagueForm(initial={'startingBalance': league.startingBalance, 'startDate': league.startDate, 'endDate': league.endDate, 'public': league.public, 'description': league.description})
+	context = {
+		'leagueName': leagueName,
+		'form': form
+	}
+	return render(request, 'adminLeague.html', context)
+
+@login_required
+def leaveLeague(request, leagueName):
+	leagueName = unquote(leagueName)
+	league = League.objects.get(name = leagueName)
+	league.players.remove(request.user)
+	return HttpResponseRedirect('/leagues/')
+	
+@login_required
+def joinLeague(request, leagueName):
+	leagueName = unquote(leagueName)
+	league = League.objects.get(name = leagueName)
+	league.players.add(request.user)
+	return HttpResponseRedirect('/leagues/')
