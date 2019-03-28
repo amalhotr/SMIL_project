@@ -15,7 +15,7 @@ admin.site.register(TimeInForce)
 
 # admin.site.register(TransactionHistory)
 class TransactionHistoryAdmin(admin.ModelAdmin):
-	list_filter = ('league', 'player', 'submittedDateTime', 'fulfilledDateTime')
+	list_filter = ('league', 'player', 'submittedDateTime', 'fulfilledDateTime') #c
 
 	list_display = ('id', 'league', 'player', 'ticker', 'transactionType', 'transactionStatus', 'submittedDateTime', 'fulfilledDateTime', 'price1', 'quantity')
 

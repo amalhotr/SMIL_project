@@ -3,7 +3,9 @@ from django.contrib.auth.models import User
 
 # Create your models here.
 class League(models.Model):
-	"""Model representing a league."""
+	'''
+	Model representing a league
+	'''
 	admin = models.ForeignKey(User, on_delete=models.CASCADE, related_name='league_admin')
 	players = models.ManyToManyField(User, blank=True, related_name='league_players')
 	name = models.CharField(max_length = 32, help_text='Enter a league name', primary_key=True)
@@ -17,47 +19,63 @@ class League(models.Model):
 		ordering = ['name']
 
 	def __str__(self):
-		"""String for representing the Model object"""
+		'''
+		String for representing the Model object
+		'''
 		return self.name
 
 class Asset(models.Model):
-	"""Model representing an asset."""
+	'''
+	Model representing an asset.
+	'''
 	name = models.CharField(max_length=100, help_text='Enter an asset (e.g. Crytocurrency)', primary_key=True)
 
 	class Meta:
 		ordering = ['name']
 
 	def __str__(self):
-		"""String for representing the Model object"""
+		'''
+		String for representing the Model object
+		'''
 		return self.name
 
 class TransactionType(models.Model):
-	"""Model representing a transaction type."""
+	'''
+	Model representing a transaction type.
+	'''
 	name = models.CharField(max_length=100, help_text='Enter a transaction type (e.g. Limit Sell)', primary_key=True)
 
 	class Meta:
 		ordering = ['name']
 
 	def __str__(self):
-		"""String for representing the Model object"""
+		'''
+		String for representing the Model object
+		'''
 		return self.name
 
 class TimeInForce(models.Model):
-	"""Model representing a time in force."""
+	'''
+	Model representing a time in force.
+	'''
 	name = models.CharField(max_length=100, help_text='Enter a time in force (e.g. Good-til-canceled)', primary_key=True)
 
 	class Meta:
 		ordering = ['name']
 
 	def __str__(self):
-		"""String for representing the Model object"""
+		'''
+		String for representing the Model object
+		'''
 		return self.name
 
 import uuid # Required for unique transaction instances
 from django.core.validators import MinValueValidator, MaxValueValidator
 
 class TransactionHistory(models.Model):
-	"""Model representing transaction history."""
+	'''
+	Model representing transaction history.
+	'''
 	id = models.UUIDField(primary_key=True, default=uuid.uuid4, help_text='Unique ID for this transaction')
 	player = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
 	league = models.ForeignKey(League, help_text='Select a league for this transaction', on_delete=models.CASCADE)
@@ -83,11 +101,15 @@ class TransactionHistory(models.Model):
 		ordering = ['id']
 
 	def __str__(self):
-		"""String for representing the Model object"""
+		'''
+		String for representing the Model object
+		'''
 		return f'{self.id}'
 
 class PendingTransaction(models.Model):
-	"""Model representing pending transactions."""
+	'''
+	Model representing pending transactions.
+	'''
 	id = models.UUIDField(primary_key=True, default=uuid.uuid4, help_text='Unique ID for this transaction')
 	player = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
 	league = models.ForeignKey(League, help_text='Select a league for this transaction', on_delete=models.CASCADE)
@@ -111,11 +133,15 @@ class PendingTransaction(models.Model):
 		ordering = ['id']
 
 	def __str__(self):
-		"""String for representing the Model object"""
+		'''
+		String for representing the Model object
+		'''
 		return f'{self.id}'
 
 class Portfolio(models.Model):
-	"""Model representing portfolio."""
+	'''
+	Model representing portfolio.
+	'''
 	id = models.UUIDField(primary_key=True, default=uuid.uuid4, help_text='Unique ID for this portfolio')
 	player = models.ForeignKey(User, on_delete=models.CASCADE)
 	league = models.ForeignKey(League, help_text='Select a league for this portfolio', on_delete=models.CASCADE)
@@ -125,11 +151,15 @@ class Portfolio(models.Model):
 		ordering = ['id']
 
 	def __str__(self):
-		"""String for representing the Model object"""
+		'''
+		String for representing the Model object
+		'''
 		return f'{self.id}'
 
 class Holding(models.Model):
-	"""Model representing stocks."""
+	'''
+	Model representing stocks.
+	'''
 	id = models.UUIDField(primary_key=True, default=uuid.uuid4, help_text='Unique ID for this holding')
 	ticker = models.CharField(max_length=5, help_text='Enter the ticker for this holding')
 	price = models.DecimalField(max_digits=11, decimal_places=2, help_text='Enter the price for this holding')
@@ -140,5 +170,7 @@ class Holding(models.Model):
 		ordering = ['id']
 
 	def __str__(self):
-		"""String for representing the Model object"""
+		'''
+		String for representing the Model object
+		'''
 		return f'{self.id}'
