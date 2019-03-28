@@ -40,11 +40,23 @@
 <td colspan=3 valign=bottom>&nbsp;<br>
 <font color="#000000" face="helvetica, arial"><a name="Plot">class <strong>Plot</strong></a>(<a href="builtins.html#object">builtins.object</a>)</font></td></tr>
     
-<tr><td bgcolor="#ffc8d8"><tt>&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+<tr bgcolor="#ffc8d8"><td rowspan=2><tt>&nbsp;&nbsp;&nbsp;</tt></td>
+<td colspan=2><tt><a href="#Plot">Plot</a>&nbsp;class&nbsp;provides&nbsp;static&nbsp;methods&nbsp;for&nbsp;generating&nbsp;HTML&nbsp;blocks<br>
+containing&nbsp;various&nbsp;plots.&nbsp;Intended&nbsp;for&nbsp;encapsulating&nbsp;the&nbsp;plotting&nbsp;functionality<br>
+and&nbsp;for&nbsp;ease&nbsp;of&nbsp;writing&nbsp;views<br>&nbsp;</tt></td></tr>
+<tr><td>&nbsp;</td>
 <td width="100%">Static methods defined here:<br>
-<dl><dt><a name="Plot-getLinePlot"><strong>getLinePlot</strong></a>(x, y, title)</dt></dl>
+<dl><dt><a name="Plot-getLinePlot"><strong>getLinePlot</strong></a>(x, y, title)</dt><dd><tt>return&nbsp;an&nbsp;HTML&nbsp;div&nbsp;with&nbsp;a&nbsp;plot<br>
+:param&nbsp;x:&nbsp;Horizontal&nbsp;axis&nbsp;data&nbsp;(array-like)<br>
+:param&nbsp;y:&nbsp;Vertical&nbsp;axis&nbsp;data&nbsp;(array-like)<br>
+:param&nbsp;title:&nbsp;Title&nbsp;for&nbsp;the&nbsp;plot<br>
+:return:&nbsp;an&nbsp;html&nbsp;div&nbsp;with&nbsp;a&nbsp;plot</tt></dd></dl>
 
-<dl><dt><a name="Plot-getPieChart"><strong>getPieChart</strong></a>(labels, values, title)</dt></dl>
+<dl><dt><a name="Plot-getPieChart"><strong>getPieChart</strong></a>(labels, values, title)</dt><dd><tt>return&nbsp;an&nbsp;HTML&nbsp;div&nbsp;with&nbsp;a&nbsp;pie&nbsp;chart<br>
+:param&nbsp;labels:&nbsp;data&nbsp;labels&nbsp;<br>
+:param&nbsp;values:&nbsp;Values&nbsp;mapped&nbsp;to&nbsp;the&nbsp;given&nbsp;labels<br>
+:param&nbsp;title:&nbsp;Title&nbsp;for&nbsp;the&nbsp;chart<br>
+:return:&nbsp;an&nbsp;html&nbsp;div&nbsp;with&nbsp;a&nbsp;pie&nbsp;chart</tt></dd></dl>
 
 <hr>
 Data descriptors defined here:<br>
