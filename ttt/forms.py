@@ -33,6 +33,11 @@ class LeagueForm(forms.Form):
 
 from django.forms import ModelForm
 
+class AdminLeagueForm(ModelForm):
+	class Meta:
+		model = League
+		fields= ['startingBalance', 'startDate', 'endDate', 'public', 'description']
+
 class CreateLeagueForm(ModelForm):
 	class Meta:
 		model = League

@@ -1,32 +1,92 @@
 {% extends "base_generic.html" %}
 
 {% block content %}
-<body class = "body" style="background-color: rgb(255, 255, 255)">
 	<h1>Leagues</h1>
 
-	{% if leagues %}
-		<table>
-			<tr>
-				<th>Name</th>
-				<th>Starting Balance</th>
-				<th>Start Date</th>
-				<th>End Date</th>
-				<th>Public</th>
-				<th>Description</th>
-			</tr>
-		{% for league in leagues %}
-			<tr>
-				<td><a href="join/{{ league.name }}">{{ league.name }}</a></td>
-				<td>{{ league.startingBalance }}</td>
-				<td>{{ league.startDate }}</td>
-				<td>{{ league.endDate }}</td>
-				<td>{{ league.public }}</td>
-				<td>{{ league.derscription }}</td>
-			</tr>
-		{% endfor %}
+	<h3>Admin Leagues</h3>
+	<a href="{% url 'createLeague' %}">Create league</a>
+	{% if adminLeagues %}
+		<table class="table table-hover">
+			<thead>
+				<tr>
+					<th scope="col">Name</th>
+					<th scope="col">Starting Balance</th>
+					<th scope="col">Start Date</th>
+					<th scope="col">End Date</th>
+					<th scope="col">Public</th>
+					<th scope="col">Description</th>
+				</tr>
+			</thead>
+			<tbody>
+				{% for adminLeague in adminLeagues %}
+				<tr>
+					<th scope="row">{{ adminLeague.name }}</th>
+					<td> {{ adminLeague.startingBalance }}</td>
+					<td> {{ adminLeague.startDate }}</td>
+					<td> {{ adminLeague.endDate }} </td>
+					<td> {{ adminLeague.public }} </td>
+					<td> {{ adminLeague.description }} </td>
+					<td><a href="admin/{{ adminLeague.name }}">Manage</a></td>
+				</tr>
+				{% endfor %}
+			</tbody>
 		</table>
 	{% endif %}
 
-	<a href="{% url 'createLeague' %}">Create league</a>
-	</body>
+	<h3>Player Leagues</h3>
+	{% if playerLeagues %}
+		<table class="table table-hover">
+			<thead>
+				<tr>
+					<th scope="col">Name</th>
+					<th scope="col">Starting Balance</th>
+					<th scope="col">Start Date</th>
+					<th scope="col">End Date</th>
+					<th scope="col">Public</th>
+					<th scope="col">Description</th>
+				</tr>
+			</thead>
+			<tbody>
+				{% for playerLeague in playerLeagues %}
+				<tr>
+					<th scope="row">{{ playerLeague.name }}</th>
+					<td> {{ playerLeague.startingBalance }}</td>
+					<td> {{ playerLeague.startDate }}</td>
+					<td> {{ playerLeague.endDate }} </td>
+					<td> {{ playerLeague.public }} </td>
+					<td> {{ playerLeague.description }} </td>
+					<td><a href="leave/{{ playerLeague.name }}">Leave</a></td>
+				</tr>
+				{% endfor %}
+			</tbody>
+		</table>
+	{% endif %}
+
+	<h3>Public Leagues</h3>
+	{% if publicLeagues %}
+		<table class="table table-hover">
+			<thead>
+				<tr>
+					<th scope="col">Name</th>
+					<th scope="col">Starting Balance</th>
+					<th scope="col">Start Date</th>
+					<th scope="col">End Date</th>
+					<th scope="col">Public</th>
+					<th scope="col">Description</th>
+				</tr>
+			</thead>
+			<tbody>
+				{% for publicLeague in publicLeagues %}
+				<tr>
+					<th scope="row">{{ publicLeague.name }}</th>
+					<td> {{ publicLeague.startingBalance }}</td>
+					<td> {{ publicLeague.startDate }}</td>
+					<td> {{ publicLeague.endDate }} </td>
+					<td> {{ publicLeague.public }} </td>
+					<td> {{ pubicLeague.description }} </td>
+					<td><a href="join/{{ publicLeague.name }}">Join</a></td>
+				</tr>
+				{% endfor %}
+			</tbody>
+	{% endif %}
 {% endblock %}

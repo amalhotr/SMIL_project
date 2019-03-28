@@ -14,18 +14,26 @@ from django.http import HttpResponseRedirect
 from django.contrib.auth.decorators import login_required
 
 from .models import League, Asset, TransactionType, TimeInForce, TransactionHistory, PendingTransaction
-from .forms import QuoteForm, TradeForm, LeagueForm, CreateLeagueForm
+from .forms import QuoteForm, TradeForm, LeagueForm, AdminLeagueForm, CreateLeagueForm
 
 # Create your views here.
 from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
 
 def home(request):
+	'''
+	Sends user to home page
+	:param request: 'Home'
+	:return: Renders the homepage
+	'''
 	return render(request, "home.html")
 
-
 def trade(request):
-	"""View function for home page of site."""
+	'''
+	Sends user to trade page
+	:param request: 'Trade'
+	:return: Renders the Trade Page
+	'''
 	if request.method == 'POST':
 		form = QuoteForm(request.POST)
 		if form.is_valid():
@@ -40,13 +48,19 @@ def trade(request):
 import uuid
 from datetime import datetime
 
-from .iex import getQuote, getKeyStats
+from .iex import getQuote, getKeyStats, getNews
 
 @login_required
 def ticker(request, ticker):
-	"""View information about given Stock before buying. Enter settings to buy/sell. """
+	'''
+	Receive information about given stock and enter settings to buy and sell.
+	:param request: 'Ticker'
+	:param ticker: string of the ticker for corresponding stock
+	:return: Renders a page with information about stock corresponding to ticker given
+	'''
 	quote = getQuote(ticker)
 	keyStats = getKeyStats(ticker)
+	news = getNews(ticker)
 	if request.method == 'POST':
 		form = TradeForm(request.POST, user=request.user)
 		if form.is_valid():
@@ -61,6 +75,7 @@ def ticker(request, ticker):
 	context = {
 		'ticker': ticker,
 		'quote': quote,
+		'news': news,
 		'keyStats': keyStats,
 		'form': form,
 		'plot': div
@@ -69,7 +84,11 @@ def ticker(request, ticker):
 
 @login_required
 def dashboard(request):
-	"""View function for dashboard page of site."""
+	'''
+	Sends user to the dashboard
+	:param request: 'Dashboard'
+	:return: Renders the user's dashboard
+	'''
 	if request.method == 'POST':
 		form = LeagueForm(request.POST, user=request.user)
 		if form.is_valid():
@@ -83,6 +102,12 @@ from urllib.parse import unquote
 
 @login_required
 def dashboardLeague(request, league):
+	'''
+	Sends the user to the league's dashboard
+	:param request: 'League dashboard'
+	:param league: League name of the requested dashboard
+	:return: Renders the league's dashboard
+	'''
 	league = unquote(league)
 
 	if request.method == 'POST':
@@ -106,24 +131,30 @@ def dashboardLeague(request, league):
 
 @login_required
 def leagues(request):
-	"""View function for leagues page of site."""
-	leag = League.objects.filter(public=True)
+	'''
+	Sends user to the page with the list of leagues
+	:param request: 'Leagues'
+	:return: Renders the page of Leagues
+	'''
+	adminLeagues = League.objects.filter(admin=request.user)
+	playerLeagues = League.objects.filter(players=request.user).exclude(admin=request.user)
+	publicLeagues = League.objects.filter(public=True)
 
 	context = {
-		'leagues': leag,
+		'adminLeagues': adminLeagues,
+		'playerLeagues': playerLeagues,
+		'publicLeagues': publicLeagues,
+
 	}
 	return render(request, 'leagues.html', context)
 
 @login_required
-def joinLeague(request, leagueName):
-	leagueName = unquote(leagueName)
-	league = League.objects.get(name = leagueName)
-	league.players.add(request.user)
-	return HttpResponseRedirect('/')
-
-
-@login_required
 def createLeague(request):
+	'''
+	Sends the user to a page to create a league
+	:param request: 'Create league'
+	:return: Renders the page and settings for the user to create a league
+	'''
 	if request.method == 'POST':
 		form = CreateLeagueForm(request.POST)
 		if form.is_valid():
@@ -135,3 +166,57 @@ def createLeague(request):
 	else:
 		form = CreateLeagueForm()
 	return render(request, 'createLeague.html', {'form': form})
+
+@login_required
+def adminLeague(request, leagueName):
+	'''
+	Sends the user to a page to create an administrative league
+	:param request: 'Admin league'
+	:param leagueName: Name of the league requested
+	:return: Renders the page to the administrative league creation
+	'''
+	leagueName = unquote(leagueName)
+	league = League.objects.get(name = leagueName)
+	if request.method == 'POST':
+		form = AdminLeagueForm(request.POST)
+		if form.is_valid():
+			league.startingBalance = form.cleaned_data['startingBalance']
+			league.startDate = form.cleaned_data['startDate']
+			league.endDate = form.cleaned_data['endDate']
+			league.public = form.cleaned_data['public']
+			league.description = form.cleaned_data['description']
+			league.save()
+			return HttpResponseRedirect('/leagues/')
+	else:
+		form = AdminLeagueForm(initial={'startingBalance': league.startingBalance, 'startDate': league.startDate, 'endDate': league.endDate, 'public': league.public, 'description': league.description})
+	context = {
+		'leagueName': leagueName,
+		'form': form
+	}
+	return render(request, 'adminLeague.html', context)
+
+@login_required
+def leaveLeague(request, leagueName):
+	'''
+	Deletes user's information from the requested league's database
+	:param request: 'Leave league'
+	:param leagueName: Name of league user wants to leave
+	:return: Removes the user from the league
+	'''
+	leagueName = unquote(leagueName)
+	league = League.objects.get(name = leagueName)
+	league.players.remove(request.user)
+	return HttpResponseRedirect('/leagues/')
+	
+@login_required
+def joinLeague(request, leagueName):
+	'''
+	Adds the user to the requested league's database
+	:param request: 'Join league'
+	:param leagueName: Name of league user wants to join
+	:return: Adds user to the league
+	'''
+	leagueName = unquote(leagueName)
+	league = League.objects.get(name = leagueName)
+	league.players.add(request.user)
+	return HttpResponseRedirect('/leagues/')
