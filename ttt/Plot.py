@@ -17,10 +17,27 @@ class Plot():
         :param title: Title for the plot
         :return: an html div with a plot
         '''
-        trace1 = go.Scatter(x=x,y=y, marker={'color':'red', 'symbol':'circle', 'size':10},mode='lines', name='1st trace')
+        trace1 = go.Scatter(x=x,y=y, marker={'color':'red', 'symbol':'circle', 'size':10},mode='lines', name=title)
 
         layout=go.Layout(title=title,xaxis={'title':'Date'}, yaxis={'title':'Value'})
         figure=go.Figure([trace1], layout=layout)
+        div=opy.plot(figure, auto_open=False, output_type='div')
+        return div
+
+    @staticmethod
+    def getTwoPlots(x1, y1,x2, y2, title):
+        '''
+        return an HTML div with a plot
+        :param x: Horizontal axis data (array-like)
+        :param y: Vertical axis data (array-like)
+        :param title: Title for the plot
+        :return: an html div with a plot
+        '''
+        trace1 = go.Scatter(x=x1,y=y1, marker={'color':'red', 'symbol':'circle', 'size':10},mode='lines', name=title)
+
+        trace2 = go.Scatter(x=x2,y=y2, marker={'color':'blue', 'symbol':'circle', 'size':10},mode='lines', name='Holt Winters Forecast')
+        layout=go.Layout(title=title,xaxis={'title':'Date'}, yaxis={'title':'Value'})
+        figure=go.Figure([trace1, trace2], layout=layout)
         div=opy.plot(figure, auto_open=False, output_type='div')
         return div
 
