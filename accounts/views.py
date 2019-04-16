@@ -19,7 +19,7 @@ def login_view(request):
         login(request, user)
         if next:
             return redirect(next)
-        return redirect('loggedin_home_view')
+        return redirect('/')
     context = {
         'form': form,
     }
@@ -43,7 +43,7 @@ def register_view(request):
         login(request, new_user)
         if next:
             return redirect(next)
-        return redirect('loggedin_home_view')
+        return redirect('/')
     context = {
         'form': form,
     }
@@ -54,4 +54,4 @@ def logout_view(request):
     return redirect('/')
 
 def loggedin_home_view(request):
-    return render(request, "loggedin_home.html")
+    return render(request, "home.html")

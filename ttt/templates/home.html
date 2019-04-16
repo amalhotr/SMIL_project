@@ -1,0 +1,129 @@
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+{% extends 'base_generic.html' %}
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<link href='home.css' rel="stylesheet" type="text/css" media="screen"/>
+		<title>Home</title>
+		{% load staticfiles %}
+		<link rel='stylesheet' href="{% static 'css/bootstrap.min.css' %}" type = 'text/css'>
+		<style>
+		
+		
+		</style>
+	</head>
+	{% block content %}
+	<body class="body" style="background-color: #0070f1">
+		<br>
+		<div name = div.a style ="text-align: center">
+		<h2 style="color: #ffffff">Welcome to TTT Stock Market League</h2>
+		<br>	
+		<p style = "color: #ffffff">TTT is the easiest place to buy, sell, and manage your virtual stock and cryptocurrency portfolio.</p>
+		</div>
+		<br>
+		<br>
+
+		<div style ="text-align: center">
+				<h3 style="color: #ffffff">Features</h3>
+				<br>
+				</div>
+				<div class="row" style ="margin: auto; width: 75%; background-color:  #0070f1; padding: 10px;">
+						<div class="col-sm-6">
+						  <div class="card">
+							<div class="card-body">
+							  <h5 class="card-title">Trade Cryptocurrency</h5>
+							  <div style = "margin: auto;
+							  width: 50%;
+							  padding: 10px;">
+							  <img src="https://en.bitcoin.it/w/images/en/2/29/BC_Logo_.png" width="70" height="70" >
+							</div>
+							<p>TTT gives access to hundreds of cryptocurrencies like Bitcoin, XRP, and Ethereum for users to invest in and trade.</p>
+		
+							</div>
+						  </div>
+						</div>
+						<div class="col-sm-6">
+						  <div class="card">
+							<div class="card-body">
+							  <h5 class="card-title">Trade Stocks</h5>
+							  <div style = "margin: auto;
+							  width: 50%;
+							  padding: 10px;">
+							  <img src="https://www.freepngimg.com/thumb/stock_market/26072-3-stock-market-file-thumb.png" width="70" height="70" >
+							</div>
+							<p>TTT gives users the ability to research, trade, and invest in thousands of stocks.</p>
+							<br>
+							</div>
+						  </div>
+						</div>
+					  </div>
+					  <div class="row" style ="margin: auto; width: 75%; background-color:  #0070f1; padding: 10px;">
+							<div class="col-sm-6">
+							  <div class="card">
+								<div class="card-body">
+								  <h5 class="card-title">Compete in Leagues</h5>
+								  <div style = "margin: auto;
+								  width: 50%;
+								  padding: 10px;">
+								  <img src="https://www.shareicon.net/data/512x512/2016/08/03/806224_people_512x512.png" width="70" height="70" >
+								</div>
+								<p>TTT users can challenge themselves in leagues with friends and fellow traders with custom rules to compete and win.</p>
+								<br>
+								<br>
+								
+								</div>
+							  </div>
+							</div>
+							<div class="col-sm-6">
+							  <div class="card">
+								<div class="card-body">
+								  <h5 class="card-title">Leaderboards</h5>
+								  <div style = "margin: auto;
+								  width: 50%;
+								  padding: 10px;">
+								  <img src="https://us.123rf.com/450wm/venimo/venimo1401/venimo140100059/25470461-vector-mobile-game-concept-tablet-pc-with-leaderboard-icons-in-flat-retro-style.jpg?ver=6" width="70" height="70" >
+								</div>
+								<p>TTT Stock Market League constantly updates the leaderboards for custom leagues as well as the global league to show the players with the highest profits..</p>
+								
+								</div>
+							  </div>
+							</div>
+						  </div>
+		<br>
+		<br>
+		<br>
+		<div style ="text-align: center">
+				<h3 style="color: #ffffff">Get Started</h3>
+				<br>
+				</div>
+				<div class="row" style ="margin: auto; width: 75%; background-color:  #0070f1; padding: 10px;">
+						<div class="col-sm-6">
+						  <div class="card">
+							<div class="card-body">
+							  <h5 class="card-title">Registration</h5>
+							  <p class="card-text">Create an account to start buying and selling stocks and cryptocurrency with a virtual balance of $100,000.</p>
+							  <a href="{% url 'register'%}" class="btn btn-primary">Create Account!</a>
+							</div>
+						  </div>
+						</div>
+						<div class="col-sm-6">
+						  <div class="card">
+							<div class="card-body">
+							  <h5 class="card-title">Sign In</h5>
+							  <p class="card-text">If you are already registered, login and continue trading and making profits!</p>
+							  <a href="{% url 'login'%}" class="btn btn-primary">Sign In</a>
+							</div>
+						  </div>
+						</div>
+					  </div>
+					  <br>
+					  <br>
+					  <br>
+					  <br>
+		
+		
+		
+	</body>
+	{% endblock %}
+</html>

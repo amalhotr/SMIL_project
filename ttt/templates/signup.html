@@ -1,0 +1,75 @@
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <a class="navbar-brand" href="{% url 'home' %}">TTT Stock Market League</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+  
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav mr-auto">
+        <li class="nav-item">
+          <a class="nav-link" href="{% url 'home' %}">Home <span class="sr-only">(current)</span></a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="{% url 'login'%}">Login</a>
+        </li>
+        <li class="nav-item active">
+                <a class="nav-link" href="{% url 'register'%}">Register</a>
+              </li>
+    
+        
+      </ul>
+    </div>
+  </nav>
+<body>
+    <br>
+    <h3>Create New Account</h3>
+    <br>
+    <form method="POST">
+        <fieldset>
+          {% csrf_token %}
+          {{form.register_view}}
+          <div class="form-group">
+            <label for="{{form.username.id_for_label}}">Username</label>
+            <!-- <input type="text" class="form-control" id="username" aria-describedby="emailHelp" placeholder="Enter Username"> -->
+            {{ form.username }}
+          </div>
+          {% csrf_token %}
+          <div class="form-group">
+            <label for="{{form.first.id_for_label}}">First Name</label>
+            <!-- <input type="text" class="form-control" id="first" placeholder="Enter First Name"> -->
+            {{ form.first }}
+          </div>
+          {% csrf_token %}
+          <div class="form-group">
+            <label for="{{form.last.id_for_label}}">Last Name</label>
+            <!-- <input type="text" class="form-control" id="last" placeholder="Enter Last Name"> -->
+            {{ form.last }}
+          </div>
+          {% csrf_token %}
+          <div class="form-group">
+            <label for="{{form.email.id_for_label}}">Email</label>
+            <!-- <input type="email" class="form-control" id="email" placeholder="Enter Email"> -->
+            {{ form.email }}
+          </div>
+          {% csrf_token %}
+          <div class="form-group">
+            <label for="{{form.password.id_for_label}}">Password</label>
+            <!-- <input type="password" class="form-control" id="password" placeholder="Enter Password"> -->
+            {{ form.password }}
+          </div>
+          
+          </fieldset>
+          <button type="submit" class="btn btn-dark">Submit</button>
+        </fieldset>
+      </form>
+</body>
+</html>

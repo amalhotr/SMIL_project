@@ -15,17 +15,22 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
-from .views import home
 from accounts.views import login_view, logout_view, register_view, loggedin_home_view
+from machina import urls as machina_urls
 
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', include('ttt.urls')),
-    path('home/', home),
     path('accounts/login/', login_view, name = 'login'),
     path('accounts/register/', register_view, name = 'register'),
     path('accounts/logout/', logout_view, name = 'logout'),
-    path('accounts/loggedin_home', loggedin_home_view, name = 'loggedin_home_view')
+    path('accounts/loggedin_home', loggedin_home_view, name = 'loggedin_home_view'),
+    path('forum/', include(machina_urls), name = 'forum'),
+    path('', include('ttt.urls')),
     
 ]
+
+from django.conf import settings
+from django.conf.urls.static import static
+
+urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

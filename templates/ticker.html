@@ -1,0 +1,67 @@
+{% extends "base_generic.html" %}
+
+{% block content %}
+	{% load humanize %}
+	{% load crispy_forms_tags %}
+	<h1>{{ ticker }}</h1>
+	{% if plot %}
+	<div style="width:300;height:250">
+		{{ plot|safe }}
+	</div>
+	{% endif %}
+	<div class="container">
+		<div class="row">
+			<div class="col">
+				<dl class="row">
+						<dt class="col-6">Ticker price</dt>
+						<dd class="col-6">{{ quote.latestPrice|floatformat:2|intcomma }}</dd>
+						<dt class="col-6">Market Cap</dt>
+						<dd class="col-6">{{ keyStats.marketcap|intcomma }}</dd>
+						<dt class="col-6">Price-Earnings Ratio</dt>
+						<dd class="col-6">{{ quote.peRatio|floatformat:2|intcomma }}</dd>
+						<dt class="col-6">Dividend Yield</dt>
+						<dd class="col-6">{{ keyStats.dividendYield|floatformat:2|intcomma }}</dd>
+						<dt class="col-6">52 Week High</dt>
+						<dd class="col-6">{{ keyStats.week52high|floatformat:2|intcomma }}</dd>
+						<dt class="col-6">52 Week Low</dt>
+						<dd class="col-6">{{ keyStats.week52low|floatformat:2|intcomma }}</dd>
+				</dl>
+			</div>
+			<div class="col">
+				<dl class="row">
+						<dt class="col-6">Average Volume</dt>
+						<dd class="col-6">{{ quote.avgTotalVolume }}</dd>
+						<dt class="col-6">High Today</dt>
+						<dd class="col-6">{{ quote.high|floatformat:2|intcomma }}</dd>
+						<dt class="col-6">Low Today</dt>
+						<dd class="col-6">{{ quote.low|floatformat:2|intcomma }}</dd>
+						<dt class="col-6">Open Price</dt>
+						<dd class="col-6">{{ quote.open|floatformat:2|intcomma }}</dd>
+						<dt class="col-6">Close Price</dt>
+						<dd class="col-6">{{ quote.close|floatformat:2|intcomma }}</dd>
+						<dt class="col-6">Volume</dt>
+						<dd class="col-6">{{ quote.latestVolume|floatformat:2|intcomma }}</dd>
+				</dl>
+			</div> 
+		</div>
+	</div>
+	<form method="post">
+		{% csrf_token %}
+		{{ form|crispy }}
+		<button type="submit" class="btn btn-primary">Submit</button>
+	</form>
+	<h3>News</h3>
+	{% if news %}
+		<div class="card">
+			{% for new in news %}
+				<div class="card-body">
+					<h5 class="card-title">{{ new.headline }}</h5>
+					<h6 class="card-subtitle mb-2 text-muted">{{ new.datetime|slice:"0:10" }}</h6>
+					<p class="card-text">{{ new.summary }}</p>
+					<a href={{ new.url }} class="card-link" target="_blank" rel="noopener noreferrer">{{ new.source }}</a>
+				</div>
+			{% endfor %}
+		</div>
+	{% endif %}
+{% endblock %}
+
