@@ -4,7 +4,7 @@ from django.contrib.auth.models import User
 # Create your models here.
 class League(models.Model):
 	'''
-	Model representing a league
+	Model representing a league.
 	'''
 	admin = models.ForeignKey(User, on_delete=models.CASCADE, related_name='league_admin')
 	players = models.ManyToManyField(User, blank=True, related_name='league_players')
