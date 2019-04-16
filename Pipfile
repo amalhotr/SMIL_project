@@ -10,6 +10,8 @@ django = "==2.1.7"
 plotly = "*"
 alpha-vantage = "*"
 pandas = "*"
+statsmodels = "*"
+scipy = "*"
 
 [requires]
 python_version = "3.7"
