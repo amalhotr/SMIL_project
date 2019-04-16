@@ -25,7 +25,6 @@ urlpatterns = [
     path('accounts/register/', register_view, name = 'register'),
     path('accounts/logout/', logout_view, name = 'logout'),
     path('accounts/loggedin_home', loggedin_home_view, name = 'loggedin_home_view'),
-    path('forum/', include(machina_urls), name = 'forum'),
     path('', include('ttt.urls')),
     
 ]
