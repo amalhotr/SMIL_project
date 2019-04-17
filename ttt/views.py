@@ -13,7 +13,7 @@ from django.shortcuts import render
 from django.http import HttpResponseRedirect
 from django.contrib.auth.decorators import login_required
 
-from .models import League, Asset, TransactionType, TimeInForce, TransactionHistory, PendingTransaction
+from .models import League, Asset, TransactionType, TimeInForce, TransactionHistory, PendingTransaction, Portfolio, Holding
 from .forms import QuoteForm, TradeForm, LeagueForm, AdminLeagueForm, CreateLeagueForm
 
 # Create your views here.
@@ -124,12 +124,32 @@ def dashboardLeague(request, league):
 
 	pendingTransactions = PendingTransaction.objects.filter(player=request.user, league=league)
 	transactionHistory = TransactionHistory.objects.filter(player=request.user, league=league)
+	portfolio = Portfolio.objects.filter(player=request.user, league=league)
+
+	if len(portfolio)>0:
+		holding = Holding.objects.filter(portfolio=portfolio[0])
+		tickers = []
+		quantities = []
+
+		for hold in holding.iterator():
+			tickers.append(hold.ticker)
+			quantities.append(hold.quantity)
+
+		pie_chart_div = Plot.getPieChart(tickers, quantities, 'Holdings')
+	else:
+		holding = None
+		pie_chart_div = None
+
+
+
 
 	context = {
 		'form': form,
 		'league': league,
 		'pendingTransactions': pendingTransactions,
-		'transactionHistory': transactionHistory
+		'transactionHistory': transactionHistory,
+		'holding':holding,
+		'pie_chart':pie_chart_div,
 	}
 	return render(request, 'dashBoardLeague.html', context)
 
