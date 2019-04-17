@@ -70,15 +70,19 @@ def ticker(request, ticker):
 	else:
 		form = TradeForm(user=request.user)
 
-	data, values = StockData.getValues(ticker)
-	div = Plot.getLinePlot(data, values, ticker)
+	dates, values = StockData.getValues(ticker)
+	div = Plot.getLinePlot(dates, values, ticker)
+
+	pred_dates, pred_values = StockData.getForecast(dates, values)
+	prediction_div = Plot.getTwoPlots(dates, values, pred_dates, pred_values, ticker)
 	context = {
 		'ticker': ticker,
 		'quote': quote,
 		'news': news,
 		'keyStats': keyStats,
 		'form': form,
-		'plot': div
+		'plot': div,
+		'prediction_plot': prediction_div
 	}
 	return render(request, 'ticker.html', context)
 
@@ -207,7 +211,7 @@ def leaveLeague(request, leagueName):
 	league = League.objects.get(name = leagueName)
 	league.players.remove(request.user)
 	return HttpResponseRedirect('/leagues/')
-	
+
 @login_required
 def joinLeague(request, leagueName):
 	'''
