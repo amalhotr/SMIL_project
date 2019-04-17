@@ -1,7 +1,8 @@
 {% extends "base_generic.html" %}
 
 {% block content %}
-	<h1>{{ league }} Dashboard</h1>
+<body class = "body" style="background-color: #0070f1">
+	<h1>{{ league }}'s Dashboard</h1>
 	<form method="post">
 		{% csrf_token %}
 		{{ form }}
@@ -65,4 +66,33 @@
 			{% endfor %}
 		</table>
 	{% endif %}
+<<<<<<< HEAD
+</body>
 {% endblock %}
+=======
+	<h2>Holdings</h2>
+	{% if holding %}
+		<table>
+			<tr>
+				<th>Ticker</th>
+				<th>Quantity</th>
+				<th>Price</th>
+			</tr>
+			{% for hold in holding %}
+				<tr>
+					<td> {{ hold.ticker }} </td>
+					<td> {{ hold.quantity }} </td>
+					<td> {{ hold.price }} </td>
+				</tr>
+			{% endfor %}
+		</table>
+	{% endif %}
+
+	{% if pie_chart %}
+	<div style="width:300;height:250">
+		{{ pie_chart|safe }}
+	</div>
+	{% endif %}
+
+{% endblock %}
+>>>>>>> abfdec58fde04705a5d03d064bb85cf8feefafb5

@@ -1,5 +1,6 @@
 from iexfinance.stocks import Stock
 
+
 def getQuote(symbol):
 	return Stock(symbol).get_quote()
 
@@ -8,3 +9,4 @@ def getKeyStats(symbol):
 
 def getNews(symbol):
 	return Stock(symbol).get_news()
+

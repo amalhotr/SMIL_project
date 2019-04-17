@@ -1,10 +1,24 @@
 from django import forms
+from crispy_forms.layout import Layout, Submit, Row, Column
+from crispy_forms.helper import FormHelper
 
 class QuoteForm(forms.Form):
 	'''
 	Class sets up ticker selection form
 	'''
-	ticker = forms.CharField(max_length=5, help_text='Enter the ticker')
+	ticker = forms.CharField(
+                                widget=forms.TextInput(attrs={'placeholder':'Enter Here'})
+                                 )
+	def __init__(self, *args, **kwargs):
+                super().__init__(*args,**kwargs)
+                self.helper = FormHelper()
+                self.helper.layout = Layout(
+                        Row(
+                        Column('ticker' , css_class='form-group col-md-6 mb-0'),
+                        css_class = 'form-row'
+                        ),
+                        Submit('submit','Submit',css_class='btn-secondary')
+                        )
 
 from django.core.validators import MinValueValidator, MaxValueValidator
 
@@ -15,7 +29,16 @@ class TradeForm(forms.Form):
 	Class sets up the form required for buying and selling stocks.
 	'''
 
-	League_name = forms.ModelChoiceField(queryset=League.objects.none())
+	League_name = forms.ModelChoiceField(queryset=League.objects)
+
+	asset = forms.ModelChoiceField(queryset=Asset.objects)
+	transactionType = forms.ModelChoiceField(queryset=TransactionType.objects)
+	timeInForce = forms.ModelChoiceField(queryset=TimeInForce.objects)
+	price1 = forms.DecimalField(max_digits=11, decimal_places=2, required=False, widget=forms.TextInput(attrs={'placeholder':'Enter Price'}))
+	price2 = forms.DecimalField(max_digits=11, decimal_places=2, required=False, widget=forms.TextInput(attrs={'placeholder':'Enter Price'}))
+	quantity = forms.IntegerField(validators=[MinValueValidator(1)], widget=forms.TextInput(attrs={'placeholder':'Enter Quantity'}))
+
+	
 
 	def __init__(self, *args, **kwargs):
 		'''
@@ -27,12 +50,26 @@ class TradeForm(forms.Form):
 		super(TradeForm, self).__init__(*args, **kwargs)
 		qs = League.objects.filter(players=user)
 		self.fields['League_name'].queryset = qs
-	asset = forms.ModelChoiceField(queryset=Asset.objects)
-	transactionType = forms.ModelChoiceField(queryset=TransactionType.objects)
-	timeInForce = forms.ModelChoiceField(queryset=TimeInForce.objects)
-	price1 = forms.DecimalField(max_digits=11, decimal_places=2, required=False, help_text='Enter the price for this transaction')
-	price2 = forms.DecimalField(max_digits=11, decimal_places=2, required=False, help_text='Enter the price for this transaction')
-	quantity = forms.IntegerField(validators=[MinValueValidator(1)], help_text='Enter the quantity for this transaction')
+		super().__init__(*args,**kwargs)
+		self.helper = FormHelper()
+		self.helper.layout = Layout(
+                        Row(
+                                Column('League_name', css_class='form-group col-xl-6 mb-0'),
+                                Column('asset' , css_class='form-group col-xl-6 mb-0'),
+                                Column('transactionType' , css_class='form-group col-xl-6 mb-0'),
+                                Column('timeInForce' , css_class='form-group col-xl-6 mb-0'),
+                                css_class = 'form-row'
+                        ),
+                        Row(
+                                Column('price1', css_class='form-group col-xl-6 mb-0'),
+                                Column('price2' , css_class='form-group col-xl-6 mb-0'),
+                                Column('quantity' , css_class='form-group col-xl-6 mb-0'),
+                                css_class = 'form-row'
+                                
+                        ),
+                        Submit('submit','Submit')
+                )
+
 
 class LeagueForm(forms.Form):
 	'''
