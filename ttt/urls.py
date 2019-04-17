@@ -1,7 +1,6 @@
-from django.urls import path, include
+from django.urls import path
 
 from . import views
-from machina import urls as machina_urls
 
 urlpatterns = [
     path('', views.home, name='home'),
@@ -14,5 +13,4 @@ urlpatterns = [
     path('leagues/admin/<str:leagueName>', views.adminLeague, name="adminLeague"),
     path('leagues/leave/<str:leagueName>', views.leaveLeague, name='leaveLeague'),
     path('leagues/join/<str:leagueName>', views.joinLeague, name='joinLeague'),   
-    path('forum/', include(machina_urls), name='forum'),
 ]
