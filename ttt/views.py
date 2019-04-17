@@ -13,7 +13,7 @@ from django.shortcuts import render
 from django.http import HttpResponseRedirect
 from django.contrib.auth.decorators import login_required
 
-from .models import League, Asset, TransactionType, TimeInForce, TransactionHistory, PendingTransaction, Portfolio, Holding
+from .models import League, Asset, TransactionType, TimeInForce, TransactionHistory, PendingTransaction
 from .forms import QuoteForm, TradeForm, LeagueForm, AdminLeagueForm, CreateLeagueForm
 
 # Create your views here.
@@ -70,19 +70,15 @@ def ticker(request, ticker):
 	else:
 		form = TradeForm(user=request.user)
 
-	dates, values = StockData.getValues(ticker)
-	div = Plot.getLinePlot(dates, values, ticker)
-
-	pred_dates, pred_values = StockData.getForecast(dates, values)
-	prediction_div = Plot.getTwoPlots(dates, values, pred_dates, pred_values, ticker)
+	data, values = StockData.getValues(ticker)
+	div = Plot.getLinePlot(data, values, ticker)
 	context = {
 		'ticker': ticker,
 		'quote': quote,
 		'news': news,
 		'keyStats': keyStats,
 		'form': form,
-		'plot': div,
-		'prediction_plot': prediction_div
+		'plot': div
 	}
 	return render(request, 'ticker.html', context)
 
@@ -124,32 +120,12 @@ def dashboardLeague(request, league):
 
 	pendingTransactions = PendingTransaction.objects.filter(player=request.user, league=league)
 	transactionHistory = TransactionHistory.objects.filter(player=request.user, league=league)
-	portfolio = Portfolio.objects.filter(player=request.user, league=league)
-
-	if len(portfolio)>0:
-		holding = Holding.objects.filter(portfolio=portfolio[0])
-		tickers = []
-		quantities = []
-
-		for hold in holding.iterator():
-			tickers.append(hold.ticker)
-			quantities.append(hold.quantity)
-
-		pie_chart_div = Plot.getPieChart(tickers, quantities, 'Holdings')
-	else:
-		holding = None
-		pie_chart_div = None
-
-
-
 
 	context = {
 		'form': form,
 		'league': league,
 		'pendingTransactions': pendingTransactions,
-		'transactionHistory': transactionHistory,
-		'holding':holding,
-		'pie_chart':pie_chart_div,
+		'transactionHistory': transactionHistory
 	}
 	return render(request, 'dashBoardLeague.html', context)
 
@@ -231,7 +207,7 @@ def leaveLeague(request, leagueName):
 	league = League.objects.get(name = leagueName)
 	league.players.remove(request.user)
 	return HttpResponseRedirect('/leagues/')
-
+	
 @login_required
 def joinLeague(request, leagueName):
 	'''

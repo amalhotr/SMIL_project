@@ -9,11 +9,6 @@
 		{{ plot|safe }}
 	</div>
 	{% endif %}
-	{% if prediction_plot %}
-	<div style="width:300;height:250">
-		{{ prediction_plot|safe }}
-	</div>
-	{% endif %}
 	<div class="container">
 		<div class="row">
 			<div class="col">
@@ -47,7 +42,7 @@
 						<dt class="col-6">Volume</dt>
 						<dd class="col-6">{{ quote.latestVolume|floatformat:2|intcomma }}</dd>
 				</dl>
-			</div>
+			</div> 
 		</div>
 	</div>
 	<form method="post">
@@ -69,3 +64,4 @@
 		</div>
 	{% endif %}
 {% endblock %}
+

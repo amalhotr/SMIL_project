@@ -65,28 +65,4 @@
 			{% endfor %}
 		</table>
 	{% endif %}
-	<h2>Holdings</h2>
-	{% if holding %}
-		<table>
-			<tr>
-				<th>Ticker</th>
-				<th>Quantity</th>
-				<th>Price</th>
-			</tr>
-			{% for hold in holding %}
-				<tr>
-					<td> {{ hold.ticker }} </td>
-					<td> {{ hold.quantity }} </td>
-					<td> {{ hold.price }} </td>
-				</tr>
-			{% endfor %}
-		</table>
-	{% endif %}
-
-	{% if pie_chart %}
-	<div style="width:300;height:250">
-		{{ pie_chart|safe }}
-	</div>
-	{% endif %}
-
 {% endblock %}

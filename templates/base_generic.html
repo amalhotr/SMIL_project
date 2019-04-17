@@ -36,6 +36,9 @@
 		                	</li>
 		                	<li class="nav-item">
 		                		<a class="nav-link {% if request.resolver_match.url_name == 'leagues' %}active{% endif %}" href="{% url 'leagues'%}">Leagues</a>
+							</li>
+							<li class="nav-item">
+		                		<a class="nav-link {% if request.resolver_match.url_name == 'forum' %}active{% endif %}" href="/forum">Forum</a>
 		                	</li>
 		                	<li class="nav-item">
 		                		<a class="nav-link {% if request.resolver_match.url_name == 'logout' %}active{% endif %}" href="{% url 'logout'%}">Logout</a>

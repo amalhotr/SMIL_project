@@ -42,7 +42,7 @@ class StockData():
             return x,y
 
     @staticmethod
-    def getForecast(dates, values, num_predictions=100, seasonal_period=4):
+    def getForecast(dates, values, num_predictions=100):
         '''
         get the full time series from a given stock or cryptocurrency
         :param symbol: symbol of desired stock or crypto
@@ -52,7 +52,7 @@ class StockData():
 
         date_format = '%Y-%m-%d'
 
-        holt = ExponentialSmoothing(values, seasonal_periods=seasonal_period, trend='add', seasonal='add').fit()
+        holt = ExponentialSmoothing(values, seasonal_periods=4, trend='add', seasonal='add').fit()
         prediction_values = holt.forecast(num_predictions)
 
         last_stock_date = datetime.datetime.strptime(dates[-1], date_format)
