@@ -1,15 +1,12 @@
 {% extends "base_generic.html" %}
-{% load crispy_forms_tags %}
 
 {% block content %}
-
 <body class = "body" style="background-color: #0070f1">
 	<h1>Trade</h1>
-	<!-- <form method="post">
+	<form method="post">
 		{% csrf_token %}
-		{{ form }} -->
-		<!-- <input type="submit" value="Submit"> -->
+		{{ form }}
+		<input type="submit" value="Submit">
 	</form>
 	</body>
-	{%crispy form%}
 {% endblock %}

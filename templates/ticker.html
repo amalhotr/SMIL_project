@@ -9,11 +9,6 @@
 		{{ plot|safe }}
 	</div>
 	{% endif %}
-	{% if prediction_plot %}
-	<div style="width:300;height:250">
-		{{ prediction_plot|safe }}
-	</div>
-	{% endif %}
 	<div class="container">
 		<div class="row">
 			<div class="col">
@@ -47,18 +42,15 @@
 						<dt class="col-6">Volume</dt>
 						<dd class="col-6">{{ quote.latestVolume|floatformat:2|intcomma }}</dd>
 				</dl>
-			</div>
+			</div> 
 		</div>
 	</div>
-	<div align = "center">
-	{%crispy form%}
-	</div>
-	<!-- <form method="post">
-		{% csrf_token %} -->
-		<!-- {{ form|crispy }} -->
-		<!-- <button type="submit" class="btn btn-primary">Submit</button> -->
-	<!-- </form> -->
-	<h3> {{ticker}} News</h3>
+	<form method="post">
+		{% csrf_token %}
+		{{ form|crispy }}
+		<button type="submit" class="btn btn-primary">Submit</button>
+	</form>
+	<h3>News</h3>
 	{% if news %}
 		<div class="card">
 			{% for new in news %}
@@ -71,5 +63,5 @@
 			{% endfor %}
 		</div>
 	{% endif %}
-	
 {% endblock %}
+

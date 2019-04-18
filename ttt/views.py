@@ -12,8 +12,9 @@ import plotly.graph_objs as go
 from django.shortcuts import render
 from django.http import HttpResponseRedirect
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.models import User
 
-from .models import League, Asset, TransactionType, TimeInForce, TransactionHistory, PendingTransaction, Portfolio, Holding
+from .models import League, Asset, TransactionType, TimeInForce, TransactionHistory, PendingTransaction
 from .forms import QuoteForm, TradeForm, LeagueForm, AdminLeagueForm, CreateLeagueForm
 
 # Create your views here.
@@ -42,7 +43,6 @@ def trade(request):
 
 	else:
 		form = QuoteForm()
-                
 
 	return render(request, 'trade.html', {'form': form})
 
@@ -65,36 +65,21 @@ def ticker(request, ticker):
 	if request.method == 'POST':
 		form = TradeForm(request.POST, user=request.user)
 		if form.is_valid():
-			instance = PendingTransaction(id=uuid.uuid4(),
-                                                      player = request.user,
-                                                      league= form.cleaned_data['League_name'],
-                                                      asset = form.cleaned_data['asset'],
-                                                      ticker = ticker,
-                                                      transactionType = form.cleaned_data['transactionType'],
-                                                      timeInForce = form.cleaned_data['timeInForce'],
-                                                      transactionStatus = 'q',
-                                                      submittedDateTime = datetime.now(),
-                                                      price1 = form.cleaned_data['price1'],
-                                                      price2 = form.cleaned_data['price2'],
-                                                      quantity = form.cleaned_data['quantity'])
+			instance = PendingTransaction(id=uuid.uuid4(), player = request.user, league= form.cleaned_data['League_name'], asset = form.cleaned_data['asset'], ticker = ticker, transactionType = form.cleaned_data['transactionType'], timeInForce = form.cleaned_data['timeInForce'], transactionStatus = 'q', submittedDateTime = datetime.now(), price1 = form.cleaned_data['price1'], price2 = form.cleaned_data['price2'], quantity = form.cleaned_data['quantity'])
 			instance.save()
 			return HttpResponseRedirect('/dashboard/' + str(instance.league))
 	else:
 		form = TradeForm(user=request.user)
 
-	dates, values = StockData.getValues(ticker)
-	div = Plot.getLinePlot(dates, values, ticker)
-
-	pred_dates, pred_values = StockData.getForecast(dates, values)
-	prediction_div = Plot.getTwoPlots(dates, values, pred_dates, pred_values, ticker)
+	data, values = StockData.getValues(ticker)
+	div = Plot.getLinePlot(data, values, ticker)
 	context = {
 		'ticker': ticker,
 		'quote': quote,
 		'news': news,
 		'keyStats': keyStats,
 		'form': form,
-		'plot': div,
-		'prediction_plot': prediction_div
+		'plot': div
 	}
 	return render(request, 'ticker.html', context)
 
@@ -136,32 +121,12 @@ def dashboardLeague(request, league):
 
 	pendingTransactions = PendingTransaction.objects.filter(player=request.user, league=league)
 	transactionHistory = TransactionHistory.objects.filter(player=request.user, league=league)
-	portfolio = Portfolio.objects.filter(player=request.user, league=league)
-
-	if len(portfolio)>0:
-		holding = Holding.objects.filter(portfolio=portfolio[0])
-		tickers = []
-		quantities = []
-
-		for hold in holding.iterator():
-			tickers.append(hold.ticker)
-			quantities.append(hold.quantity)
-
-		pie_chart_div = Plot.getPieChart(tickers, quantities, 'Holdings')
-	else:
-		holding = None
-		pie_chart_div = None
-
-
-
 
 	context = {
 		'form': form,
 		'league': league,
 		'pendingTransactions': pendingTransactions,
-		'transactionHistory': transactionHistory,
-		'holding':holding,
-		'pie_chart':pie_chart_div,
+		'transactionHistory': transactionHistory
 	}
 	return render(request, 'dashBoardLeague.html', context)
 
@@ -203,6 +168,7 @@ def createLeague(request):
 		form = CreateLeagueForm()
 	return render(request, 'createLeague.html', {'form': form})
 
+
 @login_required
 def adminLeague(request, leagueName):
 	'''
@@ -216,6 +182,8 @@ def adminLeague(request, leagueName):
 	if request.method == 'POST':
 		form = AdminLeagueForm(request.POST)
 		if form.is_valid():
+			removedPlayers = form.cleaned_data['players']
+			league.players.remove(*removedPlayers);
 			league.startingBalance = form.cleaned_data['startingBalance']
 			league.startDate = form.cleaned_data['startDate']
 			league.endDate = form.cleaned_data['endDate']
@@ -225,9 +193,10 @@ def adminLeague(request, leagueName):
 			return HttpResponseRedirect('/leagues/')
 	else:
 		form = AdminLeagueForm(initial={'startingBalance': league.startingBalance, 'startDate': league.startDate, 'endDate': league.endDate, 'public': league.public, 'description': league.description})
+		form.fields['players'].queryset = league.players;
 	context = {
 		'leagueName': leagueName,
-		'form': form
+		'form': form,
 	}
 	return render(request, 'adminLeague.html', context)
 
@@ -243,7 +212,7 @@ def leaveLeague(request, leagueName):
 	league = League.objects.get(name = leagueName)
 	league.players.remove(request.user)
 	return HttpResponseRedirect('/leagues/')
-
+	
 @login_required
 def joinLeague(request, leagueName):
 	'''

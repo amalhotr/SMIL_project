@@ -2,6 +2,9 @@
 
 {% block content %}
 	<h1>Manage {{leagueName}} League</h1>
+	<div>
+		Join link: <a href="http://127.0.0.1:8000/leagues/join/{{leagueName}}">http://127.0.0.1:8000/leagues/join/{{leagueName}}</a>
+	</div>
 	<form method="post">
 		{% csrf_token %}
 		{{ form }}
