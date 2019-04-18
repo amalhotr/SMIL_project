@@ -1,14 +1,17 @@
 from django import forms
 
+from .models import Asset, TransactionType, TimeInForce, League
+
 class QuoteForm(forms.Form):
 	'''
 	Class sets up ticker selection form
 	'''
-	ticker = forms.CharField(max_length=5, help_text='Enter the ticker')
+	ticker = forms.CharField(max_length=8, help_text='Enter the ticker')
+	asset = forms.ModelChoiceField(queryset=Asset.objects)
 
 from django.core.validators import MinValueValidator, MaxValueValidator
 
-from .models import Asset, TransactionType, TimeInForce, League
+
 
 class TradeForm(forms.Form):
 	'''

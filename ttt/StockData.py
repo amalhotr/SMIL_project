@@ -15,14 +15,14 @@ class StockData():
     '''
 
     @staticmethod
-    def getValues(symbol, currency='stock'):
+    def getValues(symbol, currency='Stock'):
         '''
         get the full time series from a given stock or cryptocurrency
         :param symbol: symbol of desired stock or crypto
         :param currency: 'stock' or 'crypto'
         :return: (x,y) x is the dates, and y is the stock value
         '''
-        if currency=='stock':
+        if currency=='Stock':
             ts = TimeSeries(key=api_key, output_format='pandas')
             try:
                 data, meta_data = ts.get_weekly(symbol)
@@ -31,7 +31,7 @@ class StockData():
             x=data.index.values # get index values (dates)
             y=data.iloc[:,3].values    # get third column which is closing price
             return x,y
-        elif currency=='crypto':
+        elif currency=='Cryptocurrency':
             cc = CryptoCurrencies(key=api_key, output_format='pandas')
             try:
                 data, meta_data = cc.get_digital_currency_weekly(symbol, market='USD')
@@ -42,7 +42,7 @@ class StockData():
             return x,y
 
     @staticmethod
-    def getForecast(dates, values, num_predictions=100):
+    def getForecast(dates, values, num_predictions=100, seasonal_period=4):
         '''
         get the full time series from a given stock or cryptocurrency
         :param symbol: symbol of desired stock or crypto
@@ -52,7 +52,7 @@ class StockData():
 
         date_format = '%Y-%m-%d'
 
-        holt = ExponentialSmoothing(values, seasonal_periods=4, trend='add', seasonal='add').fit()
+        holt = ExponentialSmoothing(values, seasonal_periods=seasonal_period, trend='add', seasonal='add').fit()
         prediction_values = holt.forecast(num_predictions)
 
         last_stock_date = datetime.datetime.strptime(dates[-1], date_format)
@@ -63,14 +63,14 @@ class StockData():
         return prediction_dates, prediction_values
 
     @staticmethod
-    def getCurrentPrice(symbol, currency='stock'):
+    def getCurrentPrice(symbol, currency='Stock'):
         '''
         get current price for a given stock or cryptocurrency
         :param symbol: string of the desired stock or cryptocurrency
         :param currency: 'stock' or 'crypto'
         :return: (x,y) x is string with date and time, and y is stock value
         '''
-        if currency=='stock':
+        if currency=='Stock':
             ts = TimeSeries(key=api_key, output_format='pandas')
             try:
                 data, meta_data = ts.get_intraday(symbol, interval='1min', outputsize='compact')
@@ -79,7 +79,7 @@ class StockData():
             x=data.index.values[-1] # get index values (dates)
             y=data.iloc[-1,3]    # get third column which is closing price
             return x,y
-        elif currency=='crypto':
+        elif currency=='Cryptocurrency':
             cc = CryptoCurrencies(key=api_key, output_format='pandas')
             try:
                 data, meta_data = cc.get_digital_currency_daily(symbol, market='USD')

@@ -17,7 +17,6 @@ from machina import MACHINA_MAIN_TEMPLATE_DIR
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
-PROJECT_PATH = os.path.realpath(os.path.dirname(__file__))
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/2.1/howto/deployment/checklist/
@@ -63,8 +62,8 @@ INSTALLED_APPS = [
     'machina.apps.forum_member',
     'machina.apps.forum_permission',
 
-    # Asychronous scheduler:
-    'django_apscheduler',
+    # Scheduler:
+    "django_apscheduler",
 ]
 
 MIDDLEWARE = [
@@ -78,6 +77,7 @@ MIDDLEWARE = [
     'machina.apps.forum_permission.middleware.ForumPermissionMiddleware',
 ]
 
+
 ROOT_URLCONF = 'SMIL_project.urls'
 
 TEMPLATES = [
@@ -85,7 +85,7 @@ TEMPLATES = [
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
         'DIRS': [os.path.join(BASE_DIR, 'templates'),
                 MACHINA_MAIN_TEMPLATE_DIR,
-        ],
+            ],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -175,7 +175,6 @@ HAYSTACK_CONNECTIONS = {
     },
 }
 
-# Scheduler config:
 SCHEDULER_CONFIG = {
     "apscheduler.jobstores.default": {
         "class": "django_apscheduler.jobstores:DjangoJobStore"
