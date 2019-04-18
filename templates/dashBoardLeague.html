@@ -2,56 +2,70 @@
 
 {% block content %}
 	<h1>{{ league }} Dashboard</h1>
+	{% load crispy_forms_tags %}
 	<form method="post">
 		{% csrf_token %}
-		{{ form }}
-		<input type="submit" value="Submit">
+		<div class="form-row">
+			<div class="form-group col-md-2">
+				<label for="{{ form.League_name.id_for_label }}"> League: </label>
+				{{ form.League_name }}
+			</div>
+		</div>
+		<button type="submit" class="btn btn-primary">Submit</button>
 	</form>
-	<h2>Pending transactions</h2>
+	<h3>Pending transactions</h3>
 	{% if pendingTransactions %}
-		<table>
-			<tr>
-				<th>Ticker</th>
-				<th>Transaction Type</th>
-				<th>Time in Force</th>
-				<th>Transaction Status</th>
-				<th>Submitted</th>
-				<th>Price 1</th>
-				<th>Price 2</th>
-				<th>Quantity</th>
-			</tr>
-			{% for pendTrans in pendingTransactions %}
+		<table class="table table-hover">
+			<thead>
 				<tr>
-					<td> {{ pendTrans.ticker }} </td>
-					<td> {{ pendTrans.transactionType }} </td>
-					<td> {{ pendTrans.timeInForce }} </td>
-					<td> {{ pendTrans.get_transactionStatus_display  }} </td>
-					<td> {{ pendTrans.submittedDateTime }} </td>
-					<td> {{ pendTrans.price1 }} </td>
-					<td> {{ pendTrans.price2 }} </td>
-					<td> {{ pendTrans.quantity }} </td>
+					<th scope="col"> Ticker </th>
+					<th scope="col"> Transaction Type </th>
+					<th scope="col"> Time in Force </th>
+					<th scope="col"> Transaction Status </th>
+					<th scope="col"> Submitted </th>
+					<th scope="col"> Price 1 </th>
+					<th scope="col"> Price 2 </th>
+					<th scope="col"> Quantity </th>
 				</tr>
-			{% endfor %}
+			</thead>
+			<tbody>
+				{% for pendTrans in pendingTransactions %}
+					<tr>
+						<th scope="row"> {{ pendTrans.ticker }} </th>
+						<td> {{ pendTrans.transactionType }} </td>
+						<td> {{ pendTrans.timeInForce }} </td>
+						<td> {{ pendTrans.get_transactionStatus_display  }} </td>
+						<td> {{ pendTrans.submittedDateTime }} </td>
+						<td> {{ pendTrans.price1 }} </td>
+						<td> {{ pendTrans.price2 }} </td>
+						<td> {{ pendTrans.quantity }} </td>
+						<td><a href="">Cancel</a></td>
+					</tr>
+				{% endfor %}
+			</tbody>
 		</table>
 	{% endif %}
-	<h2>Transaction history</h2>
+
+	<h3>Transaction history</h3>
 	{% if transactionHistory %}
-		<table>
-			<tr>
-				<th>Ticker</th>
-				<th>Transaction Type</th>
-				<th>Time in Force</th>
-				<th>Transaction Status</th>
-				<th>Submitted</th>
-				<th>Fulfilled</th>
-				<th>Price 1</th>
-				<th>Price 2</th>
-				<th>Quantity</th>
-				<th>Total</th>
-			</tr>
+		<table class="table table-hover">
+			<thead>
+				<tr>
+					<th scope="col">Ticker</th>
+					<th scope="col">Transaction Type</th>
+					<th scope="col">Time in Force</th>
+					<th scope="col">Transaction Status</th>
+					<th scope="col">Submitted</th>
+					<th scope="col">Fulfilled</th>
+					<th scope="col">Price 1</th>
+					<th scope="col">Price 2</th>
+					<th scope="col">Quantity</th>
+					<th scope="col">Total</th>
+				</tr>
+			</thead>
 			{% for transHis in transactionHistory %}
 				<tr>
-					<td> {{ transHis.ticker }} </td>
+					<th scope="row"> {{ transHis.ticker }} </th>
 					<td> {{ transHis.transactionType }} </td>
 					<td> {{ transHis.timeInForce }} </td>
 					<td> {{ transHis.get_transactionStatus_display  }} </td>
@@ -65,28 +79,38 @@
 			{% endfor %}
 		</table>
 	{% endif %}
-	<h2>Holdings</h2>
+	<h3>Holdings</h3>
 	{% if holding %}
-		<table>
-			<tr>
-				<th>Ticker</th>
-				<th>Quantity</th>
-				<th>Price</th>
-			</tr>
-			{% for hold in holding %}
-				<tr>
-					<td> {{ hold.ticker }} </td>
-					<td> {{ hold.quantity }} </td>
-					<td> {{ hold.price }} </td>
-				</tr>
-			{% endfor %}
-		</table>
+		<div class="container">
+			<div class="row">
+				<div class="col">
+					<table class="table table-hover">
+						<thead>
+							<tr>
+								<th scope="col">Ticker</th>
+								<th scope="col">Quantity</th>
+								<th scope="col">Price</th>
+							</tr>
+						</thead>
+						<tbody>
+						{% for hold in holding %}
+								<tr>
+									<th scope="row"> {{ hold.ticker }} </th>
+									<td> {{ hold.quantity }} </td>
+									<td> {{ hold.price }} </td>
+								</tr>
+							{% endfor %}
+						</tbody>
+					</table>
+				</div>
+				<div class="col">
+					{% if pie_chart %}
+						<div style="width:300;height:250">
+						{{ pie_chart|safe }}
+						</div>
+					{% endif %}
+				</div>
+			</div>
+		</div>
 	{% endif %}
-
-	{% if pie_chart %}
-	<div style="width:300;height:250">
-		{{ pie_chart|safe }}
-	</div>
-	{% endif %}
-
 {% endblock %}

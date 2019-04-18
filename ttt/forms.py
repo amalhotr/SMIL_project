@@ -42,7 +42,7 @@ class LeagueForm(forms.Form):
 	Class set up for searching and creating leagues.
 	Displays all existing League Object Models.
 	'''
-	League_name = forms.ModelChoiceField(queryset=League.objects.none())
+	League_name = forms.ModelChoiceField(queryset=League.objects.none(), empty_label=None, widget=forms.Select(attrs={'class': 'form-control'}))
 
 	def __init__(self, *args, **kwargs):
 		'''
@@ -54,6 +54,7 @@ class LeagueForm(forms.Form):
 		super(LeagueForm, self).__init__(*args, **kwargs)
 		qs = League.objects.filter(players=user)
 		self.fields['League_name'].queryset = qs
+
 
 from django.forms import ModelForm
 

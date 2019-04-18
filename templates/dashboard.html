@@ -1,12 +1,16 @@
 {% extends "base_generic.html" %}
 
 {% block content %}
-<body class = "body" style="background-color: #0070f1">
 	<h1>Dashboard</h1>
+	{% load crispy_forms_tags %}
 	<form method="post">
 		{% csrf_token %}
-		{{ form }}
-		<input type="submit" value="Submit">
+		<div class="form-row">
+			<div class="form-group col-md-2">
+				<label for="{{ form.League_name.id_for_label }}"> League: </label>
+				{{ form.League_name }}
+			</div>
+		</div>
+		<button type="submit" class="btn btn-primary">Submit</button>
 	</form>
-	</body>
 {% endblock %}

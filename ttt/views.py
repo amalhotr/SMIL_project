@@ -128,8 +128,8 @@ def dashboardLeague(request, league):
 	else:
 		form = LeagueForm(user=request.user, initial={'League_name': league})
 
-	pendingTransactions = PendingTransaction.objects.filter(player=request.user, league=league)
-	transactionHistory = TransactionHistory.objects.filter(player=request.user, league=league)
+	pendingTransactions = PendingTransaction.objects.filter(player=request.user, league=league).order_by('-submittedDateTime')
+	transactionHistory = TransactionHistory.objects.filter(player=request.user, league=league).order_by('-fulfilledDateTime')
 	portfolio = Portfolio.objects.filter(player=request.user, league=league)
 
 	if len(portfolio)>0:

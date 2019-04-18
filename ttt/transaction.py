@@ -95,7 +95,7 @@ def transaction(pendTrans):
 
 	elif pendTrans.transactionType.name == 'Stop Loss':
 		if price <= pendTrans.price1:
-			instance = PendingTransaction(id=uuid.uuid(4), player=pendTrans.player, league=pendTrans.league, asset=pendTrans.asset, ticker=pendTrans.ticker, transactionType=TransactionType.objects.get(name='Limit Buy'), timeInForce=pendTrans.timeInForce, transactionStatus='q', submittedDateTime=datetime.now(), price1=pendTrans.price2, quantity=pendTrans.quantity)
+			instance = PendingTransaction(id=uuid.uuid(4), player=pendTrans.player, league=pendTrans.league, asset=pendTrans.asset, ticker=pendTrans.ticker, transactionType=TransactionType.objects.get(name='Limit Sell'), timeInForce=pendTrans.timeInForce, transactionStatus='q', submittedDateTime=datetime.now(), price1=pendTrans.price2, quantity=pendTrans.quantity)
 			instance.save()
 			pendTrans.delete()
 	return
@@ -109,10 +109,13 @@ def cryptoExecute():
 
 	return
 
-def stockExecute():
+
+def stockMarketExecute():
+
 
 	return
 
-def EOD():
+def deleteDayTrans():
+	PendingTransaction.objects.filter(timeInForce=TimeInForce.objects.get(name='Good-for-day')).delete()
 
 	return
