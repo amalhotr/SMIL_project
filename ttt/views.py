@@ -134,6 +134,13 @@ def dashboardLeague(request, league):
 	portfolio = Portfolio.objects.filter(player=request.user, league=league)
 	position = leaderboards(league)
 
+	portcount = Portfolio.objects.filter(league=league).count()
+	port = []
+	counter = 0
+	while(counter < portcount):
+		port.append(counter+1)
+		counter += 1
+
 	if len(portfolio)>0:
 		holding = Holding.objects.filter(portfolio=portfolio[0])
 		tickers = []
@@ -157,7 +164,8 @@ def dashboardLeague(request, league):
 		'pendingTransactions': pendingTransactions,
 		'transactionHistory': transactionHistory,
 		'holding':holding,
-                'position': position,
+        'position':position,
+		'port':port,
 		'pie_chart':pie_chart_div,
 	}
 	return render(request, 'dashBoardLeague.html', context)

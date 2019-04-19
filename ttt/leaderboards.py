@@ -1,30 +1,12 @@
 from .models import *
-from django.shortcuts import render
-from .StockData import *
-from .Plot import *
+import collections
 import operator
 from .iex import *
-
-
-from django.views.generic import TemplateView
 
 '''
 import plotly.offline as opy
 import plotly.graph_objs as go
 '''
-
-from django.shortcuts import render
-from django.http import HttpResponseRedirect
-from django.contrib.auth.decorators import login_required
-
-from .models import League, Asset, TransactionType, TimeInForce, TransactionHistory, PendingTransaction
-from .forms import QuoteForm, TradeForm, LeagueForm, AdminLeagueForm, CreateLeagueForm
-
-# Create your views here.
-from django.shortcuts import render
-from django.contrib.auth.decorators import login_required
-
-
 
 def leaderboards(request):
     position = {}
@@ -37,6 +19,8 @@ def leaderboards(request):
             total = price * j.quantity
             position[i.player] += total
 
-    #sorted_p = sorted(position.items(), key=lambda x: x[1])
+    position = collections.OrderedDict(sorted(position.items(), key=operator.itemgetter(1)))
+    position = collections.OrderedDict(reversed(position.items()))
+
     return position
 
