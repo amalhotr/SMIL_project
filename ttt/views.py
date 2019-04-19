@@ -10,7 +10,7 @@ import plotly.graph_objs as go
 '''
 
 from django.shortcuts import render
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, HttpResponse
 from django.contrib.auth.decorators import login_required
 
 from .models import League, Asset, TransactionType, TimeInForce, TransactionHistory, PendingTransaction, Portfolio, Holding
@@ -19,6 +19,8 @@ from .forms import QuoteForm, TradeForm, LeagueForm, AdminLeagueForm, CreateLeag
 # Create your views here.
 from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
+
+import csv
 
 def home(request):
 	'''
@@ -156,6 +158,7 @@ def dashboardLeague(request, league):
 		'transactionHistory': transactionHistory,
 		'holding':holding,
 		'pie_chart':pie_chart_div,
+		'portfolio':portfolio,
 	}
 	return render(request, 'dashBoardLeague.html', context)
 
@@ -253,3 +256,15 @@ def joinLeague(request, leagueName):
 	league = League.objects.get(name = leagueName)
 	league.players.add(request.user)
 	return HttpResponseRedirect('/leagues/')
+
+@login_required
+def export_users_csv(request, ):
+	'''
+	'''
+	response = HttpResponse(content_type='text/csv')
+	response['Content-Disposition'] = 'attachment; filename="users.csv"'
+
+	writer = csv.writer(response)
+	writer.writerow(['Ticker', 'Quantity', 'Price'])
+
+	return response
