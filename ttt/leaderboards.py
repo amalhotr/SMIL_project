@@ -18,7 +18,9 @@ def leaderboards(request):
             try:
                 price = int(getQuote(j.ticker)["latestPrice"])
             except Exception:
-                price = j.price
+                app = 'USDT'
+                ticker = j.ticker + app
+                price = int(getQuote(ticker)["latestPrice"])
             total = price * j.quantity
             position[i.player] += total
 
