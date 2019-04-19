@@ -15,7 +15,10 @@ def leaderboards(request):
         position[i.player]= i.cash
         playersHolding = Holding.objects.filter(portfolio=i.id)
         for j in playersHolding:
-            price = int(getQuote(j.ticker)["latestPrice"])
+            try:
+                price = int(getQuote(j.ticker)["latestPrice"])
+            except Exception:
+                price = 1000
             total = price * j.quantity
             position[i.player] += total
 
