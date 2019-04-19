@@ -11,7 +11,7 @@ import plotly.graph_objs as go
 '''
 
 from django.shortcuts import render
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, HttpResponse
 from django.contrib.auth.decorators import login_required
 
 from .models import League, Asset, TransactionType, TimeInForce, TransactionHistory, PendingTransaction, Portfolio, Holding
@@ -20,6 +20,8 @@ from .forms import QuoteForm, TradeForm, LeagueForm, AdminLeagueForm, CreateLeag
 # Create your views here.
 from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
+
+import csv
 
 def home(request):
 	'''
@@ -151,9 +153,11 @@ def dashboardLeague(request, league):
 			quantities.append(hold.quantity)
 
 		pie_chart_div = Plot.getPieChart(tickers, quantities, 'Holdings')
+		portfolio_id = str(portfolio[0].id)
 	else:
 		holding = None
 		pie_chart_div = None
+		portfolio_id = None
 
 
 
@@ -167,6 +171,7 @@ def dashboardLeague(request, league):
         'position':position,
 		'port':port,
 		'pie_chart':pie_chart_div,
+		'portfolio_id':portfolio_id,
 	}
 	return render(request, 'dashBoardLeague.html', context)
 
@@ -264,3 +269,26 @@ def joinLeague(request, leagueName):
 	league = League.objects.get(name = leagueName)
 	league.players.add(request.user)
 	return HttpResponseRedirect('/leagues/')
+
+@login_required
+def exportCSV(request, portfolio_id):
+	'''
+	Adds the user to the requested league's database
+	:param request: 'Join league'
+	:param leagueName: Name of league user wants to join
+	:return: Adds user to the league
+	'''
+	response = HttpResponse(content_type='text/csv')
+	response['Content-Disposition'] = 'attachment; filename = "test.csv"'
+
+	writer = csv.writer(response)
+	writer.writerow(['Ticker', 'Quantity', 'Price'])
+
+	portfolio = Portfolio.objects.filter(id=portfolio_id)
+	if len(portfolio)>0:
+		holding = Holding.objects.filter(portfolio=portfolio[0])
+
+		for hold in holding.iterator():
+			writer.writerow([hold.ticker, hold.quantity, hold.price])
+
+	return response
