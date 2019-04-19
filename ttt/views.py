@@ -11,6 +11,7 @@ import plotly.graph_objs as go
 '''
 
 from django.shortcuts import render
+from django.contrib import messages
 from django.http import HttpResponseRedirect, HttpResponse
 from django.contrib.auth.decorators import login_required
 
@@ -67,7 +68,12 @@ def ticker(request, asset, ticker):
 	else:
 		tickerIEX = ticker
 
-	quote = getQuote(tickerIEX)
+	try:
+		quote = getQuote(tickerIEX)
+	except Exception:
+		messages.info(request, 'You have entered an invalid ticker or selected the wrong type of asset. PLEASE TRY AGAIN!')
+		return HttpResponseRedirect('/trade/')
+
 	keyStats = getKeyStats(tickerIEX)
 	news = getNews(tickerIEX)
 	if request.method == 'POST':
