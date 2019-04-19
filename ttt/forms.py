@@ -1,13 +1,30 @@
 from django import forms
-
+from crispy_forms.layout import Layout, Submit, Row, Column
+from crispy_forms.helper import FormHelper
 from .models import Asset, TransactionType, TimeInForce, League
 
 class QuoteForm(forms.Form):
 	'''
 	Class sets up ticker selection form
 	'''
-	ticker = forms.CharField(max_length=8, help_text='Enter the ticker')
+	ticker = forms.CharField(
+                                widget=forms.TextInput(attrs={'placeholder':'Enter Here'})
+                                 )
 	asset = forms.ModelChoiceField(queryset=Asset.objects)
+	def __init__(self, *args, **kwargs):
+                super().__init__(*args,**kwargs)
+                self.helper = FormHelper()
+                self.helper.layout = Layout(
+                        Row(
+                        Column('ticker' , css_class='form-group col-md-6 mb-0'),
+                        css_class = 'form-row'
+                        ),
+                        Row(
+                        Column('asset' , css_class='form-group col-md-6 mb-0'),
+                        css_class = 'form-row'
+                        ),
+                        Submit('submit','Submit',css_class='btn-secondary')
+                        )
 
 from django.core.validators import MinValueValidator, MaxValueValidator
 

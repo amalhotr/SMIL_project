@@ -6,5 +6,5 @@ class TttConfig(AppConfig):
 
     def ready(self):
     	from . import scheduler
-    	if settings.SCHEDULER_AUTOSTART:
-        	scheduler.start()
+    	#if settings.SCHEDULER_AUTOSTART:
+        #	scheduler.start()

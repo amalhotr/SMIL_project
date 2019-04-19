@@ -112,5 +112,26 @@
 				</div>
 			</div>
 		</div>
+		<h2>Leaderboards</h2>
+	{% if position %}
+	<table class="table table-hover">
+		<thead>
+			<tr>
+				<th scope="col">Position</th>
+				<th scope="col">User</th>
+				<th scope="col">Total Value</th>
+			</tr>
+		</thead>
+		<tbody>
+			{% for key, value in position.items %}
+   			<tr>
+				<th scope="row">Position</th>
+				<td> {{ key }}</td>
+				<td> {{ value }}</td>
+   			</tr>
+			{% endfor %}
+		</tbody>
+	</table>
+	{% endif %}
 	{% endif %}
 {% endblock %}

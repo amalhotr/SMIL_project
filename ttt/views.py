@@ -1,6 +1,7 @@
 from django.shortcuts import render
 from .StockData import *
 from .Plot import *
+from .leaderboards import *
 
 from django.views.generic import TemplateView
 
@@ -131,6 +132,7 @@ def dashboardLeague(request, league):
 	pendingTransactions = PendingTransaction.objects.filter(player=request.user, league=league).order_by('-submittedDateTime')
 	transactionHistory = TransactionHistory.objects.filter(player=request.user, league=league).order_by('-fulfilledDateTime')
 	portfolio = Portfolio.objects.filter(player=request.user, league=league)
+	position = leaderboards(league)
 
 	if len(portfolio)>0:
 		holding = Holding.objects.filter(portfolio=portfolio[0])
@@ -155,6 +157,7 @@ def dashboardLeague(request, league):
 		'pendingTransactions': pendingTransactions,
 		'transactionHistory': transactionHistory,
 		'holding':holding,
+                'position': position,
 		'pie_chart':pie_chart_div,
 	}
 	return render(request, 'dashBoardLeague.html', context)
