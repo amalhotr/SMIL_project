@@ -6,7 +6,7 @@ from django_apscheduler.jobstores import register_events, register_job
 
 from django.conf import settings
 
-from .transaction import cryptoExecute, stockMarketExecute, deleteDayTrans
+from .transaction import cryptoExecute, stockMarketExecute, pendDayDelete
 
 # Create scheduler to run in a thread inside the application process
 scheduler = BackgroundScheduler(settings.SCHEDULER_CONFIG)
@@ -20,10 +20,12 @@ def start():
         logging.basicConfig()
         logging.getLogger('apscheduler').setLevel(logging.DEBUG)
 
+    scheduler.add_job(stockMarketExecute , 'cron' , day_of_week = 'mon-fri' , hour = '9 - 15' , minute = '30 - 59')
+    scheduler.add_job(stockMarketExecute , 'cron' , day_of_week = 'mon-fri' , hour = '10 - 15' , minute = '0-29')
 
     scheduler.add_job(cryptoExecute, 'interval', seconds=60)
-    # scheduler.add_job(stockMarketExecute, 'crons, )
-    scheduler.add_job(deleteDayTrans,'cron', day_of_week='tue-sat', hour='0')
+    scheduler.add_job(pendDayDelete, 'cron' , day_of_week = 'tue-sat' , hour = 20)
+    
 
     # scheduler.add_job(job_function, 'interval', seconds=1) 
 

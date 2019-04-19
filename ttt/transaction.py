@@ -1,9 +1,28 @@
 import uuid 
 
-from datetime import datetime
+from datetime import datetime, date
 from decimal import Decimal
 from .iex import getQuote
 from .models import League, Asset, TransactionType, TimeInForce, TransactionHistory, PendingTransaction, Portfolio, Holding
+
+from pandas.tseries.holiday import AbstractHolidayCalendar, Holiday, nearest_workday, USMartinLutherKingJr, USPresidentsDay, GoodFriday, USMemorialDay, USLaborDay, USThanksgivingDay
+
+class USTradingCalendar(AbstractHolidayCalendar):
+    rules = [
+        Holiday('NewYearsDay', month=1, day=1, observance=nearest_workday),
+        USMartinLutherKingJr,
+        USPresidentsDay,
+        GoodFriday,
+        USMemorialDay,
+        Holiday('USIndependenceDay', month=7, day=4, observance=nearest_workday),
+        USLaborDay,
+        USThanksgivingDay,
+        Holiday('Christmas', month=12, day=25, observance=nearest_workday)
+    ]
+
+def get_trading_close_holidays(year):
+    inst = USTradingCalendar()
+    return inst.holidays(datetime.datetime(year-1, 12, 31), datetime.datetime(year, 12, 31))
 
 
 def buy(price, pendTrans):
@@ -89,13 +108,13 @@ def transaction(pendTrans):
 
 	elif pendTrans.transactionType.name == 'Stop Limit':
 		if price >= pendTrans.price1:
-			instance = PendingTransaction(id=uuid.uuid(4), player=pendTrans.player, league=pendTrans.league, asset=pendTrans.asset, ticker=pendTrans.ticker, transactionType=TransactionType.objects.get(name='Limit Buy'), timeInForce=pendTrans.timeInForce, transactionStatus='q', submittedDateTime=datetime.now(), price1=pendTrans.price2, quantity=pendTrans.quantity)
+			instance = PendingTransaction(id=uuid.uuid4(), player=pendTrans.player, league=pendTrans.league, asset=pendTrans.asset, ticker=pendTrans.ticker, transactionType=TransactionType.objects.get(name='Limit Buy'), timeInForce=pendTrans.timeInForce, transactionStatus='q', submittedDateTime=datetime.now(), price1=pendTrans.price2, quantity=pendTrans.quantity)
 			instance.save()
 			pendTrans.delete()
 
 	elif pendTrans.transactionType.name == 'Stop Loss':
 		if price <= pendTrans.price1:
-			instance = PendingTransaction(id=uuid.uuid(4), player=pendTrans.player, league=pendTrans.league, asset=pendTrans.asset, ticker=pendTrans.ticker, transactionType=TransactionType.objects.get(name='Limit Sell'), timeInForce=pendTrans.timeInForce, transactionStatus='q', submittedDateTime=datetime.now(), price1=pendTrans.price2, quantity=pendTrans.quantity)
+			instance = PendingTransaction(id=uuid.uuid4(), player=pendTrans.player, league=pendTrans.league, asset=pendTrans.asset, ticker=pendTrans.ticker, transactionType=TransactionType.objects.get(name='Limit Sell'), timeInForce=pendTrans.timeInForce, transactionStatus='q', submittedDateTime=datetime.now(), price1=pendTrans.price2, quantity=pendTrans.quantity)
 			instance.save()
 			pendTrans.delete()
 	return
@@ -111,11 +130,27 @@ def cryptoExecute():
 
 
 def stockMarketExecute():
+        now = datetime.date.today()
+        holidays = []
+        for x in get_trading_close_holidays(datetime.date.today().year):
+                holidays.append(x.date())
 
+        if now in holidays:
+                return
+        else:
+                pendingTransactions = PendingTransaction.objects.filter(asset=Asset.objects.get(name='Stock'))
 
-	return
+                
+	
+                for pendTrans in pendingTransactions:
+                        pendTrans.transactionStatus='p'
+                        transaction(pendTrans)
 
-def deleteDayTrans():
+                return
+
+def pendDayDelete():
 	PendingTransaction.objects.filter(timeInForce=TimeInForce.objects.get(name='Good-for-day')).delete()
 
 	return
+
+
