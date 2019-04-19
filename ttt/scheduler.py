@@ -20,19 +20,15 @@ def start():
         logging.basicConfig()
         logging.getLogger('apscheduler').setLevel(logging.DEBUG)
 
-<<<<<<< HEAD
-    scheduler.add_job(stockMarketExecute , 'cron' , day_of_week = 'mon-fri' , hour = "9-15" , minute = "30-59")
-    scheduler.add_job(stockMarketExecute , 'cron' , day_of_week = 'mon-fri' , hour = "10-15" , minute = '0-29')
-=======
+
     # scheduler.add_job(stockMarketExecute , 'cron' , day_of_week = 'mon-fri' , hour = '9 - 15' , minute = '30 - 59')
     # scheduler.add_job(stockMarketExecute , 'cron' , day_of_week = 'mon-fri' , hour = '10 - 15' , minute = '0-29')
->>>>>>> 102115208a192ca614a1eb91030ba8e800b0c5d0
 
     scheduler.add_job(cryptoExecute, 'interval', seconds=60)
     scheduler.add_job(pendDayDelete, 'cron' , day_of_week = 'tue-sat' , hour = 20)
-    
 
-    # scheduler.add_job(job_function, 'interval', seconds=1) 
+
+    # scheduler.add_job(job_function, 'interval', seconds=1)
 
     # Adding this job here instead of to crons.
     # This will do the following:

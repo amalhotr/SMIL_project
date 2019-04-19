@@ -171,11 +171,7 @@ def dashboardLeague(request, league):
         'position':position,
 		'port':port,
 		'pie_chart':pie_chart_div,
-<<<<<<< HEAD
 		'portfolio_id':portfolio_id,
-=======
-		'portfolio':portfolio,
->>>>>>> 102115208a192ca614a1eb91030ba8e800b0c5d0
 	}
 	return render(request, 'dashBoardLeague.html', context)
 
@@ -275,7 +271,6 @@ def joinLeague(request, leagueName):
 	return HttpResponseRedirect('/leagues/')
 
 @login_required
-<<<<<<< HEAD
 def exportCSV(request, portfolio_id):
 	'''
 	Adds the user to the requested league's database
@@ -285,28 +280,15 @@ def exportCSV(request, portfolio_id):
 	'''
 	response = HttpResponse(content_type='text/csv')
 	response['Content-Disposition'] = 'attachment; filename = "test.csv"'
-=======
-def export_users_csv(request, ):
-	'''
-	'''
-	response = HttpResponse(content_type='text/csv')
-	response['Content-Disposition'] = 'attachment; filename="users.csv"'
->>>>>>> 102115208a192ca614a1eb91030ba8e800b0c5d0
 
 	writer = csv.writer(response)
 	writer.writerow(['Ticker', 'Quantity', 'Price'])
 
-<<<<<<< HEAD
 	portfolio = Portfolio.objects.filter(id=portfolio_id)
 	if len(portfolio)>0:
 		holding = Holding.objects.filter(portfolio=portfolio[0])
 
 		for hold in holding.iterator():
 			writer.writerow([hold.ticker, hold.quantity, hold.price])
-			tickers.append(hold.ticker)
-			quantities.append(hold.quantity)
 
-
-=======
->>>>>>> 102115208a192ca614a1eb91030ba8e800b0c5d0
 	return response
