@@ -102,6 +102,9 @@
 							{% endfor %}
 						</tbody>
 					</table>
+					{% if portfolio_id %}
+					<Button><a href="{% url 'exportCSV' portfolio_id=portfolio_id%}">Export</Button>
+					{% endif %}
 				</div>
 				<div class="col">
 					{% if pie_chart %}
