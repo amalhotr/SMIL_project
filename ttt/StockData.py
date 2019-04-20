@@ -44,10 +44,10 @@ class StockData():
     @staticmethod
     def getForecast(dates, values, num_predictions=100, seasonal_period=4):
         '''
-        get the full time series from a given stock or cryptocurrency
-        :param symbol: symbol of desired stock or crypto
-        :param currency: 'stock' or 'crypto'
-        :return: (x,y) x is the dates, and y is the stock value
+        get a time series forecast based on Holt-Winters forecasting model
+        :param dates: dates of the time series
+        :param values: values of the time series
+        :return: (prediction_dates,prediction_values)
         '''
 
         date_format = '%Y-%m-%d'

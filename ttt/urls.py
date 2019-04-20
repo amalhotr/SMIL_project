@@ -17,4 +17,5 @@ urlpatterns = [
     path('leagues/join/<str:leagueName>', views.joinLeague, name='joinLeague'),
     path('forum/', include(machina_urls), name='forum'),
     path('dashboard/export_csv/<str:portfolio_id>', views.exportCSV, name='exportCSV'),
+    path('trade/ticker/<str:asset>/<str:ticker>/<str:accuracy>', views.predictionTab, name='predictionTab'),
 ]

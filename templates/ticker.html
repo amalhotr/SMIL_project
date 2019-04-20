@@ -18,16 +18,14 @@
 		<button type="submit" class="btn btn-primary">Submit</button>
 	</form>
 	<h1>{{ quote.companyName }}</h1>
-	<!-- {% if plot %}
+	{% if plot %}
 	<div style="width:300;height:250">
 		{{ plot|safe }}
 	</div>
-	{% endif %} -->
-	{% if prediction_plot %}
-	<div style="width:300;height:250">
-		{{ prediction_plot|safe }}
-	</div>
 	{% endif %}
+	
+	<a href="{% url 'predictionTab' asset=asset ticker=ticker accuracy=4 %}" target="_blank"<button type="button" class="btn btn-info">BallPark Forecast</button></a>
+	<a href="{% url 'predictionTab' asset=asset ticker=ticker accuracy=100 %}" target="_blank"<button type="button" class="btn btn-info">Accurate Forecast</button></a>
 	<div class="container">
 		{% if 'Cryptocurrency' in asset  %}
 		<div class="row">
@@ -113,7 +111,7 @@
 			<div class="form-group col-md-4">
 				<label for="{{ tradeForm.timeInForce.id_for_label }}"> Time in force: </label>
 				{{ tradeForm.timeInForce }}
-			</div>	
+			</div>
 		</div>
 		<div class="form-row">
 			<div class="form-group col-md-4">
@@ -127,7 +125,7 @@
 			<div class="form-group col-md-4">
 				<label for="{{ tradeForm.quantity.id_for_label }}"> Quantity: </label>
 				{{ tradeForm.quantity }}
-			</div>	
+			</div>
 		</div>
 		<button type="submit" class="btn btn-primary">Submit</button>
 	</form>
@@ -144,5 +142,5 @@
 			{% endfor %}
 		</div>
 	{% endif %}
-	
+
 {% endblock %}

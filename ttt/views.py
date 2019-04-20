@@ -94,8 +94,6 @@ def ticker(request, asset, ticker):
 	dates, values = StockData.getValues(ticker, asset)
 	div = Plot.getLinePlot(dates, values, ticker)
 
-	pred_dates, pred_values = StockData.getForecast(dates, values)
-	prediction_div = Plot.getTwoPlots(dates, values, pred_dates, pred_values, ticker)
 	context = {
 		'ticker': ticker,
 		'asset': asset,
@@ -105,7 +103,6 @@ def ticker(request, asset, ticker):
 		'quoteForm': quoteForm,
 		'tradeForm': tradeForm,
 		'plot': div,
-		'prediction_plot': prediction_div
 	}
 	return render(request, 'ticker.html', context)
 
@@ -308,10 +305,10 @@ def joinLeague(request, leagueName):
 @login_required
 def exportCSV(request, portfolio_id):
 	'''
-	Adds the user to the requested league's database
+	Export users holding data to CSV file
 	:param request: 'Join league'
-	:param leagueName: Name of league user wants to join
-	:return: Adds user to the league
+	:param portfolio_id: id of portfolio
+	:return: Http response with file download
 	'''
 	response = HttpResponse(content_type='text/csv')
 	response['Content-Disposition'] = 'attachment; filename = "test.csv"'
@@ -327,3 +324,26 @@ def exportCSV(request, portfolio_id):
 			writer.writerow([hold.ticker, hold.quantity, hold.price])
 
 	return response
+
+@login_required
+def predictionTab(request, asset, ticker, accuracy):
+	'''
+	Open new tab with prediction for a specific stock
+	:param asset: type of asset (stock or crypto)
+	:param ticker: ticker of given stock or crypto
+	:param accuracy: a level of accuracy for the forecast
+	:return: renders page with plot showing forecast
+	'''
+	dates, values = StockData.getValues(ticker, asset)
+
+	if int(accuracy)>1 and int(accuracy)<200:
+		pred_dates, pred_values = StockData.getForecast(dates, values, seasonal_period=int(accuracy))
+		prediction_div = Plot.getTwoPlots(dates, values, pred_dates, pred_values, ticker)
+	else:
+		pred_dates, pred_values = StockData.getForecast(dates, values)
+		prediction_div = Plot.getTwoPlots(dates, values, pred_dates, pred_values, ticker)
+
+	context = {
+		'prediction_plot':prediction_div,
+	}
+	return render(request, 'prediction.html', context)
