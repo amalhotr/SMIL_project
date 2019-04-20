@@ -6,8 +6,8 @@ class QuoteForm(forms.Form):
 	'''
 	Class sets up ticker selection form
 	'''
-	ticker = forms.CharField(max_length=8, help_text='Enter the ticker')
-	asset = forms.ModelChoiceField(queryset=Asset.objects)
+	ticker = forms.CharField(max_length=8, help_text='Enter the ticker', widget=forms.TextInput(attrs={'class': 'form-control'}))
+	asset = forms.ModelChoiceField(queryset=Asset.objects, widget=forms.Select(attrs={'class': 'form-control'}))
 
 from django.core.validators import MinValueValidator, MaxValueValidator
 
@@ -18,7 +18,7 @@ class TradeForm(forms.Form):
 	Class sets up the form required for buying and selling stocks.
 	'''
 
-	League_name = forms.ModelChoiceField(queryset=League.objects.none())
+	League_name = forms.ModelChoiceField(queryset=League.objects.none(), empty_label=None, widget=forms.Select(attrs={'class': 'form-control'}))
 
 	def __init__(self, *args, **kwargs):
 		'''
@@ -30,12 +30,11 @@ class TradeForm(forms.Form):
 		super(TradeForm, self).__init__(*args, **kwargs)
 		qs = League.objects.filter(players=user)
 		self.fields['League_name'].queryset = qs
-	asset = forms.ModelChoiceField(queryset=Asset.objects)
-	transactionType = forms.ModelChoiceField(queryset=TransactionType.objects)
-	timeInForce = forms.ModelChoiceField(queryset=TimeInForce.objects)
-	price1 = forms.DecimalField(max_digits=11, decimal_places=2, required=False, help_text='Enter the price for this transaction')
-	price2 = forms.DecimalField(max_digits=11, decimal_places=2, required=False, help_text='Enter the price for this transaction')
-	quantity = forms.IntegerField(validators=[MinValueValidator(1)], help_text='Enter the quantity for this transaction')
+	transactionType = forms.ModelChoiceField(queryset=TransactionType.objects, empty_label=None, widget=forms.Select(attrs={'class': 'form-control'}))
+	timeInForce = forms.ModelChoiceField(queryset=TimeInForce.objects, empty_label=None, widget=forms.Select(attrs={'class': 'form-control'}))
+	price1 = forms.DecimalField(max_digits=11, decimal_places=2, required=False, help_text='Enter the price for this transaction', widget=forms.NumberInput(attrs={'class': 'form-control'}))
+	price2 = forms.DecimalField(max_digits=11, decimal_places=2, required=False, help_text='Enter the price for this transaction',  widget=forms.NumberInput(attrs={'class': 'form-control'}))
+	quantity = forms.IntegerField(validators=[MinValueValidator(1)], help_text='Enter the quantity for this transaction',  widget=forms.NumberInput(attrs={'class': 'form-control'}))
 
 class LeagueForm(forms.Form):
 	'''

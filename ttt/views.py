@@ -64,33 +64,54 @@ def ticker(request, asset, ticker):
 	else:
 		tickerIEX = ticker
 
-	quote = getQuote(tickerIEX)
+	try: 
+		quote = getQuote(tickerIEX)
+	except:
+		return HttpResponseRedirect('/trade/')
 	keyStats = getKeyStats(tickerIEX)
 	news = getNews(tickerIEX)
 	if request.method == 'POST':
-		form = TradeForm(request.POST, user=request.user)
-		if form.is_valid():
-			instance = PendingTransaction(id=uuid.uuid4(), player = request.user, league= form.cleaned_data['League_name'], asset = form.cleaned_data['asset'], ticker = ticker, transactionType = form.cleaned_data['transactionType'], timeInForce = form.cleaned_data['timeInForce'], transactionStatus = 'q', submittedDateTime = datetime.now(), price1 = form.cleaned_data['price1'], price2 = form.cleaned_data['price2'], quantity = form.cleaned_data['quantity'])
+		quoteForm = QuoteForm(request.POST)
+		tradeForm = TradeForm(request.POST, user=request.user)
+		if quoteForm.is_valid():
+			ticker = quoteForm.cleaned_data['ticker']
+			asset = quoteForm.cleaned_data['asset']
+			return HttpResponseRedirect('/trade/ticker/' + str(asset) + '/' + ticker)
+		elif tradeForm.is_valid():
+			instance = PendingTransaction(id=uuid.uuid4(), player = request.user, league= tradeForm.cleaned_data['League_name'], asset = Asset.objects.get(name=asset), ticker = ticker, transactionType = tradeForm.cleaned_data['transactionType'], timeInForce = tradeForm.cleaned_data['timeInForce'], transactionStatus = 'q', submittedDateTime = datetime.now(), price1 = tradeForm.cleaned_data['price1'], price2 = tradeForm.cleaned_data['price2'], quantity = tradeForm.cleaned_data['quantity'])
 			instance.save()
 			return HttpResponseRedirect('/dashboard/' + str(instance.league))
 	else:
-		form = TradeForm(user=request.user)
+		quoteForm = QuoteForm()
+		tradeForm = TradeForm(user=request.user)
 
 	dates, values = StockData.getValues(ticker, asset)
 	div = Plot.getLinePlot(dates, values, ticker)
 
-	pred_dates, pred_values = StockData.getForecast(dates, values)
-	prediction_div = Plot.getTwoPlots(dates, values, pred_dates, pred_values, ticker)
+	# pred_dates, pred_values = StockData.getForecast(dates, values)
+	# prediction_div = Plot.getTwoPlots(dates, values, pred_dates, pred_values, ticker)
 	context = {
 		'ticker': ticker,
+		'asset': asset,
 		'quote': quote,
 		'news': news,
 		'keyStats': keyStats,
-		'form': form,
+		'quoteForm': quoteForm,
+		'tradeForm': tradeForm,
 		'plot': div,
-		'prediction_plot': prediction_div
+		# 'prediction_plot': prediction_div
 	}
 	return render(request, 'ticker.html', context)
+
+@login_required
+def deleteTrans(request, transId):
+	try:
+		pendTrans = PendingTransaction.objects.get(id=transId)
+		league = pendTrans.league
+		pendTrans.delete()
+		return HttpResponseRedirect('/dashboard/' + league.name)
+	except:
+		return HttpResponseRedirect('/dashboard/')
 
 @login_required
 def dashboard(request):
@@ -119,7 +140,7 @@ def dashboardLeague(request, league):
 	:return: Renders the league's dashboard
 	'''
 	league = unquote(league)
-
+	leagueObject = League.objects.get(name=league)
 	if request.method == 'POST':
 		form = LeagueForm(request.POST, user=request.user)
 		if form.is_valid():
@@ -130,10 +151,14 @@ def dashboardLeague(request, league):
 
 	pendingTransactions = PendingTransaction.objects.filter(player=request.user, league=league).order_by('-submittedDateTime')
 	transactionHistory = TransactionHistory.objects.filter(player=request.user, league=league).order_by('-fulfilledDateTime')
-	portfolio = Portfolio.objects.filter(player=request.user, league=league)
 
-	if len(portfolio)>0:
-		holding = Holding.objects.filter(portfolio=portfolio[0])
+	try:
+		portfolio = Portfolio.objects.get(player=request.user, league=leagueObject)
+	except:
+		portfolio = Portfolio(id=uuid.uuid4(), player=request.user, league=leagueObject, cash=leagueObject.startingBalance)
+
+	# if portfolio:
+		holding = Holding.objects.filter(portfolio=portfolio)
 		tickers = []
 		quantities = []
 
@@ -142,12 +167,9 @@ def dashboardLeague(request, league):
 			quantities.append(hold.quantity)
 
 		pie_chart_div = Plot.getPieChart(tickers, quantities, 'Holdings')
-	else:
-		holding = None
-		pie_chart_div = None
-
-
-
+	# else:
+	# 	holding = None
+	# 	pie_chart_div = None
 
 	context = {
 		'form': form,
@@ -155,6 +177,7 @@ def dashboardLeague(request, league):
 		'pendingTransactions': pendingTransactions,
 		'transactionHistory': transactionHistory,
 		'holding':holding,
+		'portfolio': portfolio,
 		'pie_chart':pie_chart_div,
 	}
 	return render(request, 'dashBoardLeague.html', context)

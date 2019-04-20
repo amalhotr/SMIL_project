@@ -13,76 +13,31 @@
 		</div>
 		<button type="submit" class="btn btn-primary">Submit</button>
 	</form>
-	<h3>Pending transactions</h3>
-	{% if pendingTransactions %}
-		<table class="table table-hover">
-			<thead>
-				<tr>
-					<th scope="col"> Ticker </th>
-					<th scope="col"> Transaction Type </th>
-					<th scope="col"> Time in Force </th>
-					<th scope="col"> Transaction Status </th>
-					<th scope="col"> Submitted </th>
-					<th scope="col"> Price 1 </th>
-					<th scope="col"> Price 2 </th>
-					<th scope="col"> Quantity </th>
-				</tr>
-			</thead>
-			<tbody>
-				{% for pendTrans in pendingTransactions %}
-					<tr>
-						<th scope="row"> {{ pendTrans.ticker }} </th>
-						<td> {{ pendTrans.transactionType }} </td>
-						<td> {{ pendTrans.timeInForce }} </td>
-						<td> {{ pendTrans.get_transactionStatus_display  }} </td>
-						<td> {{ pendTrans.submittedDateTime }} </td>
-						<td> {{ pendTrans.price1 }} </td>
-						<td> {{ pendTrans.price2 }} </td>
-						<td> {{ pendTrans.quantity }} </td>
-						<td><a href="">Cancel</a></td>
-					</tr>
-				{% endfor %}
-			</tbody>
-		</table>
-	{% endif %}
 
-	<h3>Transaction history</h3>
-	{% if transactionHistory %}
-		<table class="table table-hover">
-			<thead>
-				<tr>
-					<th scope="col">Ticker</th>
-					<th scope="col">Transaction Type</th>
-					<th scope="col">Time in Force</th>
-					<th scope="col">Transaction Status</th>
-					<th scope="col">Submitted</th>
-					<th scope="col">Fulfilled</th>
-					<th scope="col">Price 1</th>
-					<th scope="col">Price 2</th>
-					<th scope="col">Quantity</th>
-					<th scope="col">Total</th>
-				</tr>
-			</thead>
-			{% for transHis in transactionHistory %}
-				<tr>
-					<th scope="row"> {{ transHis.ticker }} </th>
-					<td> {{ transHis.transactionType }} </td>
-					<td> {{ transHis.timeInForce }} </td>
-					<td> {{ transHis.get_transactionStatus_display  }} </td>
-					<td> {{ transHis.submittedDateTime }} </td>
-					<td> {{ transHis.fulfilledDateTime }} </td>
-					<td> {{ transHis.price1 }} </td>
-					<td> {{ transHis.price2 }} </td>
-					<td> {{ transHis.quantity }} </td>
-					<td> {{ transHis.total }} </td>
-				</tr>
-			{% endfor %}
-		</table>
-	{% endif %}
-	<h3>Holdings</h3>
-	{% if holding %}
-		<div class="container">
-			<div class="row">
+	<h3>Portfolio</h3>
+	<div class="container">
+		<div class="row">
+			<div class="col">
+				<table class="table table-hover">
+					<thead>
+						<tr>
+							<th scope="col">Statistics</th>
+							<th scope="col"></th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<th scope="row">Portfolio value: </th>
+							<td> {{ totVal }} </td>
+						</tr>
+						<tr>
+							<th scope="row">Cash: </th>
+							<td> {{ portfolio.cash }} </td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+			{% if holding %}
 				<div class="col">
 					<table class="table table-hover">
 						<thead>
@@ -110,7 +65,75 @@
 						</div>
 					{% endif %}
 				</div>
+			{% endif %}
 			</div>
 		</div>
+
+	<h3>Pending transactions</h3>
+	{% if pendingTransactions %}
+		<table class="table table-hover">
+			<thead>
+				<tr>
+					<th scope="col"> Ticker </th>
+					<th scope="col"> Transaction Type </th>
+					<th scope="col"> Time in Force </th>
+					<th scope="col"> Transaction Status </th>
+					<th scope="col"> Submitted </th>
+					<th scope="col"> Price 1 </th>
+					<th scope="col"> Price 2 </th>
+					<th scope="col"> Quantity </th>
+					<th scope="col"></th>
+				</tr>
+			</thead>
+			<tbody>
+				{% for pendTrans in pendingTransactions %}
+					<tr>
+						<th scope="row"><a href="/trade/ticker/{{ pendTrans.asset.name }}/{{ pendTrans.ticker }}"> {{ pendTrans.ticker }}</a></th>
+						<td> {{ pendTrans.transactionType }} </td>
+						<td> {{ pendTrans.timeInForce }} </td>
+						<td> {{ pendTrans.get_transactionStatus_display  }} </td>
+						<td> {{ pendTrans.submittedDateTime }} </td>
+						<td> {{ pendTrans.price1 }} </td>
+						<td> {{ pendTrans.price2 }} </td>
+						<td> {{ pendTrans.quantity }} </td>
+						<td><button type="button" class="btn btn-link"><a href="/trade/delete/{{ pendTrans.id }}">Delete</a></button></td>
+					</tr>
+				{% endfor %}
+			</tbody>
+		</table>
+	{% endif %}
+
+	<h3>Transaction history</h3>
+	{% if transactionHistory %}
+		<table class="table table-hover">
+			<thead>
+				<tr>
+					<th scope="col">Ticker</th>
+					<th scope="col">Transaction Type</th>
+					<th scope="col">Time in Force</th>
+					<th scope="col">Transaction Status</th>
+					<th scope="col">Submitted</th>
+					<th scope="col">Fulfilled</th>
+					<th scope="col">Price 1</th>
+					<th scope="col">Price 2</th>
+					<th scope="col">Quantity</th>
+					<th scope="col">Total</th>
+				</tr>
+			</thead>
+			{% for transHis in transactionHistory %}
+				<tr>
+					<th scope="row"><a href="/trade/ticker/{{ transHis.asset.name }}/{{ transHis.ticker }}"> {{ transHis.ticker }}</a></th>
+					<td> {{ transHis.transactionType }} </td>
+					<td> {{ transHis.timeInForce }} </td>
+					<td> {{ transHis.get_transactionStatus_display  }} </td>
+					<td> {{ transHis.submittedDateTime }} </td>
+					<td> {{ transHis.fulfilledDateTime }} </td>
+					<td> {{ transHis.price1 }} </td>
+					<td> {{ transHis.price2 }} </td>
+					<td> {{ transHis.quantity }} </td>
+					<td> {{ transHis.total }} </td>
+				</tr>
+			{% endfor %}
+		</table>
 	{% endif %}
 {% endblock %}

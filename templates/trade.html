@@ -1,12 +1,20 @@
 {% extends "base_generic.html" %}
 
 {% block content %}
-<body class = "body" style="background-color: #0070f1">
 	<h1>Trade</h1>
+	{% load crispy_forms_tags %}
 	<form method="post">
 		{% csrf_token %}
-		{{ form }}
-		<input type="submit" value="Submit">
+		<div class="form-row">
+			<div class="form-group col-md-2">
+				<label for="{{ form.ticker.id_for_label }}"> Ticker: </label>
+					{{ form.ticker }}
+			</div>
+			<div class="form-group col-md-2">
+				<label for="{{ form.asset.id_for_label }}">Asset: </label>
+				{{ form.asset }}
+			</div>
+		</div>
+		<button type="submit" class="btn btn-primary">Submit</button>
 	</form>
-	</body>
 {% endblock %}

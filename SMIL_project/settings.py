@@ -183,4 +183,6 @@ SCHEDULER_CONFIG = {
         "type": "threadpool"
     },
 }
+
+# Set to true
 SCHEDULER_AUTOSTART = True
