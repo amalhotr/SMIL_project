@@ -165,12 +165,18 @@ def dashboardLeague(request, league):
 		portfolio = Portfolio(id=uuid.uuid4(), player=request.user, league=leagueObject, cash=leagueObject.startingBalance)
 
 	portfolio_id = portfolio.id
-	portcount = Portfolio.objects.filter(league=league).count()
-	port = []
-	counter = 0
-	while(counter < portcount):
-		port.append(counter+1)
-		counter += 1
+
+	totVal = portfolio.cash
+	playersHolding = Holding.objects.filter(portfolio=portfolio_id)
+	for j in playersHolding:
+		try:
+			price = int(getQuote(j.ticker)["latestPrice"])
+		except Exception:
+			app = 'USDT'
+			ticker = j.ticker + app
+			price = int(getQuote(ticker)["latestPrice"])
+		total = price * j.quantity
+		totVal += total
 
 	if portfolio:
 		holding = Holding.objects.filter(portfolio=portfolio)
@@ -198,9 +204,9 @@ def dashboardLeague(request, league):
 		'holding':holding,
 		'portfolio': portfolio,
         'position':position,
-		'port':port,
 		'pie_chart':pie_chart_div,
 		'portfolio_id':portfolio_id,
+		'totVal':totVal,
 	}
 	return render(request, 'dashBoardLeague.html', context)
 
