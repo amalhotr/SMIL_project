@@ -5,6 +5,9 @@
 	<head>
 		<meta charset="utf-8" />
 		<link href='home.css' rel="stylesheet" type="text/css" media="screen"/>
+		<script src ="js/bootstrap.min.js" crossorigin="anonymous"></script>
+		<script src="https://code.jquery.com/jquery-2.1.3.min.js"></script>
+		<link rel="stylesheet" href="custom.css">
 		<title>Home</title>
 		{% load staticfiles %}
 		<link rel='stylesheet' href="{% static 'css/bootstrap.min.css' %}" type = 'text/css'>
@@ -22,75 +25,30 @@
 		<p style = "color: #ffffff">TTT is the easiest place to buy, sell, and manage your virtual stock and cryptocurrency portfolio.</p>
 		</div>
 		<br>
-		<br>
-
-		<div style ="text-align: center">
-				<h3 style="color: #ffffff">Features</h3>
-				<br>
-				</div>
-				<div class="row" style ="margin: auto; width: 75%; background-color:  #0070f1; padding: 10px;">
-						<div class="col-sm-6">
-						  <div class="card">
-							<div class="card-body">
-							  <h5 class="card-title">Trade Cryptocurrency</h5>
-							  <div style = "margin: auto;
-							  width: 50%;
-							  padding: 10px;">
-							  <img src="https://en.bitcoin.it/w/images/en/2/29/BC_Logo_.png" width="70" height="70" >
-							</div>
-							<p>TTT gives access to hundreds of cryptocurrencies like Bitcoin, XRP, and Ethereum for users to invest in and trade.</p>
-		
-							</div>
-						  </div>
-						</div>
-						<div class="col-sm-6">
-						  <div class="card">
-							<div class="card-body">
-							  <h5 class="card-title">Trade Stocks</h5>
-							  <div style = "margin: auto;
-							  width: 50%;
-							  padding: 10px;">
-							  <img src="https://www.freepngimg.com/thumb/stock_market/26072-3-stock-market-file-thumb.png" width="70" height="70" >
-							</div>
-							<p>TTT gives users the ability to research, trade, and invest in thousands of stocks.</p>
-							<br>
-							</div>
-						  </div>
-						</div>
-					  </div>
-					  <div class="row" style ="margin: auto; width: 75%; background-color:  #0070f1; padding: 10px;">
-							<div class="col-sm-6">
-							  <div class="card">
-								<div class="card-body">
-								  <h5 class="card-title">Compete in Leagues</h5>
-								  <div style = "margin: auto;
-								  width: 50%;
-								  padding: 10px;">
-								  <img src="https://www.shareicon.net/data/512x512/2016/08/03/806224_people_512x512.png" width="70" height="70" >
-								</div>
-								<p>TTT users can challenge themselves in leagues with friends and fellow traders with custom rules to compete and win.</p>
-								<br>
-								<br>
-								
-								</div>
-							  </div>
-							</div>
-							<div class="col-sm-6">
-							  <div class="card">
-								<div class="card-body">
-								  <h5 class="card-title">Leaderboards</h5>
-								  <div style = "margin: auto;
-								  width: 50%;
-								  padding: 10px;">
-								  <img src="https://us.123rf.com/450wm/venimo/venimo1401/venimo140100059/25470461-vector-mobile-game-concept-tablet-pc-with-leaderboard-icons-in-flat-retro-style.jpg?ver=6" width="70" height="70" >
-								</div>
-								<p>TTT Stock Market League constantly updates the leaderboards for custom leagues as well as the global league to show the players with the highest profits..</p>
-								
-								</div>
-							  </div>
-							</div>
-						  </div>
-		<br>
+	<div id ="MagicCarousel" class="carousel slide" data-ride="carousel">
+		<div class="carousel-inner" role="listbox">
+			<div class ="carousel-item active" >
+				<img class="d-block w-100" src="https://i.ibb.co/PMHNfWR/Slide1.png" alt="First Slide">
+			</div>
+			<div class ="carousel-item" >
+				<img class="d-block w-100" src="https://i.ibb.co/ggW19G4/Slide2.png" alt="Second Slide">
+			</div>
+			<div class ="carousel-item" >
+				<img class="d-block w-100" src="https://i.ibb.co/1RPQ39b/Slide3.png" alt="Third Slide">
+			</div>
+			<div class ="carousel-item" >
+				<img class="d-block w-100" src="https://i.ibb.co/7SH5FgX/Slide4.png" alt="Fourth Slide">
+			</div>
+			<a class ="carousel-control-prev" href="#MagicCarousel" role="button" data-slide="prev">
+				<span class="carousel-control-prev-icon"></span>
+				<span class="sr-only">Previous</span>
+			</a>
+			<a class ="carousel-control-next" href="#MagicCarousel" role="button" data-slide="next">
+				<span class="carousel-control-next-icon"></span>
+				<span class="sr-only">Next</span>
+			</a>
+		</div>
+	</div>
 		<br>
 		<br>
 		<div style ="text-align: center">
