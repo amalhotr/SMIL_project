@@ -1,4 +1,5 @@
 from django import forms
+from django.forms.widgets import SelectDateWidget
 from crispy_forms.layout import Layout, Submit, Row, Column
 from crispy_forms.helper import FormHelper
 from .models import Asset, TransactionType, TimeInForce, League
@@ -72,6 +73,14 @@ class AdminLeagueForm(ModelForm):
 		labels = {
 			"players": "Remove player(s)",
 		}
+		widgets = {
+			'players': forms.SelectMultiple(attrs={'class': 'form-control'}),
+			'startingBalance': forms.NumberInput(attrs={'class': 'form-control'}),
+			'startDate': forms.SelectDateWidget(attrs={'class': 'form-control'}),
+			'endDate': forms.SelectDateWidget(attrs={'class': 'form-control'}),
+			'public': forms.CheckboxInput(attrs={'class': 'form-control'}),
+			'description': forms.TextInput(attrs={'class': 'form-control'}),
+		}
 		fields= ['players', 'startingBalance', 'startDate', 'endDate', 'public', 'description']
 
 class CreateLeagueForm(ModelForm):
@@ -85,4 +94,12 @@ class CreateLeagueForm(ModelForm):
 		:param model: Creates the new league model to be added to the database
 		'''
 		model = League
+		widgets = {
+			'name': forms.TextInput(attrs={'class': 'form-control'}),
+			'startingBalance': forms.NumberInput(attrs={'class': 'form-control'}),
+			'startDate': forms.SelectDateWidget(attrs={'class': 'form-control'}),
+			'endDate': forms.SelectDateWidget(attrs={'class': 'form-control'}),
+			'public': forms.CheckboxInput(attrs={'class': 'form-control'}),
+			'description': forms.TextInput(attrs={'class': 'form-control'}),
+		}
 		fields = ['name', 'startingBalance', 'startDate', 'endDate', 'public', 'description']
