@@ -15,7 +15,7 @@
 				{{ form.asset }}
 			</div>
 		</div>
-		<button type="submit" class="btn btn-primary">Submit</button>
+		<button type="submit" class="btn btn-secondary">Submit</button>
 {% if messages %}
 <ul class="messages">
     {% for message in messages %}
@@ -23,4 +23,15 @@
     {% endfor %}
 </ul>
 {% endif %}
+<br>
+<br>
+<br>
+<div class="card" style="width: 18rem;">
+	<img src="https://i.ibb.co/7SH5FgX/Slide4.png" class="card-img-top" alt="Card image">
+	<div class="card-body">
+	  <h5 class="card-title">Stock trading questions?</h5>
+	  <p class="card-text">Check out some frequently asked questions.</p>
+	  <a href="{% url 'FreqAskQ' %}" class="btn btn-primary">FAQs</a>
+	</div>
+  </div>
 {% endblock %}

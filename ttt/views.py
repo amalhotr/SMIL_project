@@ -132,6 +132,15 @@ def dashboard(request):
 		form = LeagueForm(user=request.user)
 	return render(request, 'dashboard.html', {'form': form})
 
+@login_required
+def FAQ(request):
+        '''
+        Sends user to the FAQ page
+        :param request: 'FAQ'
+        :return: Renders the user's page
+        '''
+        return render(request, "FAQ.html")
+
 from urllib.parse import unquote
 
 @login_required
