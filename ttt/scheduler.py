@@ -26,8 +26,7 @@ def start():
     scheduler.add_job(cryptoExecute, 'interval', seconds=60)
     scheduler.add_job(pendDayDelete, 'cron', day_of_week='tue-sat' , hour='0')
     
-
-    # scheduler.add_job(job_function, 'interval', seconds=1) 
+    # scheduler.add_job(job_function, 'interval', seconds=1)
 
     # Adding this job here instead of to crons.
     # This will do the following:

@@ -1,5 +1,5 @@
 {% extends "base_generic.html" %}
-
+{% load crispy_forms_tags %}
 {% block content %}
 	<h1>Trade</h1>
 	{% load crispy_forms_tags %}
@@ -17,4 +17,18 @@
 		</div>
 		<button type="submit" class="btn btn-primary">Submit</button>
 	</form>
+	{%crispy form%}
+	<!-- <form method="post">
+		{% csrf_token %}
+		{{ form }}
+		<input type="submit" value="Submit"> -->
+	</form>
+	</body>
+{% if messages %}
+<ul class="messages">
+    {% for message in messages %}
+    <li>{% if message.tags %}{% endif %}{{ message }}</li>
+    {% endfor %}
+</ul>
+{% endif %}
 {% endblock %}

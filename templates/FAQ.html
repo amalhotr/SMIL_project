@@ -1,0 +1,138 @@
+{% extends "base_generic.html" %}
+
+{% block content %}
+  <h1><strong>FAQ:</strong></h1>
+  <p>Here, we will define specific terms, answer basic questions about the stock market and provide basic tips on how to get started</p>
+  <h2n id="Glossary"><strong>Glossary of terms</strong></h2>
+  <ul>
+    <li><em>Ask: </em> the offered price for each share of a stock.</li>
+    <li><em>Bear Makret:</em> a market condition that means stock prices are expected to fall.</li>
+    <li><em>Bid:</em> an offer made by an investor, trader or dealer, in an effort to buy a security, commodity or currency.</li>
+    <li><em>Bid-Ask Spread:</em> the difference between the ask price and bid price. This must be resolved before a transaction can take place.</li>
+    <li><em>Block Trade:</em> buying or selling a large amount of shares; the minimum is 10,000 shares</li>
+    <li><em>Blue Chip Stocks:</em> large companies that offer consistent dividend payments.</li>
+    <li><em>Bull Market:</em> a market condition that means stock prices are expected to rise.</li>
+    <li><em>Buy:</em> take a position or buy shares in a company</li>
+    <li><em>Capitalization:</em> the market value of a company.</li>
+    <li><em>Closing price:</em> price of the last transaction of a particular stock completed during a day’s trading session on an exchange.</li>
+    <li><em>Cryptocurrency:</em> A form of digital currency which utilizes cryptographic encryption to regulate currency legitimacy and security.</li>
+    <li><em>Day Order:</em> an order to buy or sell a security that automatically expires if not executed on the day the order was placed.</li>
+    <li><em>Dividend:</em> a sum of money that a company pays out to its shareholders for holding stake in the company. Typically paid out quarterly and is dependent on the profits of the company</li>
+    <li><em>Dividend yield:</em> The dividend expressed as a percentage of a stock’s current going market price.</li>
+    <li><em>Dividend reinvestment:</em> a plan which involves taking the dividend profit made and immediately reinvesting it back into the company. Instead of making a sum of money, you will hold more equity every dividend period.</li>
+    <li><em>Dow Jones Industrial Average:</em> the leading stock market index in the U.S.; averages the value of 30 component stocks (blue chip stocks)</li>
+    <li><em>Exchange:</em> a facility where stock brokers and traders can buy and sell securities, such as shares of stock and bonds and other financial instruments.</li>
+    <li><em>Execution:</em> when an order to buy or sell the specified amount of stock has been completed.</li>
+    <li><em>Forex:</em> the act of trading in different currencies.</li>
+    <li><em>Good Till Canceled(GTC):</em> this order stands until canceled by the user to be sold whenever the stock reaches a specified price.</li>
+    <li><em>Leaderboard:</em> An ordered list of a participant’s standing with respect to other participants. It will display a player’s rank and score.</li>
+    <li><em>League:</em> A collection of players playing on the same leaderboard. They are in direct competition with each over the championship of the league.</li>
+    <li><em>Limit Order:</em> a direction given to a broker to buy or sell a security or commodity at a specified price or better.</li>
+    <li><em>Liquidity:</em> describes the degree to which an asset or security can be quickly bought or sold in the market without affecting the asset's price. Market liquidity refers to the extent to which a market, such as a country's stock market or a city's real estate market, allows assets to be bought and sold at stable prices.</li>
+    <li><em>Market Capitalization:</em> the value of a company that is traded on the stock market, calculated by multiplying the total number of shares by the present share price.</li>
+    <li><em>Market Order:</em> a buy or sell order to be executed immediately at the current market prices.</li>
+    <li><em>Moving Average:</em> a stock's price per share over a specified time.</li>
+    <li><em>Order:</em> Instruction to a broker/dealer to buy, sell, deliver, or receive securities or commodities that commits the issuer of the "order" to the terms specified.</li>
+    <li><em>Payment Date:</em>The date on which shareholders of record will be sent a check for the declared dividend.</li>
+    <li><em>P/E Ratio:</em>P/E ratio: Current stock price divided by trailing annual earnings per share.</li>
+    <li><em>Portfolio:</em> The list of investments and holdings owned by a participants. Outlines all the stocks and shares a players owns.</li>
+    <li><em>Quote:</em> the stock's current trading price.</li>
+    <li><em>Return on Investment (ROI):</em> a performance measure used to evaluate the efficiency of an investment or compare the efficiency of a number of different investments.</li>
+    <li><em>Record date:</em> Date by which a shareholder must officially own shares in order to be entitled to a dividend.</li>
+    <li><em>Screen Stocks:</em> A built in application utility that will allow users to see only to stocks that meet their own defined metrics and specifications. It is essentially a filter for stocks.</li>
+    <li><em>Security:</em> a tradable asset of any kind. Can include debts, equities, or derivatives.</li>
+    <li><em>Sector:</em> an area of the economy in which businesses share the same or a related product or service.</li>
+    <li><em>Sector allocation:</em> how much money is allocated into a specific sector of the market.</li>
+    <li><em>Sell: </em> selling off the shares you've purchased into their cash value.</li>
+    <li><em>Share:</em> a small percentage of a given company which can purchased or sold from other traders.</li>
+    <li><em>Short:</em> when a trader borrows shares from a brokerage, sells them, then buys them back when the stock is cheaper, returning them to the broker and pocketing the difference (the profit); used when you think a stock’s price is going to decrease.</li>
+    <li><em>Stop Limit Order:</em> a conditional order based on a price that is not yet available in the market when the order was originally placed. Once the future price is available, a stop order will be triggered.</li>
+    <li><em>Ticker symbol:</em> An abbreviation used to uniquely identify publicly traded shares of a particular stock on a particular stock market.</li>
+    <li><em>Trading session:</em> A period of time that comprises a single day of business in a financial market, from opening bell to its closing bell.</li>
+    <li><em>Volatility:</em> how much a stock price changes over time. If it changes a lot, the stock is very volatile.</li>
+    <li><em>Volume:</em> the number of shares that changed hands during a given day.</li>
+    <li><strong>Copies available:</strong> {{ num_instances_available }}</li>
+    <li><strong>Authors:</strong> {{ num_authors }}</li>
+  </ul>
+  <h4 id="Rules"><strong>Rules of the stock market:</strong></h4>
+  <ul>
+    <li>The stock market is open Monday-Friday. No trades can take place over the weekend.</li>  
+    <li>The stock market hours are from 9:30AM-4:00PM, EST</li>
+    <li>From 4:00PM-8:00PM, post-market trading is available. Pre-market trading hours vary; for the NYSE, these are from 7:00AM-9:00A, and for the NASDAQ, these are from 4:00AM-9:00AM. The following are eight things you should note about this market:<br>
+    1. Inability to see or act upon quotes-some firms only allow investors to view quotes from the one trading system the firm uses for after-hours trading.<br>
+    2. Lack of liquidity-during regular trading hours, buyers and sellers of most stocks can trade readily with one another. During after-hours, there may be less trading volume for some stocks, making it more difficult to execute some of your trades.<br>
+    3. Larger quote spreads-less trading activity could also mean wider spreads between the bid and ask prices. As a result, you may find it more difficult to get your order executed or to get as favorable a price as you could have during regular market hours.<br>
+    4. Price volatility-for stocks with limited trading activity, you may find greater price fluctuations than you would have seen during regular trading hours.<br>
+    5. Uncertain prices-the prices of some stocks traded during the after-hours session may not reflect the prices of those stocks during regular hours, either at the end of the regular trading session or upon the opening of regular trading the next business day. This means that even if a stock price rises in after-hours trading, it may fall right back down when regular trading opens again and the rest of the market gets to cast its vote on the price of the stock.<br>
+    6. Bias toward limit orders-many electronic trading systems currently accept only limit orders in the pre-market and after-hours sessions. Limit orders may cause you to miss out on having a trade filled.<br>
+    7. Competition with professional traders-many of the after-hours traders are professionals with large institutions, such as mutual funds, who may have access to more information than individual investors.<br>
+    8. Computer delays-as with online trading, you may encounter during after-hours delays or failures in getting your order executed, including orders to cancel or change your trades.<br></li>
+    <li>The US stock market is closed on the following holidays:<br>
+        New Year’s Day<br>
+        Martin Luther King Jr. Day<br>
+        President’s Day<br>
+        Good Friday<br>
+        Memorial Day<br>
+        Independence Day<br>
+        Labor Day<br>
+        Thanksgiving Day<br>
+        Christmas Day<br></li>
+    <li>The following days have shortened stock market trading hours:<br>
+        July 3rd: 9:30 a.m. through 1:00 p.m. ET<br>
+        Black Friday (the day after Thanksgiving): 9:30 a.m. through 1:00 p.m. ET<br>
+        Christmas Eve(December 24th): 9:30 a.m. through 1:00 p.m. ET<br></li>
+  </ul>
+  <h5 id="tips"><strong>Tips and tricks on how to get started in trading:</strong></h5>
+  <p>Now that you know the basic terms and rules to trade in the modern stock market, it's time to get started on trading! While this may
+    feel daunting at first, don't worry, it isn't as intimidating as it feels. Here are some quick and easy tips to get started.</p>
+  <ul>
+    <li><strong>Set goals for yourself.</strong><br>
+    Before you begin any kind of investment or trade, you need to have set goals for yourself. How much money do you want to make, and how fast do you want to make it?
+    Be realistic with your starting expectations-any profit is good profit. </li> 
+    <li><strong>Set rules for your trades.</strong><br>
+    As is a problem with gambling, once you get on a hot streak of winning, it is very tempting to just keep going. <em>However, the stock market is volatile and prices change all the time.</em>
+    As such, once you've reached your profit goal, sell your stock right then and there. Conversely, if you have a lower limit of how much you'll lose before selling, stick to that as well.</li>
+    <li><strong>Start with safe stocks.</strong><br>
+    Try to start with stocks that tend to have very low volatility in their prices. It's an easy way to learn the ropes of the market without having to risk much of your own capital.</li>
+    <li><strong>Don't mindlessly invest in hot stocks, or sell cold ones.</strong><br>
+    Don't make rash decisions! Just because a stock's price is rapidly rising, don't rush to buy; and conversely, if it's rapidly falling, don't rush to sell.
+    Try to be patient in your decision making and avoid following the lead of everyone else.</li>
+    <li><strong>Research before investing.</strong><br>
+    Always do research on a company before buying any of thier stocks. Check their revenue and quarterly earings; were they below or above expectations?
+    Check the news for any recent updates on their business future-perhaps they just landed a big contract, partnership or deal.</li>
+    <li><strong>Keep your emotions in check.</strong><br>
+    Try to always be as rational in your decision making as possible, and avoid making any rash and emotional decisions.
+    Treat this as if it's your real money on the line, and act accordingly.</li>
+    <li><strong>Diversify!</strong><br>
+    Don't put all your eggs in one basket! Instead, diversify your investments across multiple stocks to protect yourself. 
+    You don't want your entire profit riding on one stock.</li>    
+    <li><strong><em>Have fun!</em></strong>
+    At the end of the day, this is a learning and experimentation tool. So once you feel comfortable with the basics, go crazy! Just make sure you beat your friends while doing so.</li>
+  </ul>
+  <h3 id="common"><strong>Common questions about the market:</strong></h3>
+  <ul>
+    <li><strong>How can I gauge the health of a stock?</strong>
+    <br>Check the quarterly earnings reports released by the company you're interested in. Critically, check the following items:<br>
+    Compare the ratio of total earnings divided by the number of investor shares to get the earnings per share.<br>
+    The price of a stock per dollar of a company’s earnings will indicate future movements on the market. For instance, a stock with a low price-earnings ratio could either indicate hard times or a price increase ahead, while one with a higher ration could indicate a good year to come even though they will have to maintain those performance statistics.<br>
+    The price-book ratio will tell you what stocks are valued at in comparison to what shareholders are willing to pay for them. A value of less than one indicates that the stock is trading for less than its value, which means it could be a good time to buy; though this should only be used when comparing stocks of the same type.<br></li>
+    <li><strong>I bought a stock at $100 and now it's hovering around $80. What should I do?</strong><br>
+    Don't panic! Price fluctuations in stocks are very common-if you're focused on long term investment, a price deprecation of 20% is a non issue.
+    If this is a company that continues to pay a consistent dividend, don't sell just yet. Do research on what might have caused the price to drop; check for any recent news on the company that might have caused the stock to drop.
+    If the drop seems like it is due to public panic, then hold on to your stock; the price will probably recover soon. If anything, consider buying more stock, if the price drop truly seems to be from panic-you'll make more money that way!
+    However, if the price drop is from a fundamental issue with the company(for example, it had a low quarterly earnings report), consider selling before the price drops any further.<br></li>
+    <li><strong>What stocks should I avoid?</strong><br>
+    Low liquidity stocks, which are very often over-the-counter (OTC) stocks. OTC stocks are also known as pink sheets or unlisted stocks. The most famous kind of OTC stock is a penny stock.
+    The low liquidity makes it very difficult to exit a trade, and you may not even be able to buy a decent number of shares without moving the market yourself. The information and analysis on these companies may be difficult to find except for information published by the company itself, which raises conflict of interest concerns.   
+    Furthermore, penny stocks are highly susceptible to pump-and-dump schemes. The low price and liquidity allow fraudsters to buy low, and their trades may be the only recent buys. 
+    They then engage in a misinformation campaign, largely on forums and websites that cover penny stocks, which entices people to buy the stock, increasing liquidity and the price. 
+    The fraudsters exit when they sense a lull in interest and the price collapses with no fundamentals to prop it up. 
+    Due to the limited information available, many people experience FOMO, buying at the peak then losing during the crash. Unfortunately for penny stocks, the crash is rarely a correction. 
+    It's a return to rational price levels, which are low for a reason, and they never return to the peaks.<br></li>
+    <li><strong>How much of a stock should I buy?</strong><br>
+    Do not overextend yourself when investing in stocks and shares, especially if you're a beginner. Since you need to periodically monitor your investments, and in times of turmoil you may want to keep closer track of all of them, investing in too many stocks will result in confusion. 
+    While diversification is important, it is difficult to obtain on your own. Simply due to transactional costs, it is better to use ETFs and mutual funds to obtain diversification.
+    The investment thesis requires periodic validation, and you know it may take significant time to update yourself on the status of the stock. 
+    If you find follow-up research requires two hours a week, do not buy twenty different stocks. That's a full-time job just reading and processing new information, not looking for other investments or enjoying life.<br></li>
+  </ul>
+{% endblock %}

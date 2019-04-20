@@ -1,6 +1,7 @@
 from django.shortcuts import render
 from .StockData import *
 from .Plot import *
+from .leaderboards import *
 
 from django.views.generic import TemplateView
 
@@ -10,7 +11,8 @@ import plotly.graph_objs as go
 '''
 
 from django.shortcuts import render
-from django.http import HttpResponseRedirect
+from django.contrib import messages
+from django.http import HttpResponseRedirect, HttpResponse
 from django.contrib.auth.decorators import login_required
 
 from .models import League, Asset, TransactionType, TimeInForce, TransactionHistory, PendingTransaction, Portfolio, Holding
@@ -19,6 +21,8 @@ from .forms import QuoteForm, TradeForm, LeagueForm, AdminLeagueForm, CreateLeag
 # Create your views here.
 from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
+
+import csv
 
 def home(request):
 	'''
@@ -64,10 +68,12 @@ def ticker(request, asset, ticker):
 	else:
 		tickerIEX = ticker
 
-	try: 
+	try:
 		quote = getQuote(tickerIEX)
-	except:
+	except Exception:
+		messages.info(request, 'You have entered an invalid ticker or selected the wrong type of asset. PLEASE TRY AGAIN!')
 		return HttpResponseRedirect('/trade/')
+
 	keyStats = getKeyStats(tickerIEX)
 	news = getNews(tickerIEX)
 	if request.method == 'POST':
@@ -151,6 +157,14 @@ def dashboardLeague(request, league):
 
 	pendingTransactions = PendingTransaction.objects.filter(player=request.user, league=league).order_by('-submittedDateTime')
 	transactionHistory = TransactionHistory.objects.filter(player=request.user, league=league).order_by('-fulfilledDateTime')
+	position = leaderboards(league)
+
+	portcount = Portfolio.objects.filter(league=league).count()
+	port = []
+	counter = 0
+	while(counter < portcount):
+		port.append(counter+1)
+		counter += 1
 
 	try:
 		portfolio = Portfolio.objects.get(player=request.user, league=leagueObject)
@@ -167,9 +181,13 @@ def dashboardLeague(request, league):
 			quantities.append(hold.quantity)
 
 		pie_chart_div = Plot.getPieChart(tickers, quantities, 'Holdings')
-	# else:
-	# 	holding = None
-	# 	pie_chart_div = None
+	else:
+		holding = None
+		pie_chart_div = None
+		portfolio_id = None
+
+
+
 
 	context = {
 		'form': form,
@@ -178,7 +196,10 @@ def dashboardLeague(request, league):
 		'transactionHistory': transactionHistory,
 		'holding':holding,
 		'portfolio': portfolio,
+        'position':position,
+		'port':port,
 		'pie_chart':pie_chart_div,
+		'portfolio_id':portfolio_id,
 	}
 	return render(request, 'dashBoardLeague.html', context)
 
@@ -276,3 +297,26 @@ def joinLeague(request, leagueName):
 	league = League.objects.get(name = leagueName)
 	league.players.add(request.user)
 	return HttpResponseRedirect('/leagues/')
+
+@login_required
+def exportCSV(request, portfolio_id):
+	'''
+	Adds the user to the requested league's database
+	:param request: 'Join league'
+	:param leagueName: Name of league user wants to join
+	:return: Adds user to the league
+	'''
+	response = HttpResponse(content_type='text/csv')
+	response['Content-Disposition'] = 'attachment; filename = "test.csv"'
+
+	writer = csv.writer(response)
+	writer.writerow(['Ticker', 'Quantity', 'Price'])
+
+	portfolio = Portfolio.objects.filter(id=portfolio_id)
+	if len(portfolio)>0:
+		holding = Holding.objects.filter(portfolio=portfolio[0])
+
+		for hold in holding.iterator():
+			writer.writerow([hold.ticker, hold.quantity, hold.price])
+
+	return response
