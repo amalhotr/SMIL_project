@@ -35,13 +35,13 @@
 		                </li>
 		                {% if user.is_authenticated %}
 		                	<li class="nav-item">
-		                		<a class="nav-link {% if request.resolver_match.url_name == 'trade' %}active{% endif %}" href="{% url 'trade'%}">Trade</a>
+		                		<a class="nav-link {% if request.resolver_match.url_name == 'trade' or request.resolver_match.url_name == 'ticker' %}active{% endif %}" href="{% url 'trade'%}">Trade</a>
 		                	</li>
 		                	<li class="nav-item">
-		                		<a class="nav-link {% if request.resolver_match.url_name == 'dashboard' %}active{% endif %}" href="{% url 'dashboard'%}">Dashboard</a>
+		                		<a class="nav-link {% if request.resolver_match.url_name == 'dashboard' or request.resolver_match.url_name == 'dashboardLeague' %}active{% endif %}" href="{% url 'dashboard'%}">Dashboard</a>
 		                	</li>
 		                	<li class="nav-item">
-		                		<a class="nav-link {% if request.resolver_match.url_name == 'leagues' %}active{% endif %}" href="{% url 'leagues'%}">Leagues</a>
+		                		<a class="nav-link {% if request.resolver_match.url_name == 'leagues' or request.resolver_match.url_name == 'createLeague' or request.resolver_match.url_name == 'adminLeague' or request.resolver_match.url_name == 'leaveLeague' or request.resolver_match.url_name == 'joinLeague' %}active{% endif %}" href="{% url 'leagues'%}">Leagues</a>
 							</li>
 							<li class="nav-item">
 		                		<a class="nav-link {% if request.resolver_match.url_name == 'forum' %}active{% endif %}" href="/forum">Forum</a>

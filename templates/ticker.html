@@ -17,12 +17,12 @@
 		</div>
 		<button type="submit" class="btn btn-primary">Submit</button>
 	</form>
-	<h1>{{ ticker }}</h1>
-	{% if plot %}
+	<h1>{{ quote.companyName }}</h1>
+	<!-- {% if plot %}
 	<div style="width:300;height:250">
 		{{ plot|safe }}
 	</div>
-	{% endif %}
+	{% endif %} -->
 	{% if prediction_plot %}
 	<div style="width:300;height:250">
 		{{ prediction_plot|safe }}
