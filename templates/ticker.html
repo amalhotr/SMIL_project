@@ -99,7 +99,6 @@
 		{% endif %}
 	</div>
 	<h3>Order</h3>
-	<div align = "center">
 	<form method="post">
 		{% csrf_token %}
 		<div class="form-row">
@@ -132,8 +131,7 @@
 		</div>
 		<button type="submit" class="btn btn-primary">Submit</button>
 	</form>
-	</div>
-	<h3> {{ticker}} News</h3>
+	<h3>News</h3>
 	{% if news %}
 		<div class="card">
 			{% for new in news %}

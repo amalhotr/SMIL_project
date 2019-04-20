@@ -67,6 +67,9 @@
 				</div>
 			{% endif %}
 			</div>
+			{% if portfolio_id %}
+					<a href="{% url 'exportCSV' portfolio_id=portfolio_id%}"<button type="button" class="btn btn-info">Export</button></a>
+				{% endif %}
 		</div>
 
 	<h3>Pending transactions</h3>
@@ -136,44 +139,7 @@
 			{% endfor %}
 		</table>
 	{% endif %}
-{% endblock %}
-	<h3>Holdings</h3>
-	{% if holding %}
-		<div class="container">
-			<div class="row">
-				<div class="col">
-					<table class="table table-hover">
-						<thead>
-							<tr>
-								<th scope="col">Ticker</th>
-								<th scope="col">Quantity</th>
-								<th scope="col">Price</th>
-							</tr>
-						</thead>
-						<tbody>
-						{% for hold in holding %}
-								<tr>
-									<th scope="row"> {{ hold.ticker }} </th>
-									<td> {{ hold.quantity }} </td>
-									<td> {{ hold.price }} </td>
-								</tr>
-							{% endfor %}
-						</tbody>
-					</table>
-					{% if portfolio_id %}
-					<Button><a href="{% url 'exportCSV' portfolio_id=portfolio_id%}">Export</a></Button>
-					{% endif %}
-				</div>
-				<div class="col">
-					{% if pie_chart %}
-						<div style="width:300;height:250">
-						{{ pie_chart|safe }}
-						</div>
-					{% endif %}
-				</div>
-			</div>
-		</div>
-		<h2><abbr title="Use these standings to determine strategy">Leaderboards</abbr></h2>
+	<h3><abbr title="Use these standings to determine strategy">Leaderboards</abbr></h3>
 	{% if position %}
 	<table class="table table-hover">
 		<thead>
@@ -193,6 +159,5 @@
 			{% endfor %}
 		</tbody>
 	</table>
-	{% endif %}
 	{% endif %}
 {% endblock %}

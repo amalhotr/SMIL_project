@@ -94,8 +94,8 @@ def ticker(request, asset, ticker):
 	dates, values = StockData.getValues(ticker, asset)
 	div = Plot.getLinePlot(dates, values, ticker)
 
-	# pred_dates, pred_values = StockData.getForecast(dates, values)
-	# prediction_div = Plot.getTwoPlots(dates, values, pred_dates, pred_values, ticker)
+	pred_dates, pred_values = StockData.getForecast(dates, values)
+	prediction_div = Plot.getTwoPlots(dates, values, pred_dates, pred_values, ticker)
 	context = {
 		'ticker': ticker,
 		'asset': asset,
@@ -105,7 +105,7 @@ def ticker(request, asset, ticker):
 		'quoteForm': quoteForm,
 		'tradeForm': tradeForm,
 		'plot': div,
-		# 'prediction_plot': prediction_div
+		'prediction_plot': prediction_div
 	}
 	return render(request, 'ticker.html', context)
 
@@ -159,6 +159,12 @@ def dashboardLeague(request, league):
 	transactionHistory = TransactionHistory.objects.filter(player=request.user, league=league).order_by('-fulfilledDateTime')
 	position = leaderboards(league)
 
+	try:
+		portfolio = Portfolio.objects.get(player=request.user, league=leagueObject)
+	except:
+		portfolio = Portfolio(id=uuid.uuid4(), player=request.user, league=leagueObject, cash=leagueObject.startingBalance)
+
+	portfolio_id = portfolio.id
 	portcount = Portfolio.objects.filter(league=league).count()
 	port = []
 	counter = 0
@@ -166,12 +172,7 @@ def dashboardLeague(request, league):
 		port.append(counter+1)
 		counter += 1
 
-	try:
-		portfolio = Portfolio.objects.get(player=request.user, league=leagueObject)
-	except:
-		portfolio = Portfolio(id=uuid.uuid4(), player=request.user, league=leagueObject, cash=leagueObject.startingBalance)
-
-	# if portfolio:
+	if portfolio:
 		holding = Holding.objects.filter(portfolio=portfolio)
 		tickers = []
 		quantities = []
