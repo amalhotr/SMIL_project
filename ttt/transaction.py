@@ -22,7 +22,7 @@ class USTradingCalendar(AbstractHolidayCalendar):
 
 def get_trading_close_holidays(year):
     inst = USTradingCalendar()
-    return inst.holidays(datetime.datetime(year-1, 12, 31), datetime.datetime(year, 12, 31))
+    return inst.holidays(datetime(year-1, 12, 31), datetime(year, 12, 31))
 
 
 def buy(price, pendTrans):
@@ -57,7 +57,7 @@ def sell(price, pendTrans):
 	for holding in holdings:
 		holdingQuantity = holdingQuantity + holding.quantity
 
-	if holdingQuantity > pendTrans.quantity:
+	if holdingQuantity >= pendTrans.quantity:
 		
 		tradeQuantity = pendTrans.quantity
 		for holding in holdings:
@@ -130,27 +130,22 @@ def cryptoExecute():
 
 
 def stockMarketExecute():
-        now = datetime.date.today()
-        holidays = []
-        for x in get_trading_close_holidays(datetime.date.today().year):
-                holidays.append(x.date())
+	now = datetime.today().date()
+	holidays = []
+	for x in get_trading_close_holidays(datetime.today().year):
+		holidays.append(x.date())
 
-        if now in holidays:
-                return
-        else:
-                pendingTransactions = PendingTransaction.objects.filter(asset=Asset.objects.get(name='Stock'))
+	if now in holidays:
+		return
+	else:
+		pendingTransactions = PendingTransaction.objects.filter(asset=Asset.objects.get(name='Stock'))
 
-                
-	
-                for pendTrans in pendingTransactions:
-                        pendTrans.transactionStatus='p'
-                        transaction(pendTrans)
-
-                return
+		for pendTrans in pendingTransactions:
+			pendTrans.transactionStatus='p'
+			transaction(pendTrans)
+		return
 
 def pendDayDelete():
 	PendingTransaction.objects.filter(timeInForce=TimeInForce.objects.get(name='Good-for-day')).delete()
 
 	return
-
-

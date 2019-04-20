@@ -182,6 +182,7 @@ SCHEDULER_CONFIG = {
     'apscheduler.executors.processpool': {
         "type": "threadpool"
     },
+    # 'apscheduler.timezone': 
 }
 
 # Set to true

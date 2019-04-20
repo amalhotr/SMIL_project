@@ -176,7 +176,7 @@ def dashboardLeague(request, league):
 		totVal += total
 
 	if portfolio:
-		holding = Holding.objects.filter(portfolio=portfolio)
+		holding = Holding.objects.filter(portfolio=portfolio).order_by('ticker', '-quantity')
 		tickers = []
 		quantities = []
 
