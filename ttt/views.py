@@ -178,20 +178,17 @@ def dashboardLeague(request, league):
 	if portfolio:
 		holding = Holding.objects.filter(portfolio=portfolio).order_by('ticker', '-quantity')
 		tickers = []
-		quantities = []
+		prices = []
 
 		for hold in holding.iterator():
 			tickers.append(hold.ticker)
-			quantities.append(hold.quantity)
+			prices.append(hold.price)
 
-		pie_chart_div = Plot.getPieChart(tickers, quantities, 'Holdings')
+		pie_chart_div = Plot.getPieChart(tickers, prices, 'Holdings')
 	else:
 		holding = None
 		pie_chart_div = None
 		portfolio_id = None
-
-
-
 
 	context = {
 		'form': form,
