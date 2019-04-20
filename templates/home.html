@@ -1,23 +1,20 @@
-<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 {% extends 'base_generic.html' %}
-<!DOCTYPE html>
-<html>
-	<head>
-		<meta charset="utf-8" />
-		<link href='home.css' rel="stylesheet" type="text/css" media="screen"/>
-		<script src ="js/bootstrap.min.js" crossorigin="anonymous"></script>
-		<script src="https://code.jquery.com/jquery-2.1.3.min.js"></script>
-		<link rel="stylesheet" href="custom.css">
-		<title>Home</title>
-		{% load staticfiles %}
-		<link rel='stylesheet' href="{% static 'css/bootstrap.min.css' %}" type = 'text/css'>
-		<style>
-		
-		
-		</style>
-	</head>
-	{% block content %}
-	<body class="body" style="background-color: #000000">
+
+{% block content %}
+<style>
+	body {
+		background-color: #000000;
+	}
+
+	.carousel-indicators li {
+  background-color: #999;
+  background-color: rgba(70,70,70,.25);
+}
+
+.carousel-indicators .active {
+  background-color: #444;
+}
+</style>
 		<br>
 		<div name = div.a style ="text-align: center">
 		<h2 style="color: #ffffff">Welcome to TTT Stock Market League</h2>
@@ -58,15 +55,15 @@
 		<br>
 		<br>
 		<div style ="text-align: center">
-				<h3 style="color: #ffffff">Get Started</h3>
-				<br>
-				</div>
-				<div class="row" style ="margin: auto; width: 75%; background-color:  #000000; padding: 10px;">
-						<div class="col-sm-6">
+			<h3 style="color: #ffffff">Get Started</h3>
+			<br>
+		</div>
+			<div class="row" style ="margin: auto; width: 75%; background-color:  #000000; padding: 10px;">
+				<div class="col-sm-6">
 						  <div class="card">
 							<div class="card-body">
 							  <h5 class="card-title">Registration</h5>
-							  <p class="card-text">Create an account to start buying and selling stocks and cryptocurrency with a virtual balance of $100,000.</p>
+							  <p class="card-text">Create an account to start buying and selling stocks and cryptocurrency.</p>
 							  <a href="{% url 'register'%}" class="btn btn-primary">Create Account!</a>
 							</div>
 						  </div>
@@ -85,20 +82,7 @@
 						<br>
 					  <br>
 					  <br>
-		
-		
-		
-	</body>
 	<!-- Footer -->
-<footer class="page-footer font-small black">
-
-  <!-- Copyright -->
-  <div class="footer-copyright text-center py-3">Developed by: Albert Joshua Capistrano, Ajeet Malhotra,
-		Antoni Chrobot, Ping Lin, Danny Yong Ho Lee, Raffay Khan, Christopher Young, & Aryeh Ness
-  </div>
-  <!-- Copyright -->
-
-</footer>
+	
 <!-- Footer -->
 	{% endblock %}
-</html>
