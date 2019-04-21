@@ -1,6 +1,8 @@
 {% extends "base_generic.html" %}
 
 {% block content %}
+<div class = "card">
+<div class = "card-body">
 	<h1>Dashboard</h1>
 	{% load crispy_forms_tags %}
 	<form method="post">
@@ -13,4 +15,18 @@
 		</div>
 		<button type="submit" class="btn btn-primary">Submit</button>
 	</form>
+</div>
+</div>
+<br>
+<div class = "card">
+	<div class = "card-body">
+			<div class="media">
+					<img src="https://miro.medium.com/max/772/0*g40-FwDDC93Qta3a.jpg" style="width: 18rem;" class="mr-3" alt="StockImage">
+					<div class="media-body">
+					  <h5 class="mt-0">Welcome!</h5>
+					  Select above the league you would like to view.
+					</div>
+				  </div>
+	</div>
+</div>
 {% endblock %}

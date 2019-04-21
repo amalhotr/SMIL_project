@@ -10,6 +10,8 @@
 	</p>
 
 	<div class="collapse multi-collapse show" id="multiCollapseExample1">
+		<div class = "card">
+			<div class = "card-body">
 	<h3>Admin Leagues</h3>
 	<a href="{% url 'createLeague' %}"><button type="button" class="btn btn-link">Create league</button></a>
 	{% if adminLeagues %}
@@ -41,11 +43,15 @@
 		</table>
 	{% endif %}
 	</div>
+	</div>
+	</div>
 	<br>
 	<br>
 	<br>
 	<br>
 	<div class="collapse multi-collapse show" id="multiCollapseExample2">
+		<div class = "card">
+			<div class = "card-body">
 	<h3>Player Leagues</h3>
 	{% if playerLeagues %}
 		<table class="table table-hover">
@@ -76,11 +82,15 @@
 		</table>
 	{% endif %}
 	</div>
+	</div>
+	</div>
 	<br>
 	<br>
 	<br>
 	<br>
 	<div class="collapse multi-collapse show" id="multiCollapseExample3">
+		<div class = "card">
+			<div class = "card-body">
 	<h3>Public Leagues</h3>
 	{% if publicLeagues %}
 		<table class="table table-hover">
@@ -109,5 +119,7 @@
 				{% endfor %}
 			</tbody>
 	{% endif %}
+		</div>
+		</div>
 		</div>
 {% endblock %}
