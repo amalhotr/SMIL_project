@@ -1,31 +1,53 @@
 {% extends "base_generic.html" %}
-
 {% block content %}
 	{% load humanize %}
-	{% load crispy_forms_tags %}
-	<form method="post">
-		{% csrf_token %}
-		<div class="form-row">
-			<div class="form-group col-md-2">
-				<label for="{{ quoteForm.ticker.id_for_label }}"> Ticker: </label>
-					{{ quoteForm.ticker }}
-			</div>
-			<div class="form-group col-md-2">
-				<label for="{{ quoteForm.asset.id_for_label }}">Asset: </label>
-				{{ quoteForm.asset }}
-			</div>
+	{% load crispy_forms_tags %} 
+<ul class="nav nav-pills">
+	  <li class="nav-item">
+	    <a class="nav-link" href="#">Ticker</a>
+	  </li>
+	  <li class="nav-item">
+	    <a class="nav-link" href="#Quote">{{ quote.symbol }} </a>
+	  </li>
+	  <li class="nav-item">
+	    <a class="nav-link" href="#Order">Order</a>
+	  </li>
+	  <li class="nav-item">
+	    <a class="nav-link" href="#News">News</a>
+	  </li>
+	</ul>
+	<br>
+	<div class="card">
+		<div class="card-body">
+			<form method="post">
+				{% csrf_token %}
+				<div class="form-row">
+					<div class="form-group col-md-2">
+						<label for="{{ quoteForm.ticker.id_for_label }}"> Ticker: </label>
+							{{ quoteForm.ticker }}
+					</div>
+					<div class="form-group col-md-2">
+						<label for="{{ quoteForm.asset.id_for_label }}">Asset: </label>
+						{{ quoteForm.asset }}
+					</div>
+				</div>
+				<button type="submit" class="btn btn-primary">Submit</button>
+			</form>
 		</div>
-		<button type="submit" class="btn btn-primary">Submit</button>
-	</form>
-	<h1>{{ quote.companyName }}</h1>
-	{% if plot %}
-	<div style="width:300;height:250">
-		{{ plot|safe }}
 	</div>
-	{% endif %}
+	<br>
+	<div class="card" id="Quote">
+		<div class="card-body">
+			<h1>{{ quote.companyName }}</h1>
+			{% if plot %}
+				<div style="width:300;height:250">
+					{{ plot|safe }}
+				</div>
+			{% endif %}
 	
-	<a href="{% url 'predictionTab' asset=asset ticker=ticker accuracy=4 %}" target="_blank"<button type="button" class="btn btn-info">BallPark Forecast</button></a>
-	<a href="{% url 'predictionTab' asset=asset ticker=ticker accuracy=100 %}" target="_blank"<button type="button" class="btn btn-info">Accurate Forecast</button></a>
+	<a href="{% url 'predictionTab' asset=asset ticker=ticker accuracy=4 %}" target="_blank"><button type="button" class="btn btn-info">BallPark Forecast</button></a>
+	<a href="{% url 'predictionTab' asset=asset ticker=ticker accuracy=100 %}" target="_blank"><button type="button" class="btn btn-info">Accurate Forecast</button></a>
+
 	<div class="container">
 		{% if 'Cryptocurrency' in asset  %}
 		<div class="row">
@@ -34,11 +56,11 @@
 						<dt class="col-6">Price</dt>
 						<dd class="col-6">{{ quote.latestPrice|floatformat:2|intcomma }}</dd>
 						<dt class="col-6">Change</dt>
-						<dd class="col-6">{{ quote.change|floatformat:4 }}</dd>
+						<dd class="col-6">{{ quote.change|floatformat:2 }}</dd>
 						<dt class="col-6">Percent Change</dt>
-						<dd class="col-6">{{ quote.changePercent }}</dd>
+						<dd class="col-6">{{ quote.changePercent|floatformat:4 }}</dd>
 						<dt class="col-6">Volume</dt>
-						<dd class="col-6">{{ quote.latestVolume|floatformat:2|intcomma }}</dd>
+						<dd class="col-6">{{ quote.latestVolume|intcomma }}</dd>
 				</dl>
 			</div>
 			<div class="col">
@@ -62,7 +84,7 @@
 						<dt class="col-6">Price</dt>
 						<dd class="col-6">{{ quote.latestPrice|floatformat:2|intcomma }}</dd>
 						<dt class="col-6">Change</dt>
-						<dd class="col-6">{{ quote.change }}</dd>
+						<dd class="col-6">{{ quote.change|floatformat:2|intcomma }}</dd>
 						<dt class="col-6">Percent Change</dt>
 						<dd class="col-6">{{ quote.changePercent|floatformat:4 }}</dd>
 						<dt class="col-6">Market Cap</dt>
@@ -79,8 +101,6 @@
 			</div>
 			<div class="col">
 				<dl class="row">
-						<dt class="col-6">Average Volume</dt>
-						<dd class="col-6">{{ quote.avgTotalVolume }}</dd>
 						<dt class="col-6">High Today</dt>
 						<dd class="col-6">{{ quote.high|floatformat:2|intcomma }}</dd>
 						<dt class="col-6">Low Today</dt>
@@ -89,58 +109,69 @@
 						<dd class="col-6">{{ quote.open|floatformat:2|intcomma }}</dd>
 						<dt class="col-6">Close Price</dt>
 						<dd class="col-6">{{ quote.close|floatformat:2|intcomma }}</dd>
+						<dt class="col-6">Average Volume</dt>
+						<dd class="col-6">{{ quote.avgTotalVolume|intcomma }}</dd>
 						<dt class="col-6">Volume</dt>
-						<dd class="col-6">{{ quote.latestVolume|floatformat:2|intcomma }}</dd>
+						<dd class="col-6">{{ quote.latestVolume|intcomma }}</dd>
 				</dl>
 			</div>
 		</div>
 		{% endif %}
 	</div>
-	<h3>Order</h3>
-	<form method="post">
-		{% csrf_token %}
-		<div class="form-row">
-			<div class="form-group col-md-4">
-				<label for="{{ tradeForm.League_name.id_for_label }}"> League name: </label>
-				{{ tradeForm.League_name }}
-			</div>
-			<div class="form-group col-md-4">
-				<label for="{{ tradeForm.transactionType.id_for_label }}"> Transaction type: </label>
-				{{ tradeForm.transactionType }}
-			</div>
-			<div class="form-group col-md-4">
-				<label for="{{ tradeForm.timeInForce.id_for_label }}"> Time in force: </label>
-				{{ tradeForm.timeInForce }}
-			</div>
-		</div>
-		<div class="form-row">
-			<div class="form-group col-md-4">
-				<label for="{{ tradeForm.price1.id_for_label }}"> Price 1: </label>
-				{{ tradeForm.price1 }}
-			</div>
-			<div class="form-group col-md-4">
-				<label for="{{ tradeForm.price2.id_for_label }}"> Price 2: </label>
-				{{ tradeForm.price2 }}
-			</div>
-			<div class="form-group col-md-4">
-				<label for="{{ tradeForm.quantity.id_for_label }}"> Quantity: </label>
-				{{ tradeForm.quantity }}
-			</div>
-		</div>
-		<button type="submit" class="btn btn-primary">Submit</button>
-	</form>
-	<h3>News</h3>
-	{% if news %}
-		<div class="card">
-			{% for new in news %}
-				<div class="card-body">
-					<h5 class="card-title">{{ new.headline }}</h5>
-					<h6 class="card-subtitle mb-2 text-muted">{{ new.datetime|slice:"0:10" }}</h6>
-					<p class="card-text">{{ new.summary }}</p>
-					<a href={{ new.url }} class="card-link" target="_blank" rel="noopener noreferrer">{{ new.source }}</a>
+	</div>
+</div>
+<br>
+	<div class="card" id="Order">
+		<div class="card-body">
+			<h3>Order</h3>
+			<form method="post">
+				{% csrf_token %}
+				<div class="form-row">
+					<div class="form-group col-md-4">
+						<label for="{{ tradeForm.League_name.id_for_label }}"> League name: </label>
+						{{ tradeForm.League_name }}
+					</div>
+					<div class="form-group col-md-4">
+						<label for="{{ tradeForm.transactionType.id_for_label }}"> Transaction type: </label>
+						{{ tradeForm.transactionType }}
+					</div>
+					<div class="form-group col-md-4">
+						<label for="{{ tradeForm.timeInForce.id_for_label }}"> Time in force: </label>
+						{{ tradeForm.timeInForce }}
+					</div>
 				</div>
-			{% endfor %}
+				<div class="form-row">
+					<div class="form-group col-md-4">
+						<label for="{{ tradeForm.price1.id_for_label }}"> Price 1: </label>
+						{{ tradeForm.price1 }}
+					</div>
+					<div class="form-group col-md-4">
+						<label for="{{ tradeForm.price2.id_for_label }}"> Price 2: </label>
+						{{ tradeForm.price2 }}
+					</div>
+					<div class="form-group col-md-4">
+						<label for="{{ tradeForm.quantity.id_for_label }}"> Quantity: </label>
+						{{ tradeForm.quantity }}
+					</div>
+				</div>
+				<button type="submit" class="btn btn-primary">Submit</button>
+			</form>
 		</div>
-	{% endif %}
-
+	</div>
+	<br>
+	<div class="card" id="News">
+		<div class="card-body">
+			<h3>News</h3>
+			{% if news %}
+				{% for new in news %}
+					<div class="card-body">
+						<h5 class="card-title">{{ new.headline }}</h5>
+						<h6 class="card-subtitle mb-2 text-muted">{{ new.datetime|slice:"0:10" }}</h6>
+						<p class="card-text">{{ new.summary }}</p>
+						<a href={{ new.url }} class="card-link" target="_blank" rel="noopener noreferrer">{{ new.source }}</a>
+					</div>
+				{% endfor %}
+			{% endif %}
+		</div>	
+	</div>
 {% endblock %}
