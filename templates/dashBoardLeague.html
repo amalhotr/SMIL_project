@@ -1,7 +1,7 @@
 {% extends "base_generic.html" %}
 
 {% block content %}
-<div id="wrap" style="width:850px; clear:both;">
+<div id="wrap" style="width:850px; clear:both;" class  = "sticky-top" >
 	<div id="list-example" class="list-group" style="float:left; width:210px; position:relative;">
 		<a class="list-group-item list-group-item-action" href="#Top">{{league}} Dashboard</a>
 	</div>
@@ -18,18 +18,19 @@
 		<a class="list-group-item list-group-item-action" href="#Leaderboard">Leaderboard</a></div>
 </div>
 <div data-spy="scroll" data-target="#list-example" data-offset="0" class="scrollspy-example">
-	<h1 id = "Top">{{ league }} Dashboard</h1>
-	{% load crispy_forms_tags %}
-	<form method="post">
-		{% csrf_token %}
-		<div class="form-row">
-			<div class="form-group col-md-2">
-				<label for="{{ form.League_name.id_for_label }}"> League: </label>
-				{{ form.League_name }}
+		{% load crispy_forms_tags %}
+		<form method="post">
+			{% csrf_token %}
+			<div class="form-row">
+				<div class="form-group col-md-2">
+					<label for="{{ form.League_name.id_for_label }}"> League: </label>
+					{{ form.League_name }}
+				</div>
 			</div>
-		</div>
-		<button type="submit" class="btn btn-primary">Submit</button>
-	</form>
+			<button type="submit" class="btn btn-primary">Submit</button>
+		</form>
+	<h1 id = "Top">{{ league }} Dashboard</h1>
+	
 	<br>
 	<br>
 	<br>
