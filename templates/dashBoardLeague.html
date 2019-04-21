@@ -2,13 +2,23 @@
 
 {% block content %}
 <div id="wrap" style="width:850px; clear:both;">
-	<div id="list-example" class="list-group" style="float:left; width:210px; position:relative;"><a class="list-group-item list-group-item-action" href="#Top">{{league}} Dashboard</a></div>
-	<div id="list-example" class="list-group" style="float:left; width:100px; position:relative;"><a class="list-group-item list-group-item-action" href="#Portfolio">Portfolio</a></div>
-	<div id="list-example" class="list-group" style="float:left; width:190px; position:relative;"><a class="list-group-item list-group-item-action" href="#PT">Pending Transaction</a></div>
-	<div id="list-example" class="list-group" style="float:left; width:180px; position:relative;"><a class="list-group-item list-group-item-action" href="#TH">Transaction History</a></div>
-	<div id="list-example" class="list-group" style="width:130px; position:relative;"><a class="list-group-item list-group-item-action" href="#Leaderboard">Leaderboard</a></div>
+	<div id="list-example" class="list-group" style="float:left; width:210px; position:relative;">
+		<a class="list-group-item list-group-item-action" href="#Top">{{league}} Dashboard</a>
+	</div>
+	<div id="list-example" class="list-group" style="float:left; width:100px; position:relative;">
+		<a class="list-group-item list-group-item-action" href="#Portfolio">Portfolio</a>
+		</div>
+	<div id="list-example" class="list-group" style="float:left; width:190px; position:relative;"
+	><a class="list-group-item list-group-item-action" href="#PT">Pending Transaction</a>
 </div>
-	<h1>{{ league }} Dashboard</h1>
+	<div id="list-example" class="list-group" style="float:left; width:180px; position:relative;">
+		<a class="list-group-item list-group-item-action" href="#TH">Transaction History</a>
+	</div>
+	<div id="list-example" class="list-group" style="width:130px; position:relative;">
+		<a class="list-group-item list-group-item-action" href="#Leaderboard">Leaderboard</a></div>
+</div>
+<div data-spy="scroll" data-target="#list-example" data-offset="0" class="scrollspy-example">
+	<h1 id = "Top">{{ league }} Dashboard</h1>
 	{% load crispy_forms_tags %}
 	<form method="post">
 		{% csrf_token %}
@@ -20,7 +30,12 @@
 		</div>
 		<button type="submit" class="btn btn-primary">Submit</button>
 	</form>
-	<h3>Portfolio</h3>
+	<br>
+	<br>
+	<br>
+	<br>
+	<br>
+	<h3 id = "Portfolio">Portfolio</h3>
 	<div class="container">
 		<div class="row">
 			<div class="col">
@@ -77,8 +92,10 @@
 					<a href="{% url 'exportCSV' portfolio_id=portfolio_id%}"<button type="button" class="btn btn-info">Export</button></a>
 				{% endif %}
 		</div>
-
-	<h3>Pending transactions</h3>
+		<br>
+		<br>
+		<br>
+	<h3 id = "PT">Pending transactions</h3>
 	{% if pendingTransactions %}
 		<table class="table table-hover">
 			<thead>
@@ -109,8 +126,11 @@
 			</tbody>
 		</table>
 	{% endif %}
-
-	<h3>Transaction history</h3>
+	<br>
+	<br>
+	<br>
+	<br>
+	<h3 id = "TH">Transaction history</h3>
 	{% if transactionHistory %}
 		<table class="table table-hover">
 			<thead>
@@ -141,7 +161,11 @@
 			{% endfor %}
 		</table>
 	{% endif %}
-	<h3><abbr title="Use these standings to determine strategy">Leaderboards</abbr></h3>
+	<br>
+	<br>
+	<br>
+	<br>
+	<h3 id = "Leaderboard"><abbr title="Use these standings to determine strategy">Leaderboards</abbr></h3>
 	{% if position %}
 	<table class="table table-hover">
 		<thead>
@@ -162,4 +186,5 @@
 		</tbody>
 	</table>
 	{% endif %}
+	</div>
 {% endblock %}
