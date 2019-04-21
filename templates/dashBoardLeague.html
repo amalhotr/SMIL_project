@@ -1,191 +1,194 @@
 {% extends "base_generic.html" %}
 
 {% block content %}
-<div id="wrap" style="width:850px; clear:both;" class  = "sticky-top" >
-	<div id="list-example" class="list-group" style="float:left; width:210px; position:relative;">
-		<a class="list-group-item list-group-item-action" href="#Top">{{league}} Dashboard</a>
-	</div>
-	<div id="list-example" class="list-group" style="float:left; width:100px; position:relative;">
-		<a class="list-group-item list-group-item-action" href="#Portfolio">Portfolio</a>
-		</div>
-	<div id="list-example" class="list-group" style="float:left; width:190px; position:relative;"
-	><a class="list-group-item list-group-item-action" href="#PT">Pending Transaction</a>
-</div>
-	<div id="list-example" class="list-group" style="float:left; width:180px; position:relative;">
-		<a class="list-group-item list-group-item-action" href="#TH">Transaction History</a>
-	</div>
-	<div id="list-example" class="list-group" style="width:130px; position:relative;">
-		<a class="list-group-item list-group-item-action" href="#Leaderboard">Leaderboard</a></div>
-</div>
-<div data-spy="scroll" data-target="#list-example" data-offset="0" class="scrollspy-example">
-		{% load crispy_forms_tags %}
-		<form method="post">
-			{% csrf_token %}
-			<div class="form-row">
-				<div class="form-group col-md-2">
-					<label for="{{ form.League_name.id_for_label }}"> League: </label>
-					{{ form.League_name }}
+	{% load humanize %}
+	{% load crispy_forms_tags %}
+	<ul class="nav nav-pills">
+		<li class="nav-item">
+			<a class="nav-link" href="#">Portfolio</a>
+		</li>
+	  <li class="nav-item">
+	    <a class="nav-link" href="#PT">Pending transactions</a>
+	  </li>
+	  <li class="nav-item">
+	    <a class="nav-link" href="#TH">Transaction history</a>
+	  </li>
+	  <li class="nav-item">
+	    <a class="nav-link" href="#Leaderboard">Leaderboard</a>
+	  </li>
+	</ul>
+	<div class="card">
+		<div class="card-body">
+			<form method="post">
+				{% csrf_token %}
+				<div class="form-row">
+					<div class="form-group col-md-2">
+						<label for="{{ form.League_name.id_for_label }}"> League: </label>
+						{{ form.League_name }}
+					</div>
 				</div>
-			</div>
-			<button type="submit" class="btn btn-primary">Submit</button>
-		</form>
-	<h1 id = "Top">{{ league }} Dashboard</h1>
-	
+				<button type="submit" class="btn btn-primary">Submit</button>
+			</form>
+		</div>
+	</div>
 	<br>
+	<div class="card" id="PT">
+		<div class="card-body">
+			<h1>{{ league }}</h1>
+			<div class="container">
+				<div class="row">
+					<div class="col">
+						<table class="table table-hover">
+							<thead>
+								<tr>
+									<th scope="col">Portfolio statistics</th>
+									<th scope="col"></th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr>
+									<th scope="row">Total value </th>
+									<td> {{ totVal }} </td>
+								</tr>
+								<tr>
+									<th scope="row">Cash </th>
+									<td> {{ portfolio.cash }} </td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+					{% if holding %}
+						<div class="col">
+							<table class="table table-hover">
+								<thead>
+									<tr>
+										<th scope="col">Ticker</th>
+										<th scope="col">Quantity</th>
+										<th scope="col">Price</th>
+									</tr>
+								</thead>
+								<tbody>
+								{% for hold in holding %}
+										<tr>
+											<th scope="row"> {{ hold.ticker }} </th>
+											<td> {{ hold.quantity }} </td>
+											<td> {{ hold.price }} </td>
+										</tr>
+									{% endfor %}
+								</tbody>
+							</table>
+						</div>
+						<div class="col">
+							{% if pie_chart %}
+								<div style="width:300;height:250">
+								{{ pie_chart|safe }}
+								</div>
+							{% endif %}
+						</div>
+					{% endif %}
+					</div>
+					{% if portfolio_id %}
+							<a href="{% url 'exportCSV' portfolio_id=portfolio_id%}"><button type="button" class="btn btn-info">Export</button></a>
+						{% endif %}
+				</div>
+		</div>
+	</div>
 	<br>
-	<br>
-	<br>
-	<br>
-	<h3 id = "Portfolio">Portfolio</h3>
-	<div class="container">
-		<div class="row">
-			<div class="col">
+	<div class="card" id="PT">
+		<div class="card-body">
+			<h3>Pending transactions</h3>
+			{% if pendingTransactions %}
 				<table class="table table-hover">
 					<thead>
 						<tr>
-							<th scope="col">Statistics</th>
+							<th scope="col"> Ticker </th>
+							<th scope="col"> Transaction Type </th>
+							<th scope="col"> Time in Force </th>
+							<th scope="col"> Transaction Status </th>
+							<th scope="col"> Submitted </th>
+							<th scope="col"> Price 1 </th>
+							<th scope="col"> Quantity </th>
 							<th scope="col"></th>
 						</tr>
 					</thead>
 					<tbody>
-						<tr>
-							<th scope="row">Total value </th>
-							<td> {{ totVal }} </td>
-						</tr>
-						<tr>
-							<th scope="row">Cash </th>
-							<td> {{ portfolio.cash }} </td>
-						</tr>
+						{% for pendTrans in pendingTransactions %}
+							<tr>
+								<th scope="row"><a href="/trade/ticker/{{ pendTrans.asset.name }}/{{ pendTrans.ticker }}"> {{ pendTrans.ticker }}</a></th>
+								<td> {{ pendTrans.transactionType }} </td>
+								<td> {{ pendTrans.timeInForce }} </td>
+								<td> {{ pendTrans.get_transactionStatus_display  }} </td>
+								<td> {{ pendTrans.submittedDateTime }} </td>
+								<td> {{ pendTrans.price1 }} </td>
+								<td> {{ pendTrans.quantity }} </td>
+								<td><button type="button" class="btn btn-link"><a href="/trade/delete/{{ pendTrans.id }}">Delete</a></button></td>
+							</tr>
+						{% endfor %}
 					</tbody>
 				</table>
-			</div>
-			{% if holding %}
-				<div class="col">
-					<table class="table table-hover">
-						<thead>
-							<tr>
-								<th scope="col">Ticker</th>
-								<th scope="col">Quantity</th>
-								<th scope="col">Price</th>
-							</tr>
-						</thead>
-						<tbody>
-						{% for hold in holding %}
-								<tr>
-									<th scope="row"> {{ hold.ticker }} </th>
-									<td> {{ hold.quantity }} </td>
-									<td> {{ hold.price }} </td>
-								</tr>
-							{% endfor %}
-						</tbody>
-					</table>
-				</div>
-				<div class="col">
-					{% if pie_chart %}
-						<div style="width:300;height:250">
-						{{ pie_chart|safe }}
-						</div>
-					{% endif %}
-				</div>
 			{% endif %}
-			</div>
-			{% if portfolio_id %}
-					<a href="{% url 'exportCSV' portfolio_id=portfolio_id%}"><button type="button" class="btn btn-info">Export</button></a>
-				{% endif %}
 		</div>
-		<br>
-		<br>
-		<br>
-	<h3 id = "PT">Pending transactions</h3>
-	{% if pendingTransactions %}
-		<table class="table table-hover">
-			<thead>
-				<tr>
-					<th scope="col"> Ticker </th>
-					<th scope="col"> Transaction Type </th>
-					<th scope="col"> Time in Force </th>
-					<th scope="col"> Transaction Status </th>
-					<th scope="col"> Submitted </th>
-					<th scope="col"> Price 1 </th>
-					<th scope="col"> Quantity </th>
-					<th scope="col"></th>
-				</tr>
-			</thead>
-			<tbody>
-				{% for pendTrans in pendingTransactions %}
+	</div>
+	<br>
+	<div class="card" id="TH">
+		<div class="card-body">
+			<h3>Transaction history</h3>
+			{% if transactionHistory %}
+				<table class="table table-hover">
+					<thead>
+						<tr>
+							<th scope="col">Ticker</th>
+							<th scope="col">Transaction Type</th>
+							<th scope="col">Time in Force</th>
+							<th scope="col">Transaction Status</th>
+							<th scope="col">Submitted</th>
+							<th scope="col">Fulfilled</th>
+							<th scope="col">Price 1</th>
+							<th scope="col">Quantity</th>
+							<th scope="col">Total</th>
+						</tr>
+					</thead>
+					{% for transHis in transactionHistory %}
+						<tr>
+							<th scope="row"><a href="/trade/ticker/{{ transHis.asset.name }}/{{ transHis.ticker }}"> {{ transHis.ticker }}</a></th>
+							<td> {{ transHis.transactionType }} </td>
+							<td> {{ transHis.timeInForce }} </td>
+							<td> {{ transHis.get_transactionStatus_display  }} </td>
+							<td> {{ transHis.submittedDateTime }} </td>
+							<td> {{ transHis.fulfilledDateTime }} </td>
+							<td> {{ transHis.price1 }} </td>
+							<td> {{ transHis.quantity }} </td>
+							<td> {{ transHis.total }} </td>
+						</tr>
+					{% endfor %}
+				</table>
+			{% endif %}
+		</div>
+	</div>
+	<br>
+	<div class="card" id="Leaderboard">
+		<div class="card-body">
+			<h3>Leaderboards</h3>
+			{% if position %}
+			<table class="table table-hover">
+				<thead>
 					<tr>
-						<th scope="row"><a href="/trade/ticker/{{ pendTrans.asset.name }}/{{ pendTrans.ticker }}"> {{ pendTrans.ticker }}</a></th>
-						<td> {{ pendTrans.transactionType }} </td>
-						<td> {{ pendTrans.timeInForce }} </td>
-						<td> {{ pendTrans.get_transactionStatus_display  }} </td>
-						<td> {{ pendTrans.submittedDateTime }} </td>
-						<td> {{ pendTrans.price1 }} </td>
-						<td> {{ pendTrans.quantity }} </td>
-						<td><button type="button" class="btn btn-link"><a href="/trade/delete/{{ pendTrans.id }}">Delete</a></button></td>
+						<th scope="col">Position</th>
+						<th scope="col">User</th>
+						<th scope="col">Total Value</th>
 					</tr>
-				{% endfor %}
-			</tbody>
-		</table>
-	{% endif %}
-	<br>
-	<br>
-	<br>
-	<br>
-	<h3 id = "TH">Transaction history</h3>
-	{% if transactionHistory %}
-		<table class="table table-hover">
-			<thead>
-				<tr>
-					<th scope="col">Ticker</th>
-					<th scope="col">Transaction Type</th>
-					<th scope="col">Time in Force</th>
-					<th scope="col">Transaction Status</th>
-					<th scope="col">Submitted</th>
-					<th scope="col">Fulfilled</th>
-					<th scope="col">Price 1</th>
-					<th scope="col">Quantity</th>
-					<th scope="col">Total</th>
-				</tr>
-			</thead>
-			{% for transHis in transactionHistory %}
-				<tr>
-					<th scope="row"><a href="/trade/ticker/{{ transHis.asset.name }}/{{ transHis.ticker }}"> {{ transHis.ticker }}</a></th>
-					<td> {{ transHis.transactionType }} </td>
-					<td> {{ transHis.timeInForce }} </td>
-					<td> {{ transHis.get_transactionStatus_display  }} </td>
-					<td> {{ transHis.submittedDateTime }} </td>
-					<td> {{ transHis.fulfilledDateTime }} </td>
-					<td> {{ transHis.price1 }} </td>
-					<td> {{ transHis.quantity }} </td>
-					<td> {{ transHis.total }} </td>
-				</tr>
-			{% endfor %}
-		</table>
-	{% endif %}
-	<br>
-	<br>
-	<br>
-	<br>
-	<h3 id = "Leaderboard"><abbr title="Use these standings to determine strategy">Leaderboards</abbr></h3>
-	{% if position %}
-	<table class="table table-hover">
-		<thead>
-			<tr>
-				<th scope="col">Position</th>
-				<th scope="col">User</th>
-				<th scope="col">Total Value</th>
-			</tr>
-		</thead>
-		<tbody>
-			{% for key, value in position.items %}
-   			<tr>
-				<td>{{ forloop.counter }}</td>
-				<td> {{ key }}</td>
-				<td> {{ value }}</td>
-   			</tr>
-			{% endfor %}
-		</tbody>
-	</table>
-	{% endif %}
+				</thead>
+				<tbody>
+					{% for key, value in position.items %}
+		   			<tr>
+						<td>{{ forloop.counter }}</td>
+						<td> {{ key }}</td>
+						<td> {{ value }}</td>
+		   			</tr>
+					{% endfor %}
+				</tbody>
+			</table>
+			{% endif %}
+		</div>
 	</div>
 {% endblock %}

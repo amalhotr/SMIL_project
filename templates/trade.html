@@ -15,7 +15,7 @@
 				{{ form.asset }}
 			</div>
 		</div>
-		<button type="submit" class="btn btn-secondary">Submit</button>
+		<button type="submit" class="btn btn-primary">Submit</button>
 {% if messages %}
 <ul class="messages">
     {% for message in messages %}
@@ -25,13 +25,12 @@
 {% endif %}
 <br>
 <br>
-<br>
-<div class="card" style="width: 18rem;">
+<div class="card" style="width: 17.5rem;">
 	<img src="https://www.thebalance.com/thmb/ATfDpAdTb-ZCXOQYyCih61tmEp4=/1255x837/filters:fill(auto,1)/how-to-start-trading-stocks-56a22ddb5f9b58b7d0c78746.jpg" class="card-img-top" alt="Card image">
 	<div class="card-body">
 	  <h5 class="card-title">Stock trading questions?</h5>
 	  <p class="card-text">Check out some frequently asked questions.</p>
-	  <a href="{% url 'FreqAskQ' %}" class="btn btn-primary">FAQs</a>
+	  <a href="{% url 'FreqAskQ' %}" class="btn btn-info">FAQs</a>
 	</div>
   </div>
 {% endblock %}
