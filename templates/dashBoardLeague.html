@@ -32,7 +32,7 @@
 		</div>
 	</div>
 	<br>
-	<div class="card" id="PT">
+	<div class="card">
 		<div class="card-body">
 			<h1>{{ league }}</h1>
 			<div class="container">
@@ -70,7 +70,7 @@
 								<tbody>
 								{% for hold in holding %}
 										<tr>
-											<th scope="row"> {{ hold.ticker }} </th>
+											<th scope="row"><a href="/trade/find/{{ hold.ticker}}"> {{ hold.ticker|upper }} </a></th>
 											<td> {{ hold.quantity }} </td>
 											<td> {{ hold.price }} </td>
 										</tr>
@@ -114,7 +114,7 @@
 					<tbody>
 						{% for pendTrans in pendingTransactions %}
 							<tr>
-								<th scope="row"><a href="/trade/ticker/{{ pendTrans.asset.name }}/{{ pendTrans.ticker }}"> {{ pendTrans.ticker }}</a></th>
+								<th scope="row"><a href="/trade/ticker/{{ pendTrans.asset.name }}/{{ pendTrans.ticker }}"> {{ pendTrans.ticker|upper }}</a></th>
 								<td> {{ pendTrans.transactionType }} </td>
 								<td> {{ pendTrans.timeInForce }} </td>
 								<td> {{ pendTrans.get_transactionStatus_display  }} </td>
@@ -150,7 +150,7 @@
 					</thead>
 					{% for transHis in transactionHistory %}
 						<tr>
-							<th scope="row"><a href="/trade/ticker/{{ transHis.asset.name }}/{{ transHis.ticker }}"> {{ transHis.ticker }}</a></th>
+							<th scope="row"><a href="/trade/ticker/{{ transHis.asset.name }}/{{ transHis.ticker }}"> {{ transHis.ticker|upper }}</a></th>
 							<td> {{ transHis.transactionType }} </td>
 							<td> {{ transHis.timeInForce }} </td>
 							<td> {{ transHis.get_transactionStatus_display  }} </td>

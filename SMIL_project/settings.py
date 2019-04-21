@@ -137,7 +137,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = "America/New_York"
 
 USE_I18N = True
 
@@ -182,7 +182,7 @@ SCHEDULER_CONFIG = {
     'apscheduler.executors.processpool': {
         "type": "threadpool"
     },
-    # 'apscheduler.timezone': 
+    'apscheduler.timezone': "America/New_York",
 }
 
 # Set to true
