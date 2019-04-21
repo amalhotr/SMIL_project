@@ -1,6 +1,8 @@
 {% extends "base_generic.html" %}
 
 {% block content %}
+<div class = "card">
+  <div class = "card-body">
 <h1>Register</h1>
   <form method="POST">
     {% csrf_token %}
@@ -34,4 +36,19 @@
       </div>
     <button type="submit" class="btn btn-primary">Login</button>
   </form>
+</div>
+</div>
+<br>
+<div class = "card">
+<div class = "card-body">
+<div class="media">
+    <img src="https://www.myjewishlearning.com/wp-content/uploads/2005/05/stock-market.jpg" style = "width: 10rem;" class="align-self-end mr-3" alt="Stockmarket1">
+    <div class="media-body">
+      <h5 class="mt-0">Welcome to TTT!</h5>
+      <p>Trade Stocks. Make money*. Learn the market.</p>
+      <p class="mb-0" style = "font-size: 50%;">*not actual money, strictly a simulation.</p>
+    </div>
+  </div>
+  </div>
+  </div>
 {% endblock %}
