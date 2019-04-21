@@ -8,6 +8,7 @@ urlpatterns = [
     path('trade/', views.trade, name='trade'),
     path('trade/ticker/<str:asset>/<str:ticker>', views.ticker, name='ticker'),
     path('trade/delete/<str:transId>', views.deleteTrans, name='deleteTrans'),
+    path('trade/find/<str:ticker>', views.findTicker, name='findTicker'),
     path('dashboard/', views.dashboard, name='dashboard'),
     path('dashboard/<str:league>', views.dashboardLeague, name='dashboardLeague'),
     path('leagues/', views.leagues, name='leagues'),

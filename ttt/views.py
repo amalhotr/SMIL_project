@@ -106,6 +106,13 @@ def ticker(request, asset, ticker):
         }
         return render(request, 'ticker.html', context)
 
+def findTicker(request, ticker):
+	try:
+		quote = getQuote(tickerIEX)
+		return HttpResponseRedirect('trade/ticker/Stock/' + ticker)
+	except:
+		return HttpResponseRedirect('/trade/ticker/Cryptocurrency/' + ticker)
+
 @login_required
 def deleteTrans(request, transId):
         try:
