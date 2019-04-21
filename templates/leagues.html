@@ -2,16 +2,19 @@
 
 {% block content %}
 	<h1>Leagues</h1>
-	<p>
-		<a class="btn btn-info" data-toggle="collapse" href="#multiCollapseExample1" role="button" aria-expanded="false" aria-controls="multiCollapseExample1">Admin Leagues</a>
-		<button class="btn btn-info" type="button" data-toggle="collapse" data-target="#multiCollapseExample2" aria-expanded="false" aria-controls="multiCollapseExample2">Player Leagues</button>
-		<button class="btn btn-info" type="button" data-toggle="collapse" data-target="#multiCollapseExample3" aria-expanded="false" aria-controls="multiCollapseExample3">Public Leagues</button>
-		<button class="btn btn-info" type="button" data-toggle="collapse" data-target=".multi-collapse" aria-expanded="false" aria-controls="multiCollapseExample1 multiCollapseExample2 multiCollapseExample3">Open All</button>
-	</p>
-
-	<div class="collapse multi-collapse show" id="multiCollapseExample1">
-		<div class = "card">
-			<div class = "card-body">
+	<ul class="nav nav-pills">
+		<li class="nav-item">
+			<a class="nav-link" href="#">Admin leagues</a>
+		</li>
+	  <li class="nav-item">
+	    <a class="nav-link" href="#Player">Player leagues</a>
+	  </li>
+	  <li class="nav-item">
+	    <a class="nav-link" href="#Public">Public leagues</a>
+	  </li>
+	</ul>
+	<div class="card">
+		<div class="card-body">
 	<h3>Admin Leagues</h3>
 	<a href="{% url 'createLeague' %}"><button type="button" class="btn btn-link">Create league</button></a>
 	{% if adminLeagues %}
@@ -42,16 +45,11 @@
 			</tbody>
 		</table>
 	{% endif %}
-	</div>
-	</div>
-	</div>
-	<br>
-	<br>
-	<br>
-	<br>
-	<div class="collapse multi-collapse show" id="multiCollapseExample2">
-		<div class = "card">
-			<div class = "card-body">
+</div>
+</div>
+<br>
+<div class="card" id="Player">
+	<div class="card-body">
 	<h3>Player Leagues</h3>
 	{% if playerLeagues %}
 		<table class="table table-hover">
@@ -81,16 +79,11 @@
 			</tbody>
 		</table>
 	{% endif %}
-	</div>
-	</div>
-	</div>
-	<br>
-	<br>
-	<br>
-	<br>
-	<div class="collapse multi-collapse show" id="multiCollapseExample3">
-		<div class = "card">
-			<div class = "card-body">
+</div>
+</div>
+<br>
+<div class="card" id="Public">
+	<div class="card-body">
 	<h3>Public Leagues</h3>
 	{% if publicLeagues %}
 		<table class="table table-hover">
@@ -118,8 +111,8 @@
 				</tr>
 				{% endfor %}
 			</tbody>
+		</table>
 	{% endif %}
-		</div>
-		</div>
-		</div>
+</div>
+</div>
 {% endblock %}

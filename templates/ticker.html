@@ -1,11 +1,12 @@
 {% extends "base_generic.html" %}
+
 {% block content %}
 	{% load humanize %}
 	{% load crispy_forms_tags %} 
-<ul class="nav nav-pills">
-	  <li class="nav-item">
-	    <a class="nav-link" href="#">Ticker</a>
-	  </li>
+	<ul class="nav nav-pills">
+		<li class="nav-item">
+			<a class="nav-link" href="#">Ticker</a>
+		</li>
 	  <li class="nav-item">
 	    <a class="nav-link" href="#Quote">{{ quote.symbol }} </a>
 	  </li>
@@ -16,7 +17,6 @@
 	    <a class="nav-link" href="#News">News</a>
 	  </li>
 	</ul>
-	<br>
 	<div class="card">
 		<div class="card-body">
 			<form method="post">
@@ -47,7 +47,8 @@
 	
 	<a href="{% url 'predictionTab' asset=asset ticker=ticker accuracy=4 %}" target="_blank"><button type="button" class="btn btn-info">BallPark Forecast</button></a>
 	<a href="{% url 'predictionTab' asset=asset ticker=ticker accuracy=100 %}" target="_blank"><button type="button" class="btn btn-info">Accurate Forecast</button></a>
-
+	<br>
+	<br>
 	<div class="container">
 		{% if 'Cryptocurrency' in asset  %}
 		<div class="row">
