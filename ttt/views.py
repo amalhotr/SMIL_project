@@ -108,8 +108,8 @@ def ticker(request, asset, ticker):
 
 def findTicker(request, ticker):
 	try:
-		quote = getQuote(ticker)
-		return HttpResponseRedirect('/trade/ticker/Stock/' + ticker)
+		quote = getQuote(tickerIEX)
+		return HttpResponseRedirect('trade/ticker/Stock/' + ticker)
 	except:
 		return HttpResponseRedirect('/trade/ticker/Cryptocurrency/' + ticker)
 
@@ -194,13 +194,13 @@ def dashboardLeague(request, league):
         if portfolio:
                 holding = Holding.objects.filter(portfolio=portfolio).order_by('ticker', '-quantity')
                 tickers = []
-                prices = []
+                value = []
 
                 for hold in holding.iterator():
                         tickers.append(hold.ticker)
-                        prices.append(hold.price)
+                        value.append(hold.price * hold.quantity)
 
-                pie_chart_div = Plot.getPieChart(tickers, prices, 'Holdings')
+                pie_chart_div = Plot.getPieChart(tickers, value, 'Holdings')
         else:
                 holding = None
                 pie_chart_div = None
