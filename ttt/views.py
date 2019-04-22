@@ -109,7 +109,7 @@ def ticker(request, asset, ticker):
 def findTicker(request, ticker):
 	try:
 		quote = getQuote(tickerIEX)
-		return HttpResponseRedirect('trade/ticker/Stock/' + ticker)
+		return HttpResponseRedirect('/trade/ticker/Stock/' + ticker)
 	except:
 		return HttpResponseRedirect('/trade/ticker/Cryptocurrency/' + ticker)
 
