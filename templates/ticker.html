@@ -3,6 +3,37 @@
 {% block content %}
 	{% load humanize %}
 	{% load crispy_forms_tags %} 
+	<style>
+[tooltip]:before {
+    /* needed - do not touch */
+    content: attr(tooltip);
+    position: absolute;
+    opacity: 0;
+    
+    /* customizable */
+    transition: all .3s ease;
+	width: 360px;
+    padding: 10px;
+    color: #ffffff;
+    border-radius: 5px;
+    box-shadow: 2px 2px 1px silver;    
+}
+
+[tooltip]:hover:before {
+    /* needed - do not touch */
+    opacity: 1;
+    
+    /* customizable */
+    background: #333;
+    margin-top: -50px;
+    margin-left: -150px;    
+}
+
+[tooltip]:not([tooltip-persistent]):before {
+    pointer-events: none;
+}
+</style>
+
 	<ul class="nav nav-pills">
 		<li class="nav-item">
 			<a class="nav-link" href="#">Ticker</a>
@@ -54,25 +85,27 @@
 		<div class="row">
 			<div class="col">
 				<dl class="row">
-						<dt class="col-6">Price</dt>
+						<dt class="col-6"><div tooltip="Cryptocurrency is traded as FOREX (Foriegn Exchange).  Larger cytpocurrencies like Litecoin and Bitcoin are traded in USD.  Altcoins can be traded in Bitcoin, and larger coins are backed by fiat currencies" tooltip-persistent>Price</div></dt>
 						<dd class="col-6">{{ quote.latestPrice|floatformat:2|intcomma }}</dd>
-						<dt class="col-6">Change</dt>
-						<dd class="col-6">{{ quote.change|floatformat:2 }}</dd>
-						<dt class="col-6">Percent Change</dt>
-						<dd class="col-6">{{ quote.changePercent|floatformat:4 }}</dd>
-						<dt class="col-6">Volume</dt>
-						<dd class="col-6">{{ quote.latestVolume|intcomma }}</dd>
+						<dt class="col-6"><div tooltip="Change will be compared to the closing price of yesterday's share" tooltip-persistent>Change</div></dt>
+						<dd class="col-6">{{ quote.change|floatformat:4 }}</dd>
+						<dt class="col-6"><div tooltip="Percent Change will be compared to the closing price of yesterday's share" tooltip-persistent>Percent Change</div></dt>
+						<dd class="col-6">{{ quote.changePercent }}</dd>
+						<dt class="col-6"><div tooltip="The number of shares or securities that changed hands during a given day." tooltip-persistent>Volume</div></dt>
+						<dd class="col-6">{{ quote.latestVolume|floatformat:2|intcomma }}</dd>
 				</dl>
 			</div>
 			<div class="col">
 				<dl class="row">
-						<dt class="col-6">High Today</dt>
+						<dt class="col-6"><div tooltip="Highest price reported for the day" tooltip-persistent>High Today</div></dt>
 						<dd class="col-6">{{ quote.high|floatformat:2|intcomma }}</dd>
-						<dt class="col-6">Low Today</dt>
+						<dt class="col-6"><div tooltip="Lowest price reported for the day" tooltip-persistent>Low Today</div>
+</dt>
 						<dd class="col-6">{{ quote.low|floatformat:2|intcomma }}</dd>
-						<dt class="col-6">Open Price</dt>
+						<dt class="col-6"><div tooltip="The starting price of the day" tooltip-persistent>Open Price</div>
+</dt>
 						<dd class="col-6">{{ quote.open|floatformat:2|intcomma }}</dd>
-						<dt class="col-6">Close Price</dt>
+						<dt class="col-6"><div tooltip="The ending price of the Day" tooltip-persistent>Close Price</div></dt>
 						<dd class="col-6">{{ quote.close|floatformat:2|intcomma }}</dd>
 				</dl>
 			</div>
@@ -82,38 +115,41 @@
 		<div class="row">
 			<div class="col">
 				<dl class="row">
-						<dt class="col-6">Price</dt>
+						<dt class="col-6"><div tooltip="The Stock Market is traded in USD" tooltip-persistent>Price</div></dt>
 						<dd class="col-6">{{ quote.latestPrice|floatformat:2|intcomma }}</dd>
-						<dt class="col-6">Change</dt>
-						<dd class="col-6">{{ quote.change|floatformat:2|intcomma }}</dd>
-						<dt class="col-6">Percent Change</dt>
+						<dt class="col-6"><div tooltip="Change will be compared to the closing price of yesterday's share" tooltip-persistent>Change</div></dt>
+						<dd class="col-6">{{ quote.change }}</dd>
+						<dt class="col-6"><div tooltip="Percent Change will be compared to the closing price of yesterday's share" tooltip-persistent>Percent Change</div></dt>
 						<dd class="col-6">{{ quote.changePercent|floatformat:4 }}</dd>
-						<dt class="col-6">Market Cap</dt>
+						<dt class="col-6"><div tooltip="Market capitalization: the value of a company that is traded on the stock market, calculated by multiplying the total number of shares by the present share price." tooltip-persistent>Market Cap</div></dt>
 						<dd class="col-6">{{ keyStats.marketcap|intcomma }}</dd>
-						<dt class="col-6">Price-Earnings Ratio</dt>
+						<dt class="col-6"><div tooltip="Current stock price divided by trailing annual earnings per share." tooltip-persistent>Price-Earning Ratio</div>
+</dt>
 						<dd class="col-6">{{ quote.peRatio|floatformat:2|intcomma }}</dd>
-						<dt class="col-6">Dividend Yield</dt>
+						<dt class="col-6"><div tooltip="Dividend yield: The dividend expressed as a percentage of a stock's current going market price." tooltip-persistent>Divident Yield</div>
+</dt>
 						<dd class="col-6">{{ keyStats.dividendYield|floatformat:2|intcomma }}</dd>
-						<dt class="col-6">52 Week High</dt>
+						<dt class="col-6"><div tooltip="The highest price in the last year (52 week look back)" tooltip-persistent>52 Week High</div></dt>
 						<dd class="col-6">{{ keyStats.week52high|floatformat:2|intcomma }}</dd>
-						<dt class="col-6">52 Week Low</dt>
+						<dt class="col-6"><div tooltip="The lowest price in the last year (52 week look back)" tooltip-persistent>52 Week Low</div></dt>
 						<dd class="col-6">{{ keyStats.week52low|floatformat:2|intcomma }}</dd>
 				</dl>
 			</div>
 			<div class="col">
 				<dl class="row">
-						<dt class="col-6">High Today</dt>
+						<dt class="col-6"><div tooltip="Just like volume, average volume is total amount of shares or securities traded over a certain period of time
+" tooltip-persistent>Average Volume</div></dt>
+						<dd class="col-6">{{ quote.avgTotalVolume }}</dd>
+						<dt class="col-6"><div tooltip="Highest price reported for the day" tooltip-persistent>High Today</div></dt>
 						<dd class="col-6">{{ quote.high|floatformat:2|intcomma }}</dd>
-						<dt class="col-6">Low Today</dt>
+						<dt class="col-6"><div tooltip="Lowest price reported for the day" tooltip-persistent>Low Today</div></dt>
 						<dd class="col-6">{{ quote.low|floatformat:2|intcomma }}</dd>
-						<dt class="col-6">Open Price</dt>
+						<dt class="col-6"><div tooltip="The US Stock Market opens at 9:30 AM EST" tooltip-persistent>Open Price</div></dt>
 						<dd class="col-6">{{ quote.open|floatformat:2|intcomma }}</dd>
-						<dt class="col-6">Close Price</dt>
+						<dt class="col-6"><div tooltip="The US Stock Market closes at 4:00 PM EST" tooltip-persistent>Close Price</div></dt>
 						<dd class="col-6">{{ quote.close|floatformat:2|intcomma }}</dd>
-						<dt class="col-6">Average Volume</dt>
-						<dd class="col-6">{{ quote.avgTotalVolume|intcomma }}</dd>
-						<dt class="col-6">Volume</dt>
-						<dd class="col-6">{{ quote.latestVolume|intcomma }}</dd>
+						<dt class="col-6"><div tooltip="The number of shares that changed hands during a given day" tooltip-persistent>Volume</div></dt>
+						<dd class="col-6">{{ quote.latestVolume|floatformat:2|intcomma }}</dd>
 				</dl>
 			</div>
 		</div>
