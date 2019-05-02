@@ -45,6 +45,12 @@
 	    <a class="nav-link" href="#Order">Order</a>
 	  </li>
 	  <li class="nav-item">
+	    <a class="nav-link" href="#Holdings">Holdings</a>
+	  </li>
+	   <li class="nav-item">
+	    <a class="nav-link" href="#PT">Pending Transactions</a>
+	  </li>
+	  <li class="nav-item">
 	    <a class="nav-link" href="#News">News</a>
 	  </li>
 	</ul>
@@ -193,6 +199,71 @@
 				</div>
 				<button type="submit" class="btn btn-primary">Submit</button>
 			</form>
+		</div>
+	</div>
+	<br>
+	<div class="card" id="Holdings">
+		<div class="card-body">
+			<h3>Holdings</h3>
+			{% if holdings %}
+				<table class="table table-hover">
+					<thead>
+						<tr>
+							<th scope="col">League</th>
+							<th scope="col">Quantity</th>
+							<th scope="col">Buy Price</th>
+							<th scope="col">Equity</th>
+							<th scope="col">Change</th>
+							<th scope="col">% Change</th>
+						</tr>
+					</thead>
+					<tbody>
+						{% for holding, equity, change, percentChange in holdingsEquities %}
+							<tr>
+								<th scope="row"> {{ holding.portfolio.league.name }}</th>
+								<td> {{ holding.quantity }} </td>
+								<td> {{ holding.price|floatformat:2|intcomma }} </td>
+								<td> {{ equity|floatformat:2|intcomma }}</td>
+								<td> {{ change|floatformat:2|intcomma }}</td>
+								<td> {{ percentChange|floatformat:4 }} </td>
+							</tr>
+						{% endfor %}
+					</tbody>
+				</table>
+			{% endif %}
+		</div>
+	</div>
+	<br>
+	<div class="card" id="PT">
+		<div class="card-body">
+			<h3>Pending Transactions</h3>
+			{% if pendingTransactions %}
+				<thead>
+						<tr>
+							<th scope="col">League</th>
+							<th scope="col">Transaction Type</th>
+							<th scope="col">Time in Force</th>
+							<th scope="col">Transaction Status</th>
+							<th scope="col">Submited</th>
+							<th scope="col">Price 1</th>
+							<th scope="col">Price 2</th>
+							<th scope="col">Quantity</th>
+						</tr>
+					</thead>
+				{% for pendTran in pendingTransactions %}
+					<tbody>
+						<tr>
+							<th scope="row"> {{ pendTran.league.name }}</th>
+							<td> {{ pendTran.transactionType }} </td>
+							<td> {{ pendTran.timeInForce }} </td>
+							<td> {{ pendTran.get_transactionStatus_display }}</td>
+							<td> {{ pendTrans.price1 }}</td>
+							<td> {{ pendTrans.price2 }} </td>
+							<td> {{ pendTrans.quantity }} </td>
+						</tr>
+					</tbody>
+				{% endfor %}
+			{% endif %}
 		</div>
 	</div>
 	<br>

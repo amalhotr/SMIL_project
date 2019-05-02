@@ -52,7 +52,7 @@ def trade(request):
 
 import uuid
 from datetime import datetime
-
+from decimal import Decimal
 from .iex import getQuote, getKeyStats, getNews
 
 @login_required
@@ -76,6 +76,24 @@ def ticker(request, asset, ticker):
 
         keyStats = getKeyStats(tickerIEX)
         news = getNews(tickerIEX)
+
+        dates, values = StockData.getValues(ticker, asset)
+        div = Plot.getLinePlot(dates, values, ticker)
+
+        portfolios = Portfolio.objects.filter(player=request.user)
+        holdings = Holding.objects.filter(ticker=ticker,portfolio__in=portfolios).order_by('-quantity')
+
+        equities = []
+        change = []
+        percentChange = []
+        for holding in holdings:
+                equities.append(holding.quantity*quote['latestPrice'])
+                change.append(Decimal(holding.quantity*quote['latestPrice']) - holding.quantity*holding.price)
+                percentChange.append((Decimal(quote['latestPrice']) - holding.price)/holding.price)
+
+        holdingsEquities = zip(holdings, equities, change, percentChange)
+        pendingTransactions = PendingTransaction.objects.filter(player=request.user, ticker=ticker).order_by('-quantity')
+
         if request.method == 'POST':
                 quoteForm = QuoteForm(request.POST)
                 tradeForm = TradeForm(request.POST, user=request.user)
@@ -91,8 +109,7 @@ def ticker(request, asset, ticker):
                 quoteForm = QuoteForm()
                 tradeForm = TradeForm(user=request.user)
 
-        dates, values = StockData.getValues(ticker, asset)
-        div = Plot.getLinePlot(dates, values, ticker)
+        
 
         context = {
                 'ticker': ticker,
@@ -103,6 +120,9 @@ def ticker(request, asset, ticker):
                 'quoteForm': quoteForm,
                 'tradeForm': tradeForm,
                 'plot': div,
+                'holdings': holdings,
+                'holdingsEquities': holdingsEquities,
+                'pendingTransactions': pendingTransactions,
         }
         return render(request, 'ticker.html', context)
 
@@ -187,7 +207,7 @@ def dashboardLeague(request, league):
                 except Exception:
                         app = 'USDT'
                         ticker = j.ticker + app
-                        price = int(getQuote(ticker)["latestPrice"])
+                        price = Decimal(getQuote(ticker)["latestPrice"])
                 total = price * j.quantity
                 totVal += total
 
