@@ -1,98 +1,194 @@
 {% extends "base_generic.html" %}
 
 {% block content %}
-<body class = "body" style="background-color: #0070f1">
-	<h1>{{ league }}'s Dashboard</h1>
-	<form method="post">
-		{% csrf_token %}
-		{{ form }}
-		<input type="submit" value="Submit">
-	</form>
-	<h2>Pending transactions</h2>
-	{% if pendingTransactions %}
-		<table>
-			<tr>
-				<th>Ticker</th>
-				<th>Transaction Type</th>
-				<th>Time in Force</th>
-				<th>Transaction Status</th>
-				<th>Submitted</th>
-				<th>Price 1</th>
-				<th>Price 2</th>
-				<th>Quantity</th>
-			</tr>
-			{% for pendTrans in pendingTransactions %}
-				<tr>
-					<td> {{ pendTrans.ticker }} </td>
-					<td> {{ pendTrans.transactionType }} </td>
-					<td> {{ pendTrans.timeInForce }} </td>
-					<td> {{ pendTrans.get_transactionStatus_display  }} </td>
-					<td> {{ pendTrans.submittedDateTime }} </td>
-					<td> {{ pendTrans.price1 }} </td>
-					<td> {{ pendTrans.price2 }} </td>
-					<td> {{ pendTrans.quantity }} </td>
-				</tr>
-			{% endfor %}
-		</table>
-	{% endif %}
-	<h2>Transaction history</h2>
-	{% if transactionHistory %}
-		<table>
-			<tr>
-				<th>Ticker</th>
-				<th>Transaction Type</th>
-				<th>Time in Force</th>
-				<th>Transaction Status</th>
-				<th>Submitted</th>
-				<th>Fulfilled</th>
-				<th>Price 1</th>
-				<th>Price 2</th>
-				<th>Quantity</th>
-				<th>Total</th>
-			</tr>
-			{% for transHis in transactionHistory %}
-				<tr>
-					<td> {{ transHis.ticker }} </td>
-					<td> {{ transHis.transactionType }} </td>
-					<td> {{ transHis.timeInForce }} </td>
-					<td> {{ transHis.get_transactionStatus_display  }} </td>
-					<td> {{ transHis.submittedDateTime }} </td>
-					<td> {{ transHis.fulfilledDateTime }} </td>
-					<td> {{ transHis.price1 }} </td>
-					<td> {{ transHis.price2 }} </td>
-					<td> {{ transHis.quantity }} </td>
-					<td> {{ transHis.total }} </td>
-				</tr>
-			{% endfor %}
-		</table>
-	{% endif %}
-<<<<<<< HEAD
-</body>
-{% endblock %}
-=======
-	<h2>Holdings</h2>
-	{% if holding %}
-		<table>
-			<tr>
-				<th>Ticker</th>
-				<th>Quantity</th>
-				<th>Price</th>
-			</tr>
-			{% for hold in holding %}
-				<tr>
-					<td> {{ hold.ticker }} </td>
-					<td> {{ hold.quantity }} </td>
-					<td> {{ hold.price }} </td>
-				</tr>
-			{% endfor %}
-		</table>
-	{% endif %}
-
-	{% if pie_chart %}
-	<div style="width:300;height:250">
-		{{ pie_chart|safe }}
+	{% load humanize %}
+	{% load crispy_forms_tags %}
+	<ul class="nav nav-pills">
+		<li class="nav-item">
+			<a class="nav-link" href="#">Portfolio</a>
+		</li>
+	  <li class="nav-item">
+	    <a class="nav-link" href="#PT">Pending transactions</a>
+	  </li>
+	  <li class="nav-item">
+	    <a class="nav-link" href="#TH">Transaction history</a>
+	  </li>
+	  <li class="nav-item">
+	    <a class="nav-link" href="#Leaderboard">Leaderboard</a>
+	  </li>
+	</ul>
+	<div class="card">
+		<div class="card-body">
+			<form method="post">
+				{% csrf_token %}
+				<div class="form-row">
+					<div class="form-group col-md-2">
+						<label for="{{ form.League_name.id_for_label }}"> League: </label>
+						{{ form.League_name }}
+					</div>
+				</div>
+				<button type="submit" class="btn btn-primary">Submit</button>
+			</form>
+		</div>
 	</div>
-	{% endif %}
-
+	<br>
+	<div class="card">
+		<div class="card-body">
+			<h1>{{ league }}</h1>
+			<div class="container">
+				<div class="row">
+					<div class="col">
+						<table class="table table-hover">
+							<thead>
+								<tr>
+									<th scope="col">Portfolio Statistics</th>
+									<th scope="col"></th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr>
+									<th scope="row">Total Value </th>
+									<td> {{ totVal }} </td>
+								</tr>
+								<tr>
+									<th scope="row">Cash </th>
+									<td> {{ portfolio.cash }} </td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+					{% if holding %}
+						<div class="col">
+							<table class="table table-hover">
+								<thead>
+									<tr>
+										<th scope="col">Ticker</th>
+										<th scope="col">Quantity</th>
+										<th scope="col">Buy Price</th>
+									</tr>
+								</thead>
+								<tbody>
+								{% for hold in holding %}
+										<tr>
+											<th scope="row"><a href="/trade/find/{{ hold.ticker}}"> {{ hold.ticker|upper }} </a></th>
+											<td> {{ hold.quantity }} </td>
+											<td> {{ hold.price }} </td>
+										</tr>
+									{% endfor %}
+								</tbody>
+							</table>
+						</div>
+						<div class="col">
+							{% if pie_chart %}
+								<div style="width:300;height:250">
+								{{ pie_chart|safe }}
+								</div>
+							{% endif %}
+						</div>
+					{% endif %}
+					</div>
+					{% if portfolio_id %}
+							<a href="{% url 'exportCSV' portfolio_id=portfolio_id%}"><button type="button" class="btn btn-info">Export</button></a>
+						{% endif %}
+				</div>
+		</div>
+	</div>
+	<br>
+	<div class="card" id="PT">
+		<div class="card-body">
+			<h3>Pending transactions</h3>
+			{% if pendingTransactions %}
+				<table class="table table-hover">
+					<thead>
+						<tr>
+							<th scope="col"> Ticker </th>
+							<th scope="col"> Transaction Type </th>
+							<th scope="col"> Time in Force </th>
+							<th scope="col"> Transaction Status </th>
+							<th scope="col"> Submitted </th>
+							<th scope="col"> Price </th>
+							<th scope="col"> Quantity </th>
+							<th scope="col"></th>
+						</tr>
+					</thead>
+					<tbody>
+						{% for pendTrans in pendingTransactions %}
+							<tr>
+								<th scope="row"><a href="/trade/ticker/{{ pendTrans.asset.name }}/{{ pendTrans.ticker }}"> {{ pendTrans.ticker|upper }}</a></th>
+								<td> {{ pendTrans.transactionType }} </td>
+								<td> {{ pendTrans.timeInForce }} </td>
+								<td> {{ pendTrans.get_transactionStatus_display  }} </td>
+								<td> {{ pendTrans.submittedDateTime }} </td>
+								<td> {{ pendTrans.price1 }} </td>
+								<td> {{ pendTrans.quantity }} </td>
+								<td><button type="button" class="btn btn-link"><a href="/trade/delete/{{ pendTrans.id }}">Delete</a></button></td>
+							</tr>
+						{% endfor %}
+					</tbody>
+				</table>
+			{% endif %}
+		</div>
+	</div>
+	<br>
+	<div class="card" id="TH">
+		<div class="card-body">
+			<h3>Transaction history</h3>
+			{% if transactionHistory %}
+				<table class="table table-hover">
+					<thead>
+						<tr>
+							<th scope="col">Ticker</th>
+							<th scope="col">Transaction Type</th>
+							<th scope="col">Time in Force</th>
+							<th scope="col">Transaction Status</th>
+							<th scope="col">Submitted</th>
+							<th scope="col">Fulfilled</th>
+							<th scope="col">Price</th>
+							<th scope="col">Quantity</th>
+							<th scope="col">Total</th>
+						</tr>
+					</thead>
+					{% for transHis in transactionHistory %}
+						<tr>
+							<th scope="row"><a href="/trade/ticker/{{ transHis.asset.name }}/{{ transHis.ticker }}"> {{ transHis.ticker|upper }}</a></th>
+							<td> {{ transHis.transactionType }} </td>
+							<td> {{ transHis.timeInForce }} </td>
+							<td> {{ transHis.get_transactionStatus_display  }} </td>
+							<td> {{ transHis.submittedDateTime }} </td>
+							<td> {{ transHis.fulfilledDateTime }} </td>
+							<td> {{ transHis.price1 }} </td>
+							<td> {{ transHis.quantity }} </td>
+							<td> {{ transHis.total }} </td>
+						</tr>
+					{% endfor %}
+				</table>
+			{% endif %}
+		</div>
+	</div>
+	<br>
+	<div class="card" id="Leaderboard">
+		<div class="card-body">
+			<h3>Leaderboards</h3>
+			{% if position %}
+			<table class="table table-hover">
+				<thead>
+					<tr>
+						<th scope="col">Position</th>
+						<th scope="col">User</th>
+						<th scope="col">Total Value</th>
+					</tr>
+				</thead>
+				<tbody>
+					{% for key, value in position.items %}
+		   			<tr>
+						<td>{{ forloop.counter }}</td>
+						<td> {{ key }}</td>
+						<td> {{ value }}</td>
+		   			</tr>
+					{% endfor %}
+				</tbody>
+			</table>
+			{% endif %}
+		</div>
+	</div>
 {% endblock %}
->>>>>>> abfdec58fde04705a5d03d064bb85cf8feefafb5

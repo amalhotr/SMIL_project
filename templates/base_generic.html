@@ -2,20 +2,29 @@
 <html lang="en">
 	<head>
 		{%block title %}
-			<title>TTL Stock Market League</title>
+			<title>TTT Stock Market League</title>
 		{% endblock %}
 		<meta charset="utf-8">
-		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 		<link rel ="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
 		{% load static %}
 		<link rel="stylesheet" href="{% static 'css/styles.css' %}">
 		<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
 		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+		<style>
+			#block {
+				margin-top: 10px;
+				margin-bottom: 10px;
+				margin-left: 10px;
+				margin-right: 10px;
+			} 
+		</style>
 	</head>
 	<body>
 		{% block bar %}
-			<nav class="navbar navbar-expand-lg navbar-dark bg-dark sticky-top">
+			<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+				<img src="https://scontent.fewr1-3.fna.fbcdn.net/v/t1.15752-0/p280x280/58372887_687166411701098_7137860910055424000_n.png?_nc_cat=103&_nc_oc=AQmzSaX3j-wwtwc1dVj8H6N52zmFdlBY1iQLHk1wiNBRXHvxXLsX15IvxhTujxpMINs&_nc_ht=scontent.fewr1-3.fna&oh=9f2a099d0e84168800e48d3f15becc74&oe=5D461952" align = "center" style = "width: 2rem;" alt="TTTLogo">
 		    	<a class="navbar-brand" href="{% url 'home' %}">TTT Stock Market League</a>
 
 		    	<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -29,13 +38,13 @@
 		                </li>
 		                {% if user.is_authenticated %}
 		                	<li class="nav-item">
-		                		<a class="nav-link {% if request.resolver_match.url_name == 'trade' %}active{% endif %}" href="{% url 'trade'%}">Trade</a>
+		                		<a class="nav-link {% if request.resolver_match.url_name == 'trade' or request.resolver_match.url_name == 'ticker' or request.resolver_match.url_name == 'predictionTab' %}active{% endif %}" href="{% url 'trade'%}">Trade</a>
 		                	</li>
 		                	<li class="nav-item">
-		                		<a class="nav-link {% if request.resolver_match.url_name == 'dashboard' %}active{% endif %}" href="{% url 'dashboard'%}">Dashboard</a>
+		                		<a class="nav-link {% if request.resolver_match.url_name == 'dashboard' or request.resolver_match.url_name == 'dashboardLeague'  %}active{% endif %}" href="{% url 'dashboard'%}">Dashboard</a>
 		                	</li>
 		                	<li class="nav-item">
-		                		<a class="nav-link {% if request.resolver_match.url_name == 'leagues' %}active{% endif %}" href="{% url 'leagues'%}">Leagues</a>
+		                		<a class="nav-link {% if request.resolver_match.url_name == 'leagues' or request.resolver_match.url_name == 'createLeague' or request.resolver_match.url_name == 'adminLeague' or request.resolver_match.url_name == 'leaveLeague' or request.resolver_match.url_name == 'joinLeague' %}active{% endif %}" href="{% url 'leagues'%}">Leagues</a>
 							</li>
 							<li class="nav-item">
 		                		<a class="nav-link {% if request.resolver_match.url_name == 'forum' %}active{% endif %}" href="/forum">Forum</a>
@@ -55,7 +64,7 @@
 				</div>
 			</nav>
 		{% endblock %}
-		<div>
+		<div id="block">
 			{% block content %} {% endblock %}
 		</div>
 	</body>

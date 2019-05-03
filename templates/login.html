@@ -1,58 +1,39 @@
-<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Login</title>
-</head>
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-    <a class="navbar-brand" href="{% url 'home' %}">TTT Stock Market League</a>
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
-    </button>
-  
-    <div class="collapse navbar-collapse" id="navbarSupportedContent">
-      <ul class="navbar-nav mr-auto">
-        <li class="nav-item">
-          <a class="nav-link" href="{% url 'home' %}">Home <span class="sr-only">(current)</span></a>
-        </li>
-        <li class="nav-item active">
-          <a class="nav-link" href="{% url 'login'%}">Login</a>
-        </li>
-        <li class="nav-item">
-                <a class="nav-link" href="{% url 'register'%}">Register</a>
-              </li>
-    
-        
-      </ul>
-    </div>
-  </nav>
-<body class = "body" style="background-color: #0070f1">
-  
-  <br>
-  <h3>Login</h3>
-  <br>
-    <form method="POST">
-        <fieldset>
-          {% csrf_token %}
-          {{form.register_view}}
-          <div class="form-group">
-            <label for="{{form.username.id_for_label}}">Username</label>
-            {{form.username}}
-          </div>
+{% extends "base_generic.html" %}
 
-          {% csrf_token %}
-          <div class="form-group">
-            <label for="{{form.password.id_for_label}}">Password</label>
-            {{form.password}}
-          </div>
-          {% csrf_token %}
-          </fieldset>
-          <button type="submit" class="btn btn-dark">Login</button>
-        </fieldset>
-      </form>
-    
-</body>
-</html>
+{% block content %}
+<div class = "card">
+  <div class = "card-body">
+  <h1>Login</h1>
+    <form method="POST">
+      {% csrf_token %}
+      <div class="form-row">
+        <div class="form-group col-md-2">
+          <label for="{{form.username.id_for_label}}">Username:</label>
+          {{form.username}}
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group col-md-2">
+          <label for="{{form.password.id_for_label}}">Password:</label>
+          {{form.password}}
+        </div>
+      </div>
+          <button type="submit" class="btn btn-primary">Login</button>
+    </form>
+    </div>
+    </div>
+    <br>
+    <div class = "card">
+        <div class = "card-body">
+            <div class="media">
+                <div class="media-body">
+                  <h5 class="mt-0 mb-1">Welcome back!</h5>
+                  Enter login information to get back to trading with TTT.
+                </div>
+                {% load static %}
+                <img src="https://scontent.fewr1-3.fna.fbcdn.net/v/t1.15752-0/p280x280/58372686_2034781523490613_7051164396730449920_n.png?_nc_cat=101&_nc_oc=AQkdZFxdJyt4QzOPdaXto0b2syWVrcJ8k50KVppz0h7RjYci4vuDoBr1WJ9D1zVjQ_E&_nc_ht=scontent.fewr1-3.fna&oh=32b738b7ccac8d7d9f025b8a8a659ba9&oe=5D437E99" style = "width: 18rem;" class="ml-3" alt="TTT">
+              </div>
+        </div>
+      </div>
+
+{% endblock %}

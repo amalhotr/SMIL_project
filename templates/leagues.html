@@ -1,11 +1,21 @@
 {% extends "base_generic.html" %}
 
 {% block content %}
-<body>
-	<h1>Leagues</h1>
-
+	<ul class="nav nav-pills">
+		<li class="nav-item">
+			<a class="nav-link" href="#">Admin leagues</a>
+		</li>
+	  <li class="nav-item">
+	    <a class="nav-link" href="#Player">Player leagues</a>
+	  </li>
+	  <li class="nav-item">
+	    <a class="nav-link" href="#Public">Public leagues</a>
+	  </li>
+	</ul>
+	<div class="card">
+		<div class="card-body">
 	<h3>Admin Leagues</h3>
-	<a href="{% url 'createLeague' %}">Create league</a>
+	<a href="{% url 'createLeague' %}"><button type="button" class="btn btn-link">Create league</button></a>
 	{% if adminLeagues %}
 		<table class="table table-hover">
 			<thead>
@@ -16,6 +26,7 @@
 					<th scope="col">End Date</th>
 					<th scope="col">Public</th>
 					<th scope="col">Description</th>
+					<th scope="col"></th>
 				</tr>
 			</thead>
 			<tbody>
@@ -27,13 +38,17 @@
 					<td> {{ adminLeague.endDate }} </td>
 					<td> {{ adminLeague.public }} </td>
 					<td> {{ adminLeague.description }} </td>
-					<td><a href="admin/{{ adminLeague.name }}">Manage</a></td>
+					<td><a href="admin/{{ adminLeague.name }}"><button type="button" class="btn btn-link">Manage</button></a></td>
 				</tr>
 				{% endfor %}
 			</tbody>
 		</table>
 	{% endif %}
-
+</div>
+</div>
+<br>
+<div class="card" id="Player">
+	<div class="card-body">
 	<h3>Player Leagues</h3>
 	{% if playerLeagues %}
 		<table class="table table-hover">
@@ -45,6 +60,7 @@
 					<th scope="col">End Date</th>
 					<th scope="col">Public</th>
 					<th scope="col">Description</th>
+					<th scope="col"></th>
 				</tr>
 			</thead>
 			<tbody>
@@ -56,13 +72,17 @@
 					<td> {{ playerLeague.endDate }} </td>
 					<td> {{ playerLeague.public }} </td>
 					<td> {{ playerLeague.description }} </td>
-					<td><a href="leave/{{ playerLeague.name }}">Leave</a></td>
+					<td><button type="button" class="btn btn-link"><a href="leave/{{ playerLeague.name }}">Leave</a></button></td>
 				</tr>
 				{% endfor %}
 			</tbody>
 		</table>
 	{% endif %}
-
+</div>
+</div>
+<br>
+<div class="card" id="Public">
+	<div class="card-body">
 	<h3>Public Leagues</h3>
 	{% if publicLeagues %}
 		<table class="table table-hover">
@@ -74,6 +94,7 @@
 					<th scope="col">End Date</th>
 					<th scope="col">Public</th>
 					<th scope="col">Description</th>
+					<th scope="col"></th>
 				</tr>
 			</thead>
 			<tbody>
@@ -85,10 +106,12 @@
 					<td> {{ publicLeague.endDate }} </td>
 					<td> {{ publicLeague.public }} </td>
 					<td> {{ publicLeague.description }} </td>
-					<td><a href="join/{{ publicLeague.name }}">Join</a></td>
+					<td><button type="button" class="btn btn-link"><a href="join/{{ publicLeague.name }}">Join</a></button></td>
 				</tr>
 				{% endfor %}
 			</tbody>
+		</table>
 	{% endif %}
-		</body>
+</div>
+</div>
 {% endblock %}

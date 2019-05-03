@@ -2,74 +2,284 @@
 
 {% block content %}
 	{% load humanize %}
-	{% load crispy_forms_tags %}
-	<h1>{{ ticker }}</h1>
-	{% if plot %}
-	<div style="width:300;height:250">
-		{{ plot|safe }}
+	{% load crispy_forms_tags %} 
+	<style>
+[tooltip]:before {
+    /* needed - do not touch */
+    content: attr(tooltip);
+    position: absolute;
+    opacity: 0;
+    
+    /* customizable */
+    transition: all .3s ease;
+	width: 360px;
+    padding: 10px;
+    color: #ffffff;
+    border-radius: 5px;
+    box-shadow: 2px 2px 1px silver;    
+}
+
+[tooltip]:hover:before {
+    /* needed - do not touch */
+    opacity: 1;
+    
+    /* customizable */
+    background: #333;
+    margin-top: -50px;
+    margin-left: -150px;    
+}
+
+[tooltip]:not([tooltip-persistent]):before {
+    pointer-events: none;
+}
+</style>
+
+	<ul class="nav nav-pills">
+		<li class="nav-item">
+			<a class="nav-link" href="#">Ticker</a>
+		</li>
+	  <li class="nav-item">
+	    <a class="nav-link" href="#Quote">{{ quote.symbol }} </a>
+	  </li>
+	  <li class="nav-item">
+	    <a class="nav-link" href="#Order">Order</a>
+	  </li>
+	  <li class="nav-item">
+	    <a class="nav-link" href="#Holdings">Holdings</a>
+	  </li>
+	   <li class="nav-item">
+	    <a class="nav-link" href="#PT">Pending Transactions</a>
+	  </li>
+	  <li class="nav-item">
+	    <a class="nav-link" href="#News">News</a>
+	  </li>
+	</ul>
+	<div class="card">
+		<div class="card-body">
+			<form method="post">
+				{% csrf_token %}
+				<div class="form-row">
+					<div class="form-group col-md-2">
+						<label for="{{ quoteForm.ticker.id_for_label }}"> Ticker: </label>
+							{{ quoteForm.ticker }}
+					</div>
+					<div class="form-group col-md-2">
+						<label for="{{ quoteForm.asset.id_for_label }}">Asset: </label>
+						{{ quoteForm.asset }}
+					</div>
+				</div>
+				<button type="submit" class="btn btn-primary">Submit</button>
+			</form>
+		</div>
 	</div>
-	{% endif %}
-	{% if prediction_plot %}
-	<div style="width:300;height:250">
-		{{ prediction_plot|safe }}
-	</div>
-	{% endif %}
+	<br>
+	<div class="card" id="Quote">
+		<div class="card-body">
+			<h1>{{ quote.companyName }}</h1>
+			{% if plot %}
+				<div style="width:300;height:250">
+					{{ plot|safe }}
+				</div>
+			{% endif %}
+	
+	<a href="{% url 'predictionTab' asset=asset ticker=ticker accuracy=4 %}" target="_blank"><button type="button" class="btn btn-info">BallPark Forecast</button></a>
+	<a href="{% url 'predictionTab' asset=asset ticker=ticker accuracy=100 %}" target="_blank"><button type="button" class="btn btn-info">Accurate Forecast</button></a>
+	<br>
+	<br>
 	<div class="container">
+		{% if 'Cryptocurrency' in asset  %}
 		<div class="row">
 			<div class="col">
 				<dl class="row">
-						<dt class="col-6">Ticker price</dt>
+						<dt class="col-6"><div tooltip="Cryptocurrency is traded as FOREX (Foriegn Exchange).  Larger cytpocurrencies like Litecoin and Bitcoin are traded in USD.  Altcoins can be traded in Bitcoin, and larger coins are backed by fiat currencies" tooltip-persistent>Price</div></dt>
 						<dd class="col-6">{{ quote.latestPrice|floatformat:2|intcomma }}</dd>
-						<dt class="col-6">Market Cap</dt>
+						<dt class="col-6"><div tooltip="Change will be compared to the closing price of yesterday's share" tooltip-persistent>Change</div></dt>
+						<dd class="col-6">{{ quote.change|floatformat:4 }}</dd>
+						<dt class="col-6"><div tooltip="Percent Change will be compared to the closing price of yesterday's share" tooltip-persistent>Percent Change</div></dt>
+						<dd class="col-6">{{ quote.changePercent }}</dd>
+						<dt class="col-6"><div tooltip="The number of shares or securities that changed hands during a given day." tooltip-persistent>Volume</div></dt>
+						<dd class="col-6">{{ quote.latestVolume|floatformat:2|intcomma }}</dd>
+				</dl>
+			</div>
+			<div class="col">
+				<dl class="row">
+						<dt class="col-6"><div tooltip="Highest price reported for the day" tooltip-persistent>High Today</div></dt>
+						<dd class="col-6">{{ quote.high|floatformat:2|intcomma }}</dd>
+						<dt class="col-6"><div tooltip="Lowest price reported for the day" tooltip-persistent>Low Today</div>
+</dt>
+						<dd class="col-6">{{ quote.low|floatformat:2|intcomma }}</dd>
+						<dt class="col-6"><div tooltip="The starting price of the day" tooltip-persistent>Open Price</div>
+</dt>
+						<dd class="col-6">{{ quote.open|floatformat:2|intcomma }}</dd>
+						<dt class="col-6"><div tooltip="The ending price of the Day" tooltip-persistent>Close Price</div></dt>
+						<dd class="col-6">{{ quote.close|floatformat:2|intcomma }}</dd>
+				</dl>
+			</div>
+		</div>
+		{% endif %}
+		{% if 'Stock' in asset %}
+		<div class="row">
+			<div class="col">
+				<dl class="row">
+						<dt class="col-6"><div tooltip="The Stock Market is traded in USD" tooltip-persistent>Price</div></dt>
+						<dd class="col-6">{{ quote.latestPrice|floatformat:2|intcomma }}</dd>
+						<dt class="col-6"><div tooltip="Change will be compared to the closing price of yesterday's share" tooltip-persistent>Change</div></dt>
+						<dd class="col-6">{{ quote.change }}</dd>
+						<dt class="col-6"><div tooltip="Percent Change will be compared to the closing price of yesterday's share" tooltip-persistent>Percent Change</div></dt>
+						<dd class="col-6">{{ quote.changePercent|floatformat:4 }}</dd>
+						<dt class="col-6"><div tooltip="Market capitalization: the value of a company that is traded on the stock market, calculated by multiplying the total number of shares by the present share price." tooltip-persistent>Market Cap</div></dt>
 						<dd class="col-6">{{ keyStats.marketcap|intcomma }}</dd>
-						<dt class="col-6">Price-Earnings Ratio</dt>
+						<dt class="col-6"><div tooltip="Current stock price divided by trailing annual earnings per share." tooltip-persistent>Price-Earning Ratio</div>
+</dt>
 						<dd class="col-6">{{ quote.peRatio|floatformat:2|intcomma }}</dd>
-						<dt class="col-6">Dividend Yield</dt>
+						<dt class="col-6"><div tooltip="Dividend yield: The dividend expressed as a percentage of a stock's current going market price." tooltip-persistent>Divident Yield</div>
+</dt>
 						<dd class="col-6">{{ keyStats.dividendYield|floatformat:2|intcomma }}</dd>
-						<dt class="col-6">52 Week High</dt>
+						<dt class="col-6"><div tooltip="The highest price in the last year (52 week look back)" tooltip-persistent>52 Week High</div></dt>
 						<dd class="col-6">{{ keyStats.week52high|floatformat:2|intcomma }}</dd>
-						<dt class="col-6">52 Week Low</dt>
+						<dt class="col-6"><div tooltip="The lowest price in the last year (52 week look back)" tooltip-persistent>52 Week Low</div></dt>
 						<dd class="col-6">{{ keyStats.week52low|floatformat:2|intcomma }}</dd>
 				</dl>
 			</div>
 			<div class="col">
 				<dl class="row">
-						<dt class="col-6">Average Volume</dt>
+						<dt class="col-6"><div tooltip="Just like volume, average volume is total amount of shares or securities traded over a certain period of time
+" tooltip-persistent>Average Volume</div></dt>
 						<dd class="col-6">{{ quote.avgTotalVolume }}</dd>
-						<dt class="col-6">High Today</dt>
+						<dt class="col-6"><div tooltip="Highest price reported for the day" tooltip-persistent>High Today</div></dt>
 						<dd class="col-6">{{ quote.high|floatformat:2|intcomma }}</dd>
-						<dt class="col-6">Low Today</dt>
+						<dt class="col-6"><div tooltip="Lowest price reported for the day" tooltip-persistent>Low Today</div></dt>
 						<dd class="col-6">{{ quote.low|floatformat:2|intcomma }}</dd>
-						<dt class="col-6">Open Price</dt>
+						<dt class="col-6"><div tooltip="The US Stock Market opens at 9:30 AM EST" tooltip-persistent>Open Price</div></dt>
 						<dd class="col-6">{{ quote.open|floatformat:2|intcomma }}</dd>
-						<dt class="col-6">Close Price</dt>
+						<dt class="col-6"><div tooltip="The US Stock Market closes at 4:00 PM EST" tooltip-persistent>Close Price</div></dt>
 						<dd class="col-6">{{ quote.close|floatformat:2|intcomma }}</dd>
-						<dt class="col-6">Volume</dt>
+						<dt class="col-6"><div tooltip="The number of shares that changed hands during a given day" tooltip-persistent>Volume</div></dt>
 						<dd class="col-6">{{ quote.latestVolume|floatformat:2|intcomma }}</dd>
 				</dl>
 			</div>
 		</div>
+		{% endif %}
 	</div>
-	<div align = "center">
-	{%crispy form%}
 	</div>
-	<!-- <form method="post">
-		{% csrf_token %} -->
-		<!-- {{ form|crispy }} -->
-		<!-- <button type="submit" class="btn btn-primary">Submit</button> -->
-	<!-- </form> -->
-	<h3> {{ticker}} News</h3>
-	{% if news %}
-		<div class="card">
-			{% for new in news %}
-				<div class="card-body">
-					<h5 class="card-title">{{ new.headline }}</h5>
-					<h6 class="card-subtitle mb-2 text-muted">{{ new.datetime|slice:"0:10" }}</h6>
-					<p class="card-text">{{ new.summary }}</p>
-					<a href={{ new.url }} class="card-link" target="_blank" rel="noopener noreferrer">{{ new.source }}</a>
+</div>
+<br>
+	<div class="card" id="Order">
+		<div class="card-body">
+			<h3>Order</h3>
+			<form method="post">
+				{% csrf_token %}
+				<div class="form-row">
+					<div class="form-group col-md-4">
+						<label for="{{ tradeForm.League_name.id_for_label }}"> League name: </label>
+						{{ tradeForm.League_name }}
+					</div>
+					<div class="form-group col-md-4">
+						<label for="{{ tradeForm.transactionType.id_for_label }}"> Transaction type: </label>
+						{{ tradeForm.transactionType }}
+					</div>
+					<div class="form-group col-md-4">
+						<label for="{{ tradeForm.timeInForce.id_for_label }}"> Time in force: </label>
+						{{ tradeForm.timeInForce }}
+					</div>
 				</div>
-			{% endfor %}
+				<div class="form-row">
+					<div class="form-group col-md-4">
+						<label for="{{ tradeForm.price1.id_for_label }}"> Price 1: </label>
+						{{ tradeForm.price1 }}
+					</div>
+					<div class="form-group col-md-4">
+						<label for="{{ tradeForm.price2.id_for_label }}"> Price 2: </label>
+						{{ tradeForm.price2 }}
+					</div>
+					<div class="form-group col-md-4">
+						<label for="{{ tradeForm.quantity.id_for_label }}"> Quantity: </label>
+						{{ tradeForm.quantity }}
+					</div>
+				</div>
+				<button type="submit" class="btn btn-primary">Submit</button>
+			</form>
 		</div>
-	{% endif %}
-	
+	</div>
+	<br>
+	<div class="card" id="Holdings">
+		<div class="card-body">
+			<h3>Holdings</h3>
+			{% if holdings %}
+				<table class="table table-hover">
+					<thead>
+						<tr>
+							<th scope="col">League</th>
+							<th scope="col">Quantity</th>
+							<th scope="col">Buy Price</th>
+							<th scope="col">Equity</th>
+							<th scope="col">Change</th>
+							<th scope="col">% Change</th>
+						</tr>
+					</thead>
+					<tbody>
+						{% for holding, equity, change, percentChange in holdingsEquities %}
+							<tr>
+								<th scope="row"> {{ holding.portfolio.league.name }}</th>
+								<td> {{ holding.quantity }} </td>
+								<td> {{ holding.price|floatformat:2|intcomma }} </td>
+								<td> {{ equity|floatformat:2|intcomma }}</td>
+								<td> {{ change|floatformat:2|intcomma }}</td>
+								<td> {{ percentChange|floatformat:4 }} </td>
+							</tr>
+						{% endfor %}
+					</tbody>
+				</table>
+			{% endif %}
+		</div>
+	</div>
+	<br>
+	<div class="card" id="PT">
+		<div class="card-body">
+			<h3>Pending Transactions</h3>
+			{% if pendingTransactions %}
+				<thead>
+						<tr>
+							<th scope="col">League</th>
+							<th scope="col">Transaction Type</th>
+							<th scope="col">Time in Force</th>
+							<th scope="col">Transaction Status</th>
+							<th scope="col">Submited</th>
+							<th scope="col">Price 1</th>
+							<th scope="col">Price 2</th>
+							<th scope="col">Quantity</th>
+						</tr>
+					</thead>
+				{% for pendTran in pendingTransactions %}
+					<tbody>
+						<tr>
+							<th scope="row"> {{ pendTran.league.name }}</th>
+							<td> {{ pendTran.transactionType }} </td>
+							<td> {{ pendTran.timeInForce }} </td>
+							<td> {{ pendTran.get_transactionStatus_display }}</td>
+							<td> {{ pendTrans.price1 }}</td>
+							<td> {{ pendTrans.price2 }} </td>
+							<td> {{ pendTrans.quantity }} </td>
+						</tr>
+					</tbody>
+				{% endfor %}
+			{% endif %}
+		</div>
+	</div>
+	<br>
+	<div class="card" id="News">
+		<div class="card-body">
+			<h3>News</h3>
+			{% if news %}
+				{% for new in news %}
+					<div class="card-body">
+						<h5 class="card-title">{{ new.headline }}</h5>
+						<h6 class="card-subtitle mb-2 text-muted">{{ new.datetime|slice:"0:10" }}</h6>
+						<p class="card-text">{{ new.summary }}</p>
+						<a href={{ new.url }} class="card-link" target="_blank" rel="noopener noreferrer">{{ new.source }}</a>
+					</div>
+				{% endfor %}
+			{% endif %}
+		</div>	
+	</div>
 {% endblock %}

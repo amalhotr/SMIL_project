@@ -1,0 +1,10 @@
+{% extends "base_generic.html" %}
+{% block content %}
+
+{% if prediction_plot %}
+<div style="width:300;height:250">
+  {{ prediction_plot|safe }}
+</div>
+{% endif %}
+
+{% endblock %}

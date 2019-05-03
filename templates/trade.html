@@ -1,15 +1,45 @@
 {% extends "base_generic.html" %}
 {% load crispy_forms_tags %}
-
 {% block content %}
-
-<body class = "body" style="background-color: #0070f1">
+<div class = "card">
+	<div class = "card-body">
 	<h1>Trade</h1>
-	<!-- <form method="post">
+	{% load crispy_forms_tags %}
+	<form method="post">
 		{% csrf_token %}
-		{{ form }} -->
-		<!-- <input type="submit" value="Submit"> -->
-	</form>
-	</body>
-	{%crispy form%}
+		<div class="form-row">
+			<div class="form-group col-md-2">
+				<label for="{{ form.ticker.id_for_label }}"> Ticker: </label>
+					{{ form.ticker }}
+			</div>
+			<div class="form-group col-md-2">
+				<label for="{{ form.asset.id_for_label }}">Asset: </label>
+				{{ form.asset }}
+			</div>
+		</div>
+		<button type="submit" class="btn btn-primary">Submit</button>
+{% if messages %}
+<ul class="messages">
+    {% for message in messages %}
+    <li>{% if message.tags %}{% endif %}{{ message }}</li>
+    {% endfor %}
+</ul>
+{% endif %}
+</div>
+</div>
+<br>
+<div class = "card">
+	<div class = "card-body">
+			<div class="media">
+					<img src="https://www.thebalance.com/thmb/ATfDpAdTb-ZCXOQYyCih61tmEp4=/1255x837/filters:fill(auto,1)/how-to-start-trading-stocks-56a22ddb5f9b58b7d0c78746.jpg" style="width: 17.5rem;" class="mr-3" alt="StockImage">
+					<div class="media-body">
+					  <h5 class="mt-0">Stock trading questions?</h5>
+					  Check out some frequently asked questions.
+					  <br>
+					  <br>
+					   <a href="{% url 'FreqAskQ' %}" class="btn btn-info">FAQs</a>
+					</div>
+				  </div>
+	</div>
+</div>
 {% endblock %}
